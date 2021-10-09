@@ -160,6 +160,7 @@ node_modules
 
 # static
 static
+images
 
 # Production compose file
 docker-compose.prod.yml
