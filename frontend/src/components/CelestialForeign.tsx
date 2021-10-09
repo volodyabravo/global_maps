@@ -27,7 +27,7 @@ interface CelestialReactProps {
   zoom: number;
 }
 
-interface CelestialReactState {}
+interface CelestialReactState { }
 
 export class CelestialReact extends React.Component<
   CelestialReactProps,
@@ -38,8 +38,8 @@ export class CelestialReact extends React.Component<
   containerMounted?: number;
   updateConfigTimer: NodeJS.Timeout | null = null;
 
-  FeaturesCollection:any = CelestialFeaturesCollection;
-  Point:any  = CelestialComponentPoint;
+  FeaturesCollection: any = CelestialFeaturesCollection;
+  Point: any = CelestialComponentPoint;
 
   constructor(props: CelestialReactProps) {
     super(props);
@@ -87,6 +87,14 @@ export class CelestialReact extends React.Component<
     const { config, zoom } = this.props;
     if (nextProps.config != config) {
       this.updateConfig(config, nextProps.config);
+    }
+
+    if (config.projection != nextProps.config.projection) {
+      console.log("rerender");
+      this.celestial.reproject( nextProps.config);
+
+      // return true;
+
     }
     return false;
   };

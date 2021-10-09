@@ -13,6 +13,7 @@ import AppNavBar from './components/AppBar';
 import { ThemeProvider } from '.pnpm/@emotion+react@11.4.1_b094b78811fc8d2f00a90f13d0251fb6/node_modules/@emotion/react';
 import theme from './theme/theme';
 import { MapEditorPage } from './pages/MapEditor';
+import { UIKitPage } from './pages/UIKit';
 
 
 
@@ -28,6 +29,10 @@ function App() {
             <Route exact path="/">
               <MapEditorPage />
             </Route>
+            <Route exact path="/ui/">
+              <UIKitPage />
+            </Route>
+            
           </Switch>
 
         </Router>

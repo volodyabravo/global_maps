@@ -16,6 +16,8 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingBag from '@mui/icons-material/ShoppingBag';
+import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -169,6 +171,7 @@ export default function AppNavBar() {
                     >
                         <MenuIcon />
                     </IconButton>
+
                     <Typography
                         variant="h6"
                         noWrap
@@ -177,6 +180,26 @@ export default function AppNavBar() {
                     >
                         Global Maps
                     </Typography>
+
+                   
+                        <Button
+                            variant="text"
+                          
+                            component={Link}
+                            to={"/"}
+                            sx={{ display: { xs: 'none', sm: 'block', textDecoration: "none" } }}
+                        >
+                            Home
+                        </Button>
+                        <Button
+                            variant="text"
+                          
+                            component={Link}
+                            to={"/ui"}
+                            sx={{ display: { xs: 'none', sm: 'block', textDecoration: "none" } }}
+                        >
+                            UI
+                        </Button>
                     {/* <Search>
                         <SearchIconWrapper>
                             <SearchIcon />

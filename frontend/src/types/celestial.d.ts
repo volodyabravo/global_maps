@@ -30,13 +30,14 @@ declare module "d3-celestial/celestial" {
     reload: (config?: CelestialOptions) => void;
     apply: (config?: CelestialOptions) => void;
     redraw: () => void;
+    reproject: (params : {projection?: string}) => void;
     context: any;
     setTextStyle: (style: any) => any;
   }
 
   export interface CelestialOptions {
     location?: boolean;
-    projection?: "airy";
+    projection?: "airy"| "orthographic";
     datapath?: "../data/";
 
     /**
@@ -62,7 +63,7 @@ declare module "d3-celestial/celestial" {
     // overrides center
     follow?: "zenith"; // on which coordinates to center the map, default: zenith, if location enabled,
     // otherwise center
-    zoomlevel?: null; // initial zoom level 0...zoomextend; 0|null = default, 1 = 100%, 0 < x <= zoomextend
+    zoomlevel?: number; // initial zoom level 0...zoomextend; 0|null = default, 1 = 100%, 0 < x <= zoomextend
     zoomextend?: 10; // maximum zoom level
     adaptable?: true; // Sizes are increased with higher zoom-levels
     interactive?: true; // Enable zooming and rotation with mousewheel and dragging
