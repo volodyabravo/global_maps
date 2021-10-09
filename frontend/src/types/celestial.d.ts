@@ -38,7 +38,6 @@ declare module "d3-celestial/celestial" {
     location?: boolean;
     projection?: "airy";
     datapath?: "../data/";
-    planets?: { show: true };
 
     /**
      *  Default width, 0 = full parent element width;
@@ -90,55 +89,55 @@ declare module "d3-celestial/celestial" {
     container?: "map"; // ID of parent element, e.g. div, null = html-body
     datapath?: "data/"; // Path/URL to data files, empty = subfolder 'data'
     stars?: {
-      show: true; // Show stars
-      limit: 6; // Show only stars brighter than limit magnitude
-      colors: true; // Show stars in spectral colors, if not use default color
-      style: { fill: "#ffffff"; opacity: 1 }; // Default style for stars
-      designation: true; // Show star names (Bayer, Flamsteed, Variable star, Gliese or designation,
+      show?: boolean; // Show stars
+      limit?: 6; // Show only stars brighter than limit magnitude
+      colors?: true; // Show stars in spectral colors, if not use default color
+      style?: { fill: "#ffffff"; opacity: 1 }; // Default style for stars
+      designation?: true; // Show star names (Bayer, Flamsteed, Variable star, Gliese or designation,
       // i.e. whichever of the previous applies first); may vary with culture setting
-      designationType: "desig"; // Which kind of name is displayed as designation (fieldname in starnames.json)
-      designationStyle: {
+      designationType?: "desig"; // Which kind of name is displayed as designation (fieldname in starnames.json)
+      designationStyle?: {
         fill: "#ddddbb";
         font: "11px 'Palatino Linotype', Georgia, Times, 'Times Roman', serif";
         align: "left";
         baseline: "top";
       };
-      designationLimit: 2.5; // Show only names for stars brighter than nameLimit
-      propername: false; // Show proper name (if present)
-      propernameType: "name"; // Languge for proper name, default IAU name; may vary with culture setting
+      designationLimit?: 2.5; // Show only names for stars brighter than nameLimit
+      propername?: false; // Show proper name (if present)
+      propernameType?: "name"; // Languge for proper name, default IAU name; may vary with culture setting
       // (see list below of languages codes available for stars)
-      propernameStyle: {
+      propernameStyle?: {
         fill: "#ddddbb";
         font: "13px 'Palatino Linotype', Georgia, Times, 'Times Roman', serif";
         align: "right";
         baseline: "bottom";
       };
-      propernameLimit: 1.5; // Show proper names for stars brighter than propernameLimit
-      size: 7; // Maximum size (radius) of star circle in pixels
-      exponent: -0.28; // Scale exponent for star size, larger = more linear
-      data: "stars.6.json"; // Data source for stellar data,
+      propernameLimit?: 1.5; // Show proper names for stars brighter than propernameLimit
+      size?: 7; // Maximum size (radius) of star circle in pixels
+      exponent?: -0.28; // Scale exponent for star size, larger = more linear
+      data?: "stars.6.json"; // Data source for stellar data,
       // number indicates limit magnitude
     };
     dsos?: {
-      show: true; // Show Deep Space Objects
-      limit: 6; // Show only DSOs brighter than limit magnitude
-      colors: true; // // Show DSOs in symbol colors if true, use style setting below if false
-      style: { fill: "#cccccc"; stroke: "#cccccc"; width: 2; opacity: 1 }; // Default style for dsos
-      names: true; // Show DSO names
-      namesType: "name"; // Type of DSO ('desig' or language) name shown
+      show?: boolean; // Show Deep Space Objects
+      limit?: 6; // Show only DSOs brighter than limit magnitude
+      colors?: true; // // Show DSOs in symbol colors if true, use style setting below if false
+      style?: { fill: "#cccccc"; stroke: "#cccccc"; width: 2; opacity: 1 }; // Default style for dsos
+      names?: true; // Show DSO names
+      namesType?: "name"; // Type of DSO ('desig' or language) name shown
       // (see list below for languages codes available for dsos)
-      nameStyle: {
+      nameStyle?: {
         fill: "#cccccc";
         font: "11px Helvetica, Arial, serif";
         align: "left";
         baseline: "top";
       }; // Style for DSO names
-      nameLimit: 6; // Show only names for DSOs brighter than namelimit
-      size: null; // Optional seperate scale size for DSOs, null = stars.size
-      exponent: 1.4; // Scale exponent for DSO size, larger = more non-linear
-      data: "dsos.bright.json"; // Data source for DSOs,
+      nameLimit?: 6; // Show only names for DSOs brighter than namelimit
+      size?: null; // Optional seperate scale size for DSOs, null = stars.size
+      exponent?: 1.4; // Scale exponent for DSO size, larger = more non-linear
+      data?: "dsos.bright.json"; // Data source for DSOs,
       // opt. number indicates limit magnitude
-      symbols: {
+      symbols?: {
         //DSO symbol styles, 'stroke'-parameter present = outline
         gg: { shape: "circle"; fill: "#ff0000" }; // Galaxy cluster
         g: { shape: "ellipse"; fill: "#ff0000" }; // Generic galaxy
@@ -166,9 +165,9 @@ declare module "d3-celestial/celestial" {
     };
     planets?: {
       //Show planet locations, if date-time is set
-      show: false;
+      show?: boolean;
       // List of all objects to show
-      which: [
+      which?: [
         "sol",
         "mer",
         "ven",
@@ -181,7 +180,7 @@ declare module "d3-celestial/celestial" {
         "nep"
       ];
       // Font styles for planetary symbols
-      symbols: {
+      symbols?: {
         // Character and color for each symbol in 'which' above (simple circle: \u25cf), optional size override for Sun & Moon
         sol: { symbol: "\u2609"; letter: "Su"; fill: "#ffff00"; size: "" };
         mer: { symbol: "\u263f"; letter: "Me"; fill: "#cccccc" };
@@ -198,41 +197,41 @@ declare module "d3-celestial/celestial" {
         plu: { symbol: "\u2647"; letter: "P"; fill: "#aaaaaa" };
         eri: { symbol: "\u26aa"; letter: "E"; fill: "#eeeeee" };
       };
-      symbolStyle: {
+      symbolStyle?: {
         fill: "#00ccff";
         font: "bold 17px 'Lucida Sans Unicode', Consolas, sans-serif";
         align: "center";
         baseline: "middle";
       };
-      symbolType: "symbol"; // Type of planet symbol: 'symbol' graphic planet sign, 'disk' filled circle scaled by magnitude
+      symbolType?: "symbol"; // Type of planet symbol: 'symbol' graphic planet sign, 'disk' filled circle scaled by magnitude
       // 'letter': 1 or 2 letters S Me V L Ma J S U N
-      names: false; // Show name in nameType language next to symbol
-      nameStyle: {
+      names?: boolean; // Show name in nameType language next to symbol
+      nameStyle?: {
         fill: "#00ccff";
         font: "14px 'Lucida Sans Unicode', Consolas, sans-serif";
         align: "right";
         baseline: "top";
       };
-      namesType: "desig"; // Language of planet name (see list below of language codes available for planets),
+      namesType?: "desig"; // Language of planet name (see list below of language codes available for planets),
       // or desig = 3-letter designation
     };
     constellations?: {
-      names: true; // Show constellation names
-      namesType: "iau"; // Type of name Latin (iau, default), 3 letter designation (desig) or other language (see list below)
-      nameStyle: {
-        fill: "#cccc99";
-        align: "center";
-        baseline: "middle";
-        font: [
+      names?: boolean; // Show constellation names
+      namesType?: "iau"; // Type of name Latin (iau, default), 3 letter designation (desig) or other language (see list below)
+      nameStyle?: {
+        fill?: "#cccc99";
+        align?: "center";
+        baseline?: "middle";
+        font?: [
           "14px Helvetica, Arial, sans-serif", // Style for constellations
           "12px Helvetica, Arial, sans-serif", // Different fonts for diff.
           "11px Helvetica, Arial, sans-serif"
         ];
       }; // ranked constellations
-      lines: true; // Show constellation lines, style below
-      lineStyle: { stroke: "#cccccc"; width: 1; opacity: 0.6 };
-      bounds: false; // Show constellation boundaries, style below
-      boundStyle: { stroke: "#cccc00"; width: 0.5; opacity: 0.8; dash: [2, 4] };
+      lines?: boolean; // Show constellation lines, style below
+      lineStyle?: { stroke: "#cccccc"; width: 1; opacity: 0.6 };
+      bounds?: boolean; // Show constellation boundaries, style below
+      boundStyle?: { stroke: "#cccc00"; width: 0.5; opacity: 0.8; dash: [2, 4] };
     };
     /**
      * Milky way
