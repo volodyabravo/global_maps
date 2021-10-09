@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from "@mui/material";
 import { Celestial } from "d3-celestial/celestial";
 import { useState } from "react";
 import { CelestialReact } from "../components/CelestialForeign";
@@ -40,7 +40,7 @@ export function MapEditorPage() {
             show: false,
         },
         background: {
-            fill: "#cccccc"
+            fill: "#000"
         }
     })
 
@@ -88,54 +88,38 @@ export function MapEditorPage() {
                             <AccordionDetails>
                                 <Grid container spacing={1} sx={{ color: "#FFF" }}>
                                     <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <InputLabel htmlFor="age-simple">Показывать планеты</InputLabel>
-                                            <Select
-                                                value={mapProps.planets?.show ? "yes" : "no"}
-                                                onChange={(val) => {
-                                                    setMapProps((prev) => ({
-                                                        ...prev, planets: {
-                                                            ...mapProps.planets,
-                                                            show: val.target.value == "yes"
-                                                        }
-                                                    }))
-                                                }}
-                                                inputProps={{
-                                                    name: 'age',
-                                                    id: 'age-simple',
-                                                }}
-                                            >
-                                                <MenuItem value={"yes"}>Да</MenuItem>
-                                                <MenuItem value={"no"}>Нет</MenuItem>
-                                            </Select>
-                                        </FormControl>
+
+                                        <FormControlLabel
+                                            label="Показывать планеты"
+                                            control={<Checkbox checked={mapProps.planets?.show} onChange={(e, v) => {
+                                                setMapProps((prev) => ({
+                                                    ...prev, planets: {
+                                                        ...mapProps.planets,
+                                                        show: v
+                                                    }
+                                                }))
+                                            }} />}
+                                        />
+
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+
+
+                                        <FormControlLabel
+                                            label="Показывать звезды"
+                                            control={<Checkbox checked={mapProps.stars?.show} onChange={(e, v) => {
+                                                setMapProps((prev) => ({
+                                                    ...prev, stars: {
+                                                        ...mapProps.stars,
+                                                        show: v
+                                                    }
+                                                }))
+                                            }} />}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} md={6} direction="row">
                                         <FormControl sx={{ width: "100%" }}>
-                                            <InputLabel htmlFor="age-simple"><Typography>Показывать звезды</Typography></InputLabel>
-                                            <Select
-                                                value={mapProps.stars?.show ? "yes" : "no"}
-                                                onChange={(val) => {
-                                                    setMapProps((prev) => ({
-                                                        ...prev, stars: {
-                                                            ...mapProps.stars,
-                                                            show: val.target.value == "yes"
-                                                        }
-                                                    }))
-                                                }}
-                                                inputProps={{
-                                                    name: 'age',
-                                                    id: 'age-simple',
-                                                }}
-                                            >
-                                                <MenuItem value={"yes"}>Да</MenuItem>
-                                                <MenuItem value={"no"}>Нет</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <InputLabel htmlFor="age-simple"><Typography>Вид проекции</Typography></InputLabel>
+                                            <InputLabel htmlFor="age-simple"><Typography color={"white"}>Вид проекции</Typography></InputLabel>
                                             <Select
                                                 value={mapProps.projection}
                                                 onChange={(val) => {
@@ -158,14 +142,9 @@ export function MapEditorPage() {
                                             <SketchPicker
                                                 color={mapProps.background?.fill}
                                                 onChangeComplete={color => setMapProps((prev) => ({ ...prev, background: { ...prev.background, fill: color.hex } }))}
-
-
                                             />
                                         </FormControl>
                                     </Grid>
-
-
-
                                 </Grid>
                             </AccordionDetails>
                         </Accordion>

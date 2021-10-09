@@ -15,12 +15,12 @@ export interface GlobalMapsTheme {
     thumbnail?: string,
 
     /**
-     * Show product
+     * Type of the map
      */
     product: MapType;
     
     /**
-     * Options related to starry sky (being used as a default)
+     * Options related to starry sky (being used as a default) exists on skymap
      */
     celestial?: CelestialOptions
 }
