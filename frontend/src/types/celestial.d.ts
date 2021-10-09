@@ -52,9 +52,12 @@ declare module "d3-celestial/celestial" {
     projectionRatio?: null; // Optional override for default projection ratio
     transform?: "equatorial"; // Coordinate transformation: equatorial (default),
     // ecliptic, galactic, supergalactic
-    center?: null; // Initial center coordinates in set transform
-    // [longitude, latitude, orientation] all in degrees
-    // null = default center [0,0,0]
+    /**
+     * Initial center coordinates in set transform
+     * [longitude, latitude, orientation] all in degrees
+     *  null = default center [0,0,0]
+     */
+    center?: Array<number>;
     orientationfixed?: true; // Keep orientation angle the same as center[2]
     geopos?: null; // optional initial geographic position [lat,lon] in degrees,
     // overrides center
@@ -80,7 +83,7 @@ declare module "d3-celestial/celestial" {
     advanced?: true; // Display fewer form fields if false
     daterange?: []; // Calender date range; null: displaydate-+10; [n<100]: displaydate-+n; [yr]: yr-+10;
     // [yr, n<100]: [yr-n, yr+n]; [yr0, yr1]
-    controls?: true; // Display zoom controls
+    controls?: boolean; // Display zoom controls
     lang?: ""; // Global language override for names, any name setting that has the chosen language available
     // Default: desig or empty string for designations, other languages as used anywhere else
     culture?: ""; // Source of constellations and star names, default "iau", other: "cn" Traditional Chinese
@@ -272,19 +275,19 @@ declare module "d3-celestial/celestial" {
       /**
        *   Area fill (#cccccc)
        */
-      fill: string;
+      fill?: string;
       /**
-       *  opacity
+       *  opacity from 1 to 0
        */
-      opacity: 1;
+      opacity?: number;
       /**
        *  Outline
        */
-      stroke: string;
+      stroke?: string;
       /**
        *  width
        */
-      width: 1.5;
+      width?: number;
     };
 
     horizon?: {
