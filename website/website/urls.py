@@ -16,8 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
+from rest_framework import routers
+from catalog.views import MapThemeView, MapSizeView, MapPricesView, MapVersionsView, MapOrderView
+
+router = routers.DefaultRouter()
+router.register(r'themes', MapThemeView)
+router.register(r'sizes', MapSizeView)
+router.register(r'prices', MapPricesView)
+router.register(r'versions', MapVersionsView)
+router.register(r'orders', MapOrderView)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls'))
 ]
