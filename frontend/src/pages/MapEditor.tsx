@@ -104,6 +104,7 @@ export function MapEditorPage() {
 
     // Celestial
     const backgroundForm = useForm<{
+        customCss: string;
         backgroundColor?: string;
         mapBackground?: string;
         title?: string;
@@ -125,6 +126,33 @@ export function MapEditorPage() {
         }
     }>({
         defaultValues: {
+            customCss: `
+.map-container {
+
+}
+.card-container {
+
+}
+.card-area {
+
+}
+.text-container {
+
+}
+.text-headline {
+
+}
+.text-divider {
+
+}
+.text-tagline {
+
+}
+.text-subline {
+
+}
+
+            `,
             backgroundColor: "#022B30FF",
             mapBackground: "#022B30FF",
             headline: {
@@ -157,6 +185,9 @@ export function MapEditorPage() {
 
 
     return <div>
+        <style dangerouslySetInnerHTML={{
+            __html: backProps.customCss
+        }} />
         <Grid container spacing={1} sx={{
             "minHeight": "100vh"
         }} >
@@ -164,18 +195,16 @@ export function MapEditorPage() {
                 // "pointerEvents": "none"
             }} >
 
-                <CardArea>
-                    <CardContainer style={{ background: backProps.backgroundColor }}>
-                        <MapContainer style={{ background: backProps.mapBackground }}>
+                <CardArea className="card-area">
+                    <CardContainer className="card-container" style={{ background: backProps.backgroundColor }}>
+                        <MapContainer className="map-container" style={{ background: backProps.mapBackground }}>
                             <CelestialReact zoom={0} config={mapProps} />
-
-
                         </MapContainer>
-                        <CardTextContainer>
-                            <Typography color={backProps.headline.color} >{backProps.headline.text}</Typography>
-                            <Typography color={backProps.divider.color} >{backProps.divider.text}</Typography>
-                            <Typography color={backProps.tagline.color} >{backProps.tagline.text}</Typography>
-                            <Typography color={backProps.subline.color} >{backProps.subline.text}</Typography>
+                        <CardTextContainer className="text-container">
+                            <Typography className="text-headline" color={backProps.headline.color} >{backProps.headline.text}</Typography>
+                            <Typography className="text-divider" color={backProps.divider.color} >{backProps.divider.text}</Typography>
+                            <Typography className="text-tagline" color={backProps.tagline.color} >{backProps.tagline.text}</Typography>
+                            <Typography className="text-subline" color={backProps.subline.color} >{backProps.subline.text}</Typography>
                         </CardTextContainer>
                     </CardContainer>
                 </CardArea>
@@ -387,7 +416,7 @@ export function MapEditorPage() {
                                     </Grid>
                                     <Grid item xs={12} md={6} direction="row">
                                         <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="mapBackground"  control={backgroundForm.control} label="Цвет карты"></ColorPicker>
+                                            <ColorPicker name="mapBackground" control={backgroundForm.control} label="Цвет карты"></ColorPicker>
                                         </FormControl>
                                     </Grid>
 
@@ -493,6 +522,35 @@ export function MapEditorPage() {
 
                             </AccordionDetails>
                         </Accordion>
+                        <Accordion >
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1bh-content"
+                                id="panel1bh-header"
+                            >
+                                <Typography sx={{ width: '33%', flexShrink: 0, }}>
+                                    CSS
+                                </Typography>
+
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Controller
+                                    name="customCss"
+                                    control={backgroundForm.control}
+                                    render={({ field }) =>
+                                        <TextField
+
+                                            label={"Свой CSS"} {...field}
+                                            multiline
+                                            maxRows={20}
+                                            sx={{ width: "100%" }}
+                                        />
+                                    }
+                                />
+
+                            </AccordionDetails>
+                        </Accordion>
+
                         {/* <CheckoutButton /> */}
                     </CardContent>
                 </Card>
