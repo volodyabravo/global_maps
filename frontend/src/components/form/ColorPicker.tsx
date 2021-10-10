@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { SketchPicker } from "react-color"
 import styled from "@emotion/styled";
 import { Control, Path, useController } from "react-hook-form";
@@ -28,12 +28,32 @@ export function ColorPicker<FieldValues>({ name, control, label }: ColorPickerPr
         control: control
     })
 
+    const wrapperRef = useRef(null);
+
+    useEffect(() => {
+        /**
+         * Alert if clicked on outside of element
+         */
+        function handleClickOutside(event: any) {
+            // @ts-expect-error
+            if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        }
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [wrapperRef]);
+
     return (
-        <ColorPickerContainer  onClick={(e) => e.target === e.currentTarget && setIsOpen((prev) => !prev)}>
+        <ColorPickerContainer ref={wrapperRef} onClick={(e) => e.target === e.currentTarget && setIsOpen((prev) => !prev)}>
             <div onClick={(e) => e.target === e.currentTarget && setIsOpen((prev) => !prev)}>{label || "Изменить цвет"}</div>
             <div style={{
-            background: controller.field.value
-        }} onClick={(e) => e.target === e.currentTarget && setIsOpen((prev) => !prev)}>{controller.field.value}</div>
+                background: controller.field.value
+            }} onClick={(e) => e.target === e.currentTarget && setIsOpen((prev) => !prev)}>{controller.field.value}</div>
             {isOpen && <PickerContainer>
                 <SketchPicker
                     color={controller.field.value}
