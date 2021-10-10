@@ -239,7 +239,7 @@ declare module "d3-celestial/celestial" {
      */
     mw?: {
       show: true; // Show Milky Way as filled multi-polygon outlines
-      style: { fill: "#ffffff"; opacity: 0.15 }; // Style for MW layers
+      style: { fill: string; opacity: number }; // Style for MW layers
     };
     lines?: {
       // Display & styles for graticule & some planes
@@ -261,12 +261,12 @@ declare module "d3-celestial/celestial" {
           font: "10px Helvetica, Arial, sans-serif";
         };
       };
-      equatorial: { show: true; stroke: "#aaaaaa"; width: 1.3; opacity: 0.7 };
-      ecliptic: { show: true; stroke: "#66cc66"; width: 1.3; opacity: 0.7 };
-      galactic: { show: false; stroke: "#cc6666"; width: 1.3; opacity: 0.7 };
+      equatorial: { show: boolean; stroke: string; width: 1.3; opacity: 0.7 };
+      ecliptic: { show: boolean; stroke: string; width: 1.3; opacity: 0.7 };
+      galactic: { show: boolean; stroke:string; width: 1.3; opacity: 0.7 };
       supergalactic: {
-        show: false;
-        stroke: "#cc66cc";
+        show: boolean;
+        stroke: string;
         width: 1.3;
         opacity: 0.7;
       };

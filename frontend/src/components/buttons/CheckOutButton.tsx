@@ -1,4 +1,4 @@
-import styled from ".pnpm/@emotion+styled@11.3.0_5c2d7d4b854c783938f3cfe7091c0f9b/node_modules/@emotion/styled";
+import styled from "@emotion/styled";
 import { Button, ButtonTypeMap, ExtendButtonBase } from "@mui/material";
 import { BsChevronRight } from "react-icons/bs";
 import { FaCartPlus } from "react-icons/fa";

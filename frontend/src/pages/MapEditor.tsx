@@ -9,40 +9,63 @@ import {
 } from "d3-celestial/celestial";
 
 import { SketchPicker } from 'react-color';
+import { useForm, Controller } from "react-hook-form";
+import { ColorPicker } from "../components/form/ColorPicker";
 
 export function MapEditorPage() {
     // Accordion control
     const [expanded, setExpanded] = useState<string | false>("panel1");
 
-    const [text, setText] = useState({
-        title: "",
-        subTitle: "",
+    // Celestial
+    const celestialForm = useForm<CelestialOptions>({
+        defaultValues: {
+            center: [0, 3, 0],
+            projection: "airy",
+            controls: false,
+            zoomlevel: 2,
+            constellations: {
+                names: false
+            },
+            planets: {
+                show: true,
+                names: false,
+            },
 
-    })
+            stars: {
+                show: true
+            },
+            dsos: {
+                show: false,
+            },
+            background: {
+                fill: "#000"
+            },
+            lines: {
+                ecliptic: {
+                    show: true,
+                    stroke: "#66cc66"
+                },
+                equatorial: {
+                    show: true,
+                    stroke: "#aaaaaa"
+                }
+            },
+            mw: {
+                show: true,
+                style: {
+                    fill: "#ffffff",
+                    opacity: 0.15
+                }
+            },
+            horizon: {
+                show: false,
+                fill: "#000000"
+            },
 
-    const [mapProps, setMapProps] = useState<CelestialOptions>({
-        center: [0, 3, 0],
-        projection: "airy",
-        controls: false,
-        zoomlevel: 2,
-        constellations: {
-            names: false
-        },
-        planets: {
-            show: true,
-            names: false,
-        },
-
-        stars: {
-            show: true
-        },
-        dsos: {
-            show: false,
-        },
-        background: {
-            fill: "#000"
         }
-    })
+    });
+
+    let mapProps = celestialForm.watch();
 
 
 
@@ -59,6 +82,7 @@ export function MapEditorPage() {
             <Grid container item xs={12} md={8} direction="column" sx={{
                 // "pointerEvents": "none"
             }} >
+                
                 <Box
                     display="flex"
                     justifyContent="center"
@@ -88,61 +112,140 @@ export function MapEditorPage() {
                             <AccordionDetails>
                                 <Grid container spacing={1} sx={{ color: "#FFF" }}>
                                     <Grid item xs={12} md={6} direction="row">
-
-                                        <FormControlLabel
-                                            label="Показывать планеты"
-                                            control={<Checkbox checked={mapProps.planets?.show} onChange={(e, v) => {
-                                                setMapProps((prev) => ({
-                                                    ...prev, planets: {
-                                                        ...mapProps.planets,
-                                                        show: v
-                                                    }
-                                                }))
-                                            }} />}
+                                        <Controller
+                                            name="planets.show"
+                                            control={celestialForm.control}
+                                            render={({ field }) =>
+                                                <FormControlLabel
+                                                    label="Показывать планеты"
+                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                />
+                                            }
                                         />
-
                                     </Grid>
                                     <Grid item xs={12} md={6} direction="row">
-
-
-                                        <FormControlLabel
-                                            label="Показывать звезды"
-                                            control={<Checkbox checked={mapProps.stars?.show} onChange={(e, v) => {
-                                                setMapProps((prev) => ({
-                                                    ...prev, stars: {
-                                                        ...mapProps.stars,
-                                                        show: v
-                                                    }
-                                                }))
-                                            }} />}
+                                        <Controller
+                                            name="lines.equatorial.show"
+                                            control={celestialForm.control}
+                                            render={({ field }) =>
+                                                <FormControlLabel
+                                                    label="Показать линию экватора"
+                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="lines.ecliptic.show"
+                                            control={celestialForm.control}
+                                            render={({ field }) =>
+                                                <FormControlLabel
+                                                    label="Показать линию ecliptic"
+                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="dsos.show"
+                                            control={celestialForm.control}
+                                            render={({ field }) =>
+                                                <FormControlLabel
+                                                    label="Показать Deep Space обьекты"
+                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="mw.show"
+                                            control={celestialForm.control}
+                                            render={({ field }) =>
+                                                <FormControlLabel
+                                                    label="Показать млечный путь"
+                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="planets.show"
+                                            control={celestialForm.control}
+                                            render={({ field }) =>
+                                                <FormControlLabel
+                                                    label="Показывать планеты"
+                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="stars.show"
+                                            control={celestialForm.control}
+                                            defaultValue={true}
+                                            rules={{ required: true }}
+                                            render={({ field }) =>
+                                                <FormControlLabel
+                                                    label="Показывать звезды"
+                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                />
+                                            }
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={6} direction="row">
                                         <FormControl sx={{ width: "100%" }}>
                                             <InputLabel htmlFor="age-simple"><Typography color={"white"}>Вид проекции</Typography></InputLabel>
-                                            <Select
-                                                value={mapProps.projection}
-                                                onChange={(val) => {
-                                                    // @ts-expect-error
-                                                    setMapProps((prev) => ({
-                                                        ...prev, projection: val.target.value
-                                                    }))
-                                                }}
-
-                                            >
-                                                <MenuItem value={"orthographic"}>Ортографическая</MenuItem>
-                                                <MenuItem value={"airy"}>Воздушная</MenuItem>
-
-                                            </Select>
+                                            <Controller
+                                                name="projection"
+                                                control={celestialForm.control}
+                                                render={({ field }) =>
+                                                    <Select {...field}>
+                                                        <MenuItem value={"orthographic"}>Ортографическая</MenuItem>
+                                                        <MenuItem value={"airy"}>Воздушная</MenuItem>
+                                                    </Select>
+                                                }
+                                            />
                                         </FormControl>
                                     </Grid>
                                     <Grid item xs={12} md={6} direction="row">
                                         <FormControl sx={{ width: "100%" }}>
-                                            <InputLabel htmlFor="age-simple"><Typography>Вид проекции</Typography></InputLabel>
-                                            <SketchPicker
-                                                color={mapProps.background?.fill}
-                                                onChangeComplete={color => setMapProps((prev) => ({ ...prev, background: { ...prev.background, fill: color.hex } }))}
-                                            />
+
+                                            <ColorPicker name="background.fill" control={celestialForm.control} label="Цвет заливки"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="constellations.lineStyle.stroke" control={celestialForm.control} label="Цвет линий созвездий"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="horizon.stroke" control={celestialForm.control} label="Цвет линии горизонта"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="horizon.fill" control={celestialForm.control} label="Цвет заливки горизонта"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="mw.style.fill" control={celestialForm.control} label="Цвет заливки млечного пути"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="lines.ecliptic.stroke" control={celestialForm.control} label="Цвет линии ecliptic"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="lines.equatorial.stroke" control={celestialForm.control} label="Цвет линии galactic"></ColorPicker>
                                         </FormControl>
                                     </Grid>
                                 </Grid>
