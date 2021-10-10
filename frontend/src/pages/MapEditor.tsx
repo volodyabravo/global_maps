@@ -19,29 +19,30 @@ const CardArea = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 2em;
 `;
 
 const CardContainer = styled.div`
     position: relative;
     width: 590px;
     height: 855px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 `;
-const CardOverlay = styled.div`
+const CardTextContainer = styled.div`
     position: absolute;
-    top:0; bottom: 0; right: 0; left: 0;
-    opacity: 0.5;
-    background-color: black;
-    width: 500px;
-    height: 800px;
+   bottom: 0; right: 0; left: 0;
+    /* opacity: 0.5; */
+    /* background-color: black; */
+    padding: 15px;
+    /* width: 100%; */
 `;
 
 const MapContainer = styled.div`
-    position: absolute;
-    top:0; right: 0; left: 0;
-    width: 590px;
-    height: 590px;
+    width: 500px;
+    height: 500px;
     overflow: hidden;
     border-radius: 50%;
+    margin: 3em auto;
 `;
 
 
@@ -56,7 +57,7 @@ export function MapEditorPage() {
             projection: "airy",
             controls: false,
             zoomlevel: 1,
-            width: 590,
+            width: 500,
             constellations: {
                 lines: true,
                 names: false
@@ -104,11 +105,45 @@ export function MapEditorPage() {
     // Celestial
     const backgroundForm = useForm<{
         backgroundColor?: string;
+        mapBackground?: string;
         title?: string;
+        headline: {
+            color: string,
+            text: string
+        },
+        divider: {
+            color: string,
+            text: string
+        }
+        tagline: {
+            color: string,
+            text: string
+        },
+        subline: {
+            color: string,
+            text: string
+        }
     }>({
         defaultValues: {
-            backgroundColor: "#022B30",
-            title: "LOL"
+            backgroundColor: "#022B30FF",
+            mapBackground: "#022B30FF",
+            headline: {
+                color: "#FFF",
+                text: "Paris"
+            },
+            divider: {
+                color: "#FFF",
+                text: "France"
+            },
+            tagline: {
+                color: "#FFF",
+                text: "SEPTEMBER 10TH 2019"
+            },
+            subline: {
+                color: "#FFF",
+                text: "48.856°N / 2.3522°E"
+            }
+
         }
     });
 
@@ -131,9 +166,17 @@ export function MapEditorPage() {
 
                 <CardArea>
                     <CardContainer style={{ background: backProps.backgroundColor }}>
-                        <MapContainer>
+                        <MapContainer style={{ background: backProps.mapBackground }}>
                             <CelestialReact zoom={0} config={mapProps} />
+
+
                         </MapContainer>
+                        <CardTextContainer>
+                            <Typography color={backProps.headline.color} >{backProps.headline.text}</Typography>
+                            <Typography color={backProps.divider.color} >{backProps.divider.text}</Typography>
+                            <Typography color={backProps.tagline.color} >{backProps.tagline.text}</Typography>
+                            <Typography color={backProps.subline.color} >{backProps.subline.text}</Typography>
+                        </CardTextContainer>
                     </CardContainer>
                 </CardArea>
             </Grid>
@@ -174,10 +217,10 @@ export function MapEditorPage() {
                                             name="lines.graticule.show"
                                             control={celestialForm.control}
                                             render={({ field }) =>
-                                            <FormControlLabel
-                                                label="Показывать сетку"
-                                                control={<Switch  {...field} checked={field.value}  />}
-                                            />
+                                                <FormControlLabel
+                                                    label="Показывать сетку"
+                                                    control={<Switch  {...field} checked={field.value} />}
+                                                />
                                             }
                                         />
                                     </Grid>
@@ -188,7 +231,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показывать планеты"
-                                                    control={<Switch  {...field} checked={field.value}  />}
+                                                    control={<Switch  {...field} checked={field.value} />}
                                                 />
                                             }
                                         />
@@ -200,7 +243,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показать линию экватора"
-                                                    control={<Switch  {...field} checked={field.value}  />}
+                                                    control={<Switch  {...field} checked={field.value} />}
                                                 />
                                             }
                                         />
@@ -212,7 +255,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показать линию ecliptic"
-                                                    control={<Switch  {...field} checked={field.value}  />}
+                                                    control={<Switch  {...field} checked={field.value} />}
                                                 />
                                             }
                                         />
@@ -224,7 +267,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показать Deep Space обьекты"
-                                                    control={<Switch  {...field} checked={field.value}  />}
+                                                    control={<Switch  {...field} checked={field.value} />}
                                                 />
                                             }
                                         />
@@ -236,7 +279,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показать млечный путь"
-                                                    control={<Switch  {...field} checked={field.value}  />}
+                                                    control={<Switch  {...field} checked={field.value} />}
                                                 />
                                             }
                                         />
@@ -250,7 +293,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показывать звезды"
-                                                    control={<Switch  {...field} checked={field.value}  />}
+                                                    control={<Switch  {...field} checked={field.value} />}
                                                 />
                                             }
                                         />
@@ -279,12 +322,12 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показывать линии"
-                                                    control={<Switch  {...field} checked={field.value}  />}
+                                                    control={<Switch  {...field} checked={field.value} />}
                                                 />
                                             }
                                         />
                                     </Grid>
-                                    
+
                                     <Grid item xs={12} md={6} direction="row">
                                         <FormControl sx={{ width: "100%" }}>
                                             <ColorPicker name="background.fill" control={celestialForm.control} label="Цвет заливки"></ColorPicker>
@@ -342,6 +385,86 @@ export function MapEditorPage() {
                                             <ColorPicker name="backgroundColor" control={backgroundForm.control} label="Цвет фона"></ColorPicker>
                                         </FormControl>
                                     </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="mapBackground"  control={backgroundForm.control} label="Цвет карты"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+
+
+                                </Grid>
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion >
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1bh-content"
+                                id="panel1bh-header"
+                            >
+                                <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                    Текст
+                                </Typography>
+
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="headline.color" control={backgroundForm.control} label="Цвет заголовка"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="divider.color" control={backgroundForm.control} label="Цвет разделителя"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="tagline.color" control={backgroundForm.control} label="Цвет тэглайна"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="subline.color" control={backgroundForm.control} label="Цвет сублайна"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="headline.text"
+                                            control={backgroundForm.control}
+                                            render={({ field }) =>
+                                                <TextField label={"Текст заголовка"} {...field} />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="divider.text"
+                                            control={backgroundForm.control}
+                                            render={({ field }) =>
+                                                <TextField label={"Текст разделителя"} {...field} />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="tagline.text"
+                                            control={backgroundForm.control}
+                                            render={({ field }) =>
+                                                <TextField label={"Текст тэглайна"} {...field} />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="subline.text"
+                                            control={backgroundForm.control}
+                                            render={({ field }) =>
+                                                <TextField label={"Текст сублайна"} {...field} />
+                                            }
+                                        />
+                                    </Grid>
+
                                 </Grid>
                             </AccordionDetails>
                         </Accordion>
@@ -358,12 +481,12 @@ export function MapEditorPage() {
                             </AccordionSummary>
                             <AccordionDetails>
                                 <TextField
-                                   
+
                                     label="Multiline"
                                     multiline
                                     maxRows={7}
-                                    
-                                    sx={{width: "100%"}}
+
+                                    sx={{ width: "100%" }}
                                     value={JSON.stringify(mapProps, null, 2)}
 
                                 />
