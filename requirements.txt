@@ -5,3 +5,5 @@ markdown==3.3.4
 django-filter==2.1.0
 django-money==2.1
 Pillow==8.3.2
+celery==5.1.2
+redis==3.5.3
