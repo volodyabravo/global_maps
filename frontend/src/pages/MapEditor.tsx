@@ -22,8 +22,8 @@ const CardArea = styled.div`
 
 const CardContainer = styled.div`
     position: relative;
-    width: 500px;
-    height: 800px;
+    width: 590px;
+    height: 855px;
 `;
 const CardOverlay = styled.div`
     position: absolute;
@@ -32,6 +32,15 @@ const CardOverlay = styled.div`
     background-color: black;
     width: 500px;
     height: 800px;
+`;
+
+const MapContainer = styled.div`
+    position: absolute;
+    top:0; right: 0; left: 0;
+    width: 590px;
+    height: 590px;
+    overflow: hidden;
+    border-radius: 50%;
 `;
 
 
@@ -45,7 +54,8 @@ export function MapEditorPage() {
             center: [0, 3, 0],
             projection: "airy",
             controls: false,
-            zoomlevel: 2,
+            zoomlevel: 0,
+            width: 590,
             constellations: {
                 names: false
             },
@@ -108,18 +118,9 @@ export function MapEditorPage() {
 
                 <CardArea>
                     <CardContainer >
-                        <CelestialReact zoom={0} config={mapProps} />
-                        {/* <CardOverlay>
-                            <div style={{
-                                width: "500px",
-                                height: "500px",
-                                borderRadius: "50%",
-                                background: "#FFFFFF22"
-                            }}>
-                                
-                            </div>
-                            <Typography>Текст</Typography> 
-                        </CardOverlay> */}
+                        <MapContainer>
+                            <CelestialReact zoom={0} config={mapProps} />
+                        </MapContainer>
                     </CardContainer>
                 </CardArea>
             </Grid>
