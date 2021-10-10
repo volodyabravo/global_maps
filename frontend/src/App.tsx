@@ -15,28 +15,31 @@ import theme from './theme/theme';
 import { MapEditorPage } from './pages/MapEditor';
 import { UIKitPage } from './pages/UIKit';
 
-
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 function App() {
 
   const [state, setstate] = useState("#fff")
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <Router>
-          <AppNavBar />
-          <Switch>
-            <Route exact path="/">
-              <MapEditorPage />
-            </Route>
-            <Route exact path="/ui/">
-              <UIKitPage />
-            </Route>
-            
-          </Switch>
+      <LocalizationProvider  dateAdapter={AdapterDateFns}>
+        <div className="App">
+          <Router>
+            <AppNavBar />
+            <Switch>
+              <Route exact path="/">
+                <MapEditorPage />
+              </Route>
+              <Route exact path="/ui/">
+                <UIKitPage />
+              </Route>
 
-        </Router>
-      </div>
+            </Switch>
+
+          </Router>
+        </div>
+      </LocalizationProvider>
     </ThemeProvider>
 
   );

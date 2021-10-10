@@ -92,9 +92,6 @@ export class CelestialReact extends React.Component<
     if (config.projection != nextProps.config.projection) {
       console.log("rerender");
       this.celestial.reproject( nextProps.config);
-
-      // return true;
-
     }
     return false;
   };

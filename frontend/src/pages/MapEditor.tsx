@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch } from "@mui/material";
 import { Celestial } from "d3-celestial/celestial";
 import { useState } from "react";
 import { CelestialReact } from "../components/CelestialForeign";
@@ -11,6 +11,7 @@ import {
 import { SketchPicker } from 'react-color';
 import { useForm, Controller } from "react-hook-form";
 import { ColorPicker } from "../components/form/ColorPicker";
+import DateTimePicker from '@mui/lab/DateTimePicker';
 
 import styled from "@emotion/styled";
 
@@ -57,10 +58,11 @@ export function MapEditorPage() {
             zoomlevel: 1,
             width: 590,
             constellations: {
+                lines: true,
                 names: false
             },
             planets: {
-                show: true,
+                show: false,
                 names: false,
             },
 
@@ -75,13 +77,14 @@ export function MapEditorPage() {
             },
             lines: {
                 ecliptic: {
-                    show: true,
+                    show: false,
                     stroke: "#66cc66"
                 },
                 equatorial: {
-                    show: true,
+                    show: false,
                     stroke: "#aaaaaa"
-                }
+                },
+                graticule: { show: false, stroke: "#cccccc", width: 0.6, opacity: 0.8, }
             },
             mw: {
                 show: true,
@@ -111,8 +114,6 @@ export function MapEditorPage() {
 
     let mapProps = celestialForm.watch();
     let backProps = backgroundForm.watch();
-
-
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -152,6 +153,34 @@ export function MapEditorPage() {
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Grid container spacing={1}>
+
+
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="date"
+                                            control={celestialForm.control}
+                                            render={({ field }) =>
+                                                <DateTimePicker
+                                                    label="Date&Time picker"
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    renderInput={(params: any) => <TextField {...params} />}
+                                                />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="lines.graticule.show"
+                                            control={celestialForm.control}
+                                            render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показывать сетку"
+                                                control={<Switch  {...field} checked={field.value}  />}
+                                            />
+                                            }
+                                        />
+                                    </Grid>
                                     <Grid item xs={12} md={6} direction="row">
                                         <Controller
                                             name="planets.show"
@@ -159,7 +188,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показывать планеты"
-                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                    control={<Switch  {...field} checked={field.value}  />}
                                                 />
                                             }
                                         />
@@ -171,7 +200,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показать линию экватора"
-                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                    control={<Switch  {...field} checked={field.value}  />}
                                                 />
                                             }
                                         />
@@ -183,7 +212,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показать линию ecliptic"
-                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                    control={<Switch  {...field} checked={field.value}  />}
                                                 />
                                             }
                                         />
@@ -195,7 +224,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показать Deep Space обьекты"
-                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                    control={<Switch  {...field} checked={field.value}  />}
                                                 />
                                             }
                                         />
@@ -207,7 +236,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показать млечный путь"
-                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                    control={<Switch  {...field} checked={field.value}  />}
                                                 />
                                             }
                                         />
@@ -219,7 +248,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показывать планеты"
-                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                    control={<Switch  {...field} checked={field.value}  />}
                                                 />
                                             }
                                         />
@@ -233,14 +262,14 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <FormControlLabel
                                                     label="Показывать звезды"
-                                                    control={<Checkbox {...field} checked={field.value} />}
+                                                    control={<Switch  {...field} checked={field.value}  />}
                                                 />
                                             }
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={6} direction="row">
                                         <FormControl sx={{ width: "100%" }}>
-                                            <InputLabel htmlFor="age-simple"><Typography color={"white"}>Вид проекции</Typography></InputLabel>
+                                            <InputLabel htmlFor="age-simple"><Typography>Вид проекции</Typography></InputLabel>
                                             <Controller
                                                 name="projection"
                                                 control={celestialForm.control}
@@ -253,6 +282,21 @@ export function MapEditorPage() {
                                             />
                                         </FormControl>
                                     </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="constellations.lines"
+                                            control={celestialForm.control}
+                                            defaultValue={true}
+                                            rules={{ required: true }}
+                                            render={({ field }) =>
+                                                <FormControlLabel
+                                                    label="Показывать линии"
+                                                    control={<Switch  {...field} checked={field.value}  />}
+                                                />
+                                            }
+                                        />
+                                    </Grid>
+                                    
                                     <Grid item xs={12} md={6} direction="row">
                                         <FormControl sx={{ width: "100%" }}>
                                             <ColorPicker name="background.fill" control={celestialForm.control} label="Цвет заливки"></ColorPicker>
@@ -319,21 +363,26 @@ export function MapEditorPage() {
                                 aria-controls="panel1bh-content"
                                 id="panel1bh-header"
                             >
-                                <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                <Typography sx={{ width: '33%', flexShrink: 0, }}>
                                     Вывод JSON
                                 </Typography>
 
                             </AccordionSummary>
                             <AccordionDetails>
+                                <TextField
+                                   
+                                    label="Multiline"
+                                    multiline
+                                    maxRows={7}
+                                    
+                                    sx={{width: "100%"}}
+                                    value={JSON.stringify(mapProps, null, 2)}
 
-                                <Typography align="left">
-                                    <pre>
-                                        {JSON.stringify(mapProps, null, 2)}
-                                    </pre>
-                                </Typography>
+                                />
+
                             </AccordionDetails>
                         </Accordion>
-                        <CheckoutButton />
+                        {/* <CheckoutButton /> */}
                     </CardContent>
                 </Card>
 

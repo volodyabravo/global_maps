@@ -3,7 +3,7 @@ import { orange } from "@mui/material/colors";
 
 const theme = createTheme({
     palette: {
-        mode: 'dark',
+        // mode: 'dark',
     }
 });
 

@@ -29,16 +29,15 @@ export function ColorPicker<FieldValues>({ name, control, label }: ColorPickerPr
     })
 
     return (
-        <ColorPickerContainer  onClick={(e) => e.target == e.currentTarget && setIsOpen((prev) => !prev)}>
-            <div onClick={(e) => e.target == e.currentTarget && setIsOpen((prev) => !prev)}>{label || "Изменить цвет"}</div>
+        <ColorPickerContainer  onClick={(e) => e.target === e.currentTarget && setIsOpen((prev) => !prev)}>
+            <div onClick={(e) => e.target === e.currentTarget && setIsOpen((prev) => !prev)}>{label || "Изменить цвет"}</div>
             <div style={{
             background: controller.field.value
-        }} onClick={(e) => e.target == e.currentTarget && setIsOpen((prev) => !prev)}>{controller.field.value}</div>
+        }} onClick={(e) => e.target === e.currentTarget && setIsOpen((prev) => !prev)}>{controller.field.value}</div>
             {isOpen && <PickerContainer>
                 <SketchPicker
                     color={controller.field.value}
                     onChangeComplete={(val) => controller.field.onChange(val.hex)}
-
                 />
             </PickerContainer>}
 

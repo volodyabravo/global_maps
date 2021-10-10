@@ -41,6 +41,11 @@ declare module "d3-celestial/celestial" {
     datapath?: "../data/";
 
     /**
+     * Date (used by the react component)
+     */
+    date?: Date;
+
+    /**
      *  Default width, 0 = full parent element width;
      */
     width?: number;
@@ -244,10 +249,10 @@ declare module "d3-celestial/celestial" {
     lines?: {
       // Display & styles for graticule & some planes
       graticule: {
-        show: true;
-        stroke: "#cccccc";
-        width: 0.6;
-        opacity: 0.8;
+        show: boolean;
+        stroke: string;
+        width: number;
+        opacity: number;
         // grid values: "outline", "center", or [lat,...] specific position
         lon: {
           pos: [""];
