@@ -243,18 +243,6 @@ export function MapEditorPage() {
                                     </Grid>
                                     <Grid item xs={12} md={6} direction="row">
                                         <Controller
-                                            name="planets.show"
-                                            control={celestialForm.control}
-                                            render={({ field }) =>
-                                                <FormControlLabel
-                                                    label="Показывать планеты"
-                                                    control={<Switch  {...field} checked={field.value}  />}
-                                                />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
                                             name="stars.show"
                                             control={celestialForm.control}
                                             defaultValue={true}
