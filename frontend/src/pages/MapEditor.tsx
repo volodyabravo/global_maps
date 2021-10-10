@@ -12,6 +12,29 @@ import { SketchPicker } from 'react-color';
 import { useForm, Controller } from "react-hook-form";
 import { ColorPicker } from "../components/form/ColorPicker";
 
+import styled from "@emotion/styled";
+
+const CardArea = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const CardContainer = styled.div`
+    position: relative;
+    width: 500px;
+    height: 800px;
+`;
+const CardOverlay = styled.div`
+    position: absolute;
+    top:0; bottom: 0; right: 0; left: 0;
+    opacity: 0.5;
+    background-color: black;
+    width: 500px;
+    height: 800px;
+`;
+
+
 export function MapEditorPage() {
     // Accordion control
     const [expanded, setExpanded] = useState<string | false>("panel1");
@@ -82,18 +105,23 @@ export function MapEditorPage() {
             <Grid container item xs={12} md={8} direction="column" sx={{
                 // "pointerEvents": "none"
             }} >
-                
-                <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    minHeight="70vh"
-                    height="70vh"
-                >
-                    <div style={{ width: "100%", height: "100%" }}>
+
+                <CardArea>
+                    <CardContainer >
                         <CelestialReact zoom={0} config={mapProps} />
-                    </div>
-                </Box>
+                        {/* <CardOverlay>
+                            <div style={{
+                                width: "500px",
+                                height: "500px",
+                                borderRadius: "50%",
+                                background: "#FFFFFF22"
+                            }}>
+                                
+                            </div>
+                            <Typography>Текст</Typography> 
+                        </CardOverlay> */}
+                    </CardContainer>
+                </CardArea>
             </Grid>
             <Grid container item xs={12} md={4} direction="column" >
                 <Card>

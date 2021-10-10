@@ -39,7 +39,6 @@ const BootstrapButton = styled(Button)({
     '&:active': {
         boxShadow: 'none',
         backgroundColor: '#5371A9',
-        
     },
     '&:focus': {
       
