@@ -57,7 +57,9 @@ export function ColorPicker<FieldValues>({ name, control, label }: ColorPickerPr
             {isOpen && <PickerContainer>
                 <SketchPicker
                     color={controller.field.value}
-                    onChangeComplete={(val) => controller.field.onChange(val.hex)}
+                    // TODO: Fix alpha
+                    disableAlpha={true}
+                    onChange={(val) => controller.field.onChange(val.hex)}
                 />
             </PickerContainer>}
 
