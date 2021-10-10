@@ -54,7 +54,7 @@ export function MapEditorPage() {
             center: [0, 3, 0],
             projection: "airy",
             controls: false,
-            zoomlevel: 0,
+            zoomlevel: 1,
             width: 590,
             constellations: {
                 names: false
@@ -98,7 +98,19 @@ export function MapEditorPage() {
         }
     });
 
+    // Celestial
+    const backgroundForm = useForm<{
+        backgroundColor?: string;
+        title?: string;
+    }>({
+        defaultValues: {
+            backgroundColor: "#022B30",
+            title: "LOL"
+        }
+    });
+
     let mapProps = celestialForm.watch();
+    let backProps = backgroundForm.watch();
 
 
 
@@ -117,7 +129,7 @@ export function MapEditorPage() {
             }} >
 
                 <CardArea>
-                    <CardContainer >
+                    <CardContainer style={{ background: backProps.backgroundColor }}>
                         <MapContainer>
                             <CelestialReact zoom={0} config={mapProps} />
                         </MapContainer>
@@ -127,19 +139,19 @@ export function MapEditorPage() {
             <Grid container item xs={12} md={4} direction="column" >
                 <Card>
                     <CardContent>
-                        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                        <Accordion>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1bh-content"
                                 id="panel1bh-header"
                             >
                                 <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                    Опции редактора
+                                    Параметры карты
                                 </Typography>
 
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Grid container spacing={1} sx={{ color: "#FFF" }}>
+                                <Grid container spacing={1}>
                                     <Grid item xs={12} md={6} direction="row">
                                         <Controller
                                             name="planets.show"
@@ -243,7 +255,6 @@ export function MapEditorPage() {
                                     </Grid>
                                     <Grid item xs={12} md={6} direction="row">
                                         <FormControl sx={{ width: "100%" }}>
-
                                             <ColorPicker name="background.fill" control={celestialForm.control} label="Цвет заливки"></ColorPicker>
                                         </FormControl>
                                     </Grid>
@@ -280,7 +291,29 @@ export function MapEditorPage() {
                                 </Grid>
                             </AccordionDetails>
                         </Accordion>
-                        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                        <Accordion >
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1bh-content"
+                                id="panel1bh-header"
+                            >
+                                <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                    Параметры фона
+                                </Typography>
+
+                            </AccordionSummary>
+                            <AccordionDetails>
+
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="backgroundColor" control={backgroundForm.control} label="Цвет фона"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion >
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1bh-content"
