@@ -53,8 +53,8 @@ export function ColorPicker<FieldValues>({ name, control, label }: ColorPickerPr
             <div onClick={(e) => e.target === e.currentTarget && setIsOpen((prev) => !prev)}>{label || "Изменить цвет"}</div>
             <div style={{
                 background: controller.field.value,
-                width: "20px",
-                height: "20px",
+                width: "15px",
+                height: "15px",
                 borderRadius: "50%",
                 border: "2px #e7e7e7 solid"
             }} onClick={(e) => e.target === e.currentTarget && setIsOpen((prev) => !prev)}></div>

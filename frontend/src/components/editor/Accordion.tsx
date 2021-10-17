@@ -46,6 +46,6 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
     },
     '& .MuiAccordionSummary-content': {
         //@ts-expect-error
-        marginLeft: theme.spacing(1),
+        marginLeft: theme.spacing(0),
     },
 }));

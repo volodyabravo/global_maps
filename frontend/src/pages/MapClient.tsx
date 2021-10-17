@@ -189,104 +189,110 @@ export function MapClientPage() {
                     <Typography fontSize="12px" fontWeight="700" align="left" color="#C5C5C5">Customize your star map</Typography>
                     <Typography fontSize="12px" fontWeight="700" align="left" color="#C5C5C5">Change zodiac, labels and appearance</Typography>
                 </Box>
-                <Box sx={{ boxShadow: "-5px -5px 10px rgba(0, 0, 0, 0.05)" }}>
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1bh-content"
-                            id="panel1bh-header"
-                        >
-                            <Typography sx={{ flexShrink: 0 }} align="left">
-                                Параметры карты
-                            </Typography>
+                <Box sx={{ boxShadow: "-5px -5px 10px rgba(0, 0, 0, 0.05)", paddingBottom: "10px" }}>
+                    <Typography align="left" fontSize="12px" fontWeight="400">
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1bh-content"
+                                id="panel1bh-header"
+                            >
+                                <Typography sx={{ flexShrink: 0 }} align="left" fontSize="12px">
+                                    Параметры карты
+                                </Typography>
 
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Grid container spacing={1}>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Grid container spacing={1}>
 
 
 
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="horizon.fill" control={celestialForm.control} label="Цвет заливки горизонта"></ColorPicker>
-                                    </FormControl>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="horizon.fill" control={celestialForm.control} label="Цвет заливки горизонта"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="mw.style.fill" control={celestialForm.control} label="Цвет заливки млечного пути"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="lines.ecliptic.stroke" control={celestialForm.control} label="Цвет линии ecliptic"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="lines.equatorial.stroke" control={celestialForm.control} label="Цвет линии galactic"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="mw.style.fill" control={celestialForm.control} label="Цвет заливки млечного пути"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="lines.ecliptic.stroke" control={celestialForm.control} label="Цвет линии ecliptic"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="lines.equatorial.stroke" control={celestialForm.control} label="Цвет линии galactic"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
-                            </Grid>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion >
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1bh-content"
-                            id="panel1bh-header"
-                        >
-                            <Typography sx={{ flexShrink: 0 }} align="left">
-                                Параметры фона
-                            </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion >
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1bh-content"
+                                id="panel1bh-header"
+                            >
+                                <Typography sx={{ flexShrink: 0 }} align="left" fontSize="12px">
+                                    Параметры фона
+                                </Typography>
 
-                        </AccordionSummary>
-                        <AccordionDetails>
+                            </AccordionSummary>
+                            <AccordionDetails>
 
-                            <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="backgroundColor" control={backgroundForm.control} label="Цвет фона"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="mapBackground" control={backgroundForm.control} label="Цвет карты"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="backgroundColor" control={backgroundForm.control} label="Цвет фона"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="mapBackground" control={backgroundForm.control} label="Цвет карты"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
 
 
-                            </Grid>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion >
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1bh-content"
-                            id="panel1bh-header"
-                        >
-                            <Typography sx={{ flexShrink: 0 }} align="left">
-                                Текст
-                            </Typography>
-
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="headline.color" control={backgroundForm.control} label="Цвет заголовка"></ColorPicker>
-                                    </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="divider.color" control={backgroundForm.control} label="Цвет разделителя"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion >
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1bh-content"
+                                id="panel1bh-header"
+                            >
+                                <Typography sx={{ flexShrink: 0 }} align="left" fontSize="12px">
+                                    Текст
+                                </Typography>
 
-                            </Grid>
-                        </AccordionDetails>
-                    </Accordion>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="headline.color" control={backgroundForm.control} label="Цвет заголовка"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <ColorPicker name="divider.color" control={backgroundForm.control} label="Цвет разделителя"></ColorPicker>
+                                        </FormControl>
+                                    </Grid>
+
+                                </Grid>
+                            </AccordionDetails>
+                        </Accordion>
+                    </Typography>
+                    <Box sx={{  padding: "10px", background:"#FFFFFF", border: "1px solid #EEEEEE", }}>
+                        <CheckoutButton />
+                    </Box>
+
                 </Box>
-                <CheckoutButton />
+
             </Grid>
         </Grid>
     </div >
