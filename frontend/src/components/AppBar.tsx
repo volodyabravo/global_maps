@@ -17,7 +17,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingBag from '@mui/icons-material/ShoppingBag';
 import { Link } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, Container } from '@mui/material';
+import { BsFillBagCheckFill } from 'react-icons/bs';
+
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -160,31 +162,55 @@ export default function AppNavBar() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+            <AppBar position="static" sx={{
+                background: "white",
+                color: "#3F557F",
+                boxShadow: "0px 4px 3px rgba(0, 0, 0, 0.01)"
+            }}>
+                <Container>
+                    <Toolbar>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            aria-label="open drawer"
+                            sx={{
+                                display: {
+                                    xs: 'block',
+                                    md: 'none',
+                                },
+                                mr: 2
+                            }}
+                            onClick={e => handleMobileMenuOpen(e)}
+                        >
+                            <MenuIcon />
+                        </IconButton>
 
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ display: { xs: 'none', sm: 'block' } }}
-                    >
-                        Global Maps
-                    </Typography>
+                        <Box
+                            sx={{
+                                height: "20px",
+                                width: "20px",
+                                background: "wheat",
+                                marginRight: "10px",
+                                display: {
+                                    xs: 'block',
+                                    md: 'block',
+                                },
+                            }}></Box>
 
-                   
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ display: { xs: 'none', sm: 'block', lg: "block" }, fontSize: "16px", fontWeight: 700 }}
+                        >
+                            Global Maps
+                        </Typography>
+
+
                         <Button
                             variant="text"
-                          
+
                             component={Link}
                             to={"/"}
                             sx={{ display: { xs: 'none', sm: 'block', textDecoration: "none" } }}
@@ -193,14 +219,14 @@ export default function AppNavBar() {
                         </Button>
                         <Button
                             variant="text"
-                          
+
                             component={Link}
                             to={"/ui"}
                             sx={{ display: { xs: 'none', sm: 'block', textDecoration: "none" } }}
                         >
                             UI
                         </Button>
-                    {/* <Search>
+                        {/* <Search>
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>
@@ -209,22 +235,22 @@ export default function AppNavBar() {
                             inputProps={{ 'aria-label': 'search' }}
                         />
                     </Search> */}
-                    <Box sx={{ flexGrow: 1 }} />
-                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="show 17 new notifications"
-                            color="inherit"
-                        >
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <ShoppingBag />
-                        </IconButton>
+                        <Box sx={{ flexGrow: 1 }} />
+                        <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
+                            {/* <IconButton
+                                size="small"
+                                aria-label="show 17 new notifications"
+                                color="inherit"
+                            >
+                                <Badge badgeContent={17} color="error">
+                                    <NotificationsIcon />
+                                </Badge>
+                            </IconButton> */}
+                            <IconButton size="small" aria-label="show 4 new mails" color="inherit">
+                                <BsFillBagCheckFill />
+                            </IconButton>
 
-                        {/* <IconButton
+                            {/* <IconButton
                             size="large"
                             edge="end"
                             aria-label="account of current user"
@@ -235,23 +261,25 @@ export default function AppNavBar() {
                         >
                             <AccountCircle />
                         </IconButton> */}
-                    </Box>
-                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon />
-                        </IconButton>
-                    </Box>
-                </Toolbar>
+                        </Box>
+                        {/* <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                            <IconButton
+                                size="large"
+                                aria-label="show more"
+                                aria-controls={mobileMenuId}
+                                aria-haspopup="true"
+                                onClick={handleMobileMenuOpen}
+                                color="inherit"
+                            >
+                                <MoreIcon />
+                            </IconButton>
+                        </Box> */}
+                    </Toolbar>
+                </Container>
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
-        </Box>
+
+        </Box >
     );
 }

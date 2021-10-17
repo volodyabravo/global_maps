@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch } from "@mui/material";
+import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch, Container } from "@mui/material";
 import { Celestial } from "d3-celestial/celestial";
 import { useState } from "react";
 import { CelestialReact } from "../components/CelestialForeign";
@@ -12,6 +12,14 @@ import { SketchPicker } from 'react-color';
 import { useForm, Controller } from "react-hook-form";
 import { ColorPicker } from "../components/form/ColorPicker";
 import DateTimePicker from '@mui/lab/DateTimePicker';
+
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+
+import MuiAccordionSummary, {
+    AccordionSummaryProps,
+} from '@mui/material/AccordionSummary';
+
+import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
 
 import styled from "@emotion/styled";
 
@@ -47,6 +55,39 @@ const MapContainer = styled.div`
     margin: 3em auto;
 `;
 
+
+const Accordion = styled((props: AccordionProps) => (
+    <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+    border: `1px solid white`,
+    '&:not(:last-child)': {
+        borderBottom: 0,
+    },
+    '&:before': {
+        display: 'none',
+    },
+}));
+
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
+    <MuiAccordionSummary
+        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+        {...props}
+    />
+))(({ theme }) => ({
+    backgroundColor:
+        //@ts-expect-error
+        theme.palette.mode === 'dark'
+            ? 'rgba(255, 255, 255, .05)'
+            : 'rgba(0, 0, 0, .03)',
+    flexDirection: 'row-reverse',
+    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+        transform: 'rotate(90deg)',
+    },
+    '& .MuiAccordionSummary-content': {
+        //@ts-expect-error
+        marginLeft: theme.spacing(1),
+    },
+}));
 
 export function MapEditorPage() {
     // Accordion control
@@ -212,351 +253,347 @@ export function MapEditorPage() {
                 </CardArea>
             </Grid>
             <Grid container item xs={12} md={4} direction="column" >
-                <Card>
-                    <CardContent>
-                        <Accordion>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1bh-content"
-                                id="panel1bh-header"
-                            >
-                                <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                    Параметры карты
-                                </Typography>
+                <Container>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            <Typography sx={{ width: '33%', flexShrink: 0 }} align="left">
+                                Параметры карты
+                            </Typography>
 
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Grid container spacing={1}>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
 
 
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="date"
-                                            control={celestialForm.control}
-                                            render={({ field }) =>
-                                                <DateTimePicker
-                                                    label="Date&Time picker"
-                                                    value={field.value}
-                                                    onChange={field.onChange}
-                                                    renderInput={(params: any) => <TextField {...params} />}
-                                                />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="lines.graticule.show"
-                                            control={celestialForm.control}
-                                            render={({ field }) =>
-                                                <FormControlLabel
-                                                    label="Показывать сетку"
-                                                    control={<Switch  {...field} checked={field.value} />}
-                                                />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="planets.show"
-                                            control={celestialForm.control}
-                                            render={({ field }) =>
-                                                <FormControlLabel
-                                                    label="Показывать планеты"
-                                                    control={<Switch  {...field} checked={field.value} />}
-                                                />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="lines.equatorial.show"
-                                            control={celestialForm.control}
-                                            render={({ field }) =>
-                                                <FormControlLabel
-                                                    label="Показать линию экватора"
-                                                    control={<Switch  {...field} checked={field.value} />}
-                                                />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="lines.ecliptic.show"
-                                            control={celestialForm.control}
-                                            render={({ field }) =>
-                                                <FormControlLabel
-                                                    label="Показать линию ecliptic"
-                                                    control={<Switch  {...field} checked={field.value} />}
-                                                />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="dsos.show"
-                                            control={celestialForm.control}
-                                            render={({ field }) =>
-                                                <FormControlLabel
-                                                    label="Показать Deep Space обьекты"
-                                                    control={<Switch  {...field} checked={field.value} />}
-                                                />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="mw.show"
-                                            control={celestialForm.control}
-                                            render={({ field }) =>
-                                                <FormControlLabel
-                                                    label="Показать млечный путь"
-                                                    control={<Switch  {...field} checked={field.value} />}
-                                                />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="stars.show"
-                                            control={celestialForm.control}
-                                            defaultValue={true}
-                                            rules={{ required: true }}
-                                            render={({ field }) =>
-                                                <FormControlLabel
-                                                    label="Показывать звезды"
-                                                    control={<Switch  {...field} checked={field.value} />}
-                                                />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <InputLabel htmlFor="age-simple"><Typography>Вид проекции</Typography></InputLabel>
-                                            <Controller
-                                                name="projection"
-                                                control={celestialForm.control}
-                                                render={({ field }) =>
-                                                    <Select {...field}>
-                                                        <MenuItem value={"orthographic"}>Ортографическая</MenuItem>
-                                                        <MenuItem value={"airy"}>Воздушная</MenuItem>
-                                                    </Select>
-                                                }
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="date"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <DateTimePicker
+                                                label="Date&Time picker"
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                renderInput={(params: any) => <TextField {...params} />}
                                             />
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="lines.graticule.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показывать сетку"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="planets.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показывать планеты"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="lines.equatorial.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показать линию экватора"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="lines.ecliptic.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показать линию ecliptic"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="dsos.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показать Deep Space обьекты"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="mw.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показать млечный путь"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="stars.show"
+                                        control={celestialForm.control}
+                                        defaultValue={true}
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показывать звезды"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <InputLabel htmlFor="age-simple"><Typography>Вид проекции</Typography></InputLabel>
                                         <Controller
-                                            name="constellations.lines"
+                                            name="projection"
                                             control={celestialForm.control}
-                                            defaultValue={true}
-                                            rules={{ required: true }}
                                             render={({ field }) =>
-                                                <FormControlLabel
-                                                    label="Показывать линии"
-                                                    control={<Switch  {...field} checked={field.value} />}
-                                                />
+                                                <Select {...field}>
+                                                    <MenuItem value={"orthographic"}>Ортографическая</MenuItem>
+                                                    <MenuItem value={"airy"}>Воздушная</MenuItem>
+                                                </Select>
                                             }
                                         />
-                                    </Grid>
-
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="background.fill" control={celestialForm.control} label="Цвет заливки"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="constellations.lineStyle.stroke" control={celestialForm.control} label="Цвет линий созвездий"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="horizon.stroke" control={celestialForm.control} label="Цвет линии горизонта"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="horizon.fill" control={celestialForm.control} label="Цвет заливки горизонта"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="mw.style.fill" control={celestialForm.control} label="Цвет заливки млечного пути"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="lines.ecliptic.stroke" control={celestialForm.control} label="Цвет линии ecliptic"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="lines.equatorial.stroke" control={celestialForm.control} label="Цвет линии galactic"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
+                                    </FormControl>
                                 </Grid>
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion >
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1bh-content"
-                                id="panel1bh-header"
-                            >
-                                <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                    Параметры фона
-                                </Typography>
-
-                            </AccordionSummary>
-                            <AccordionDetails>
-
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="backgroundColor" control={backgroundForm.control} label="Цвет фона"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="mapBackground" control={backgroundForm.control} label="Цвет карты"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-
-
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="constellations.lines"
+                                        control={celestialForm.control}
+                                        defaultValue={true}
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показывать линии"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
                                 </Grid>
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion >
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1bh-content"
-                                id="panel1bh-header"
-                            >
-                                <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                    Текст
-                                </Typography>
 
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="headline.color" control={backgroundForm.control} label="Цвет заголовка"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="divider.color" control={backgroundForm.control} label="Цвет разделителя"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="tagline.color" control={backgroundForm.control} label="Цвет тэглайна"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="subline.color" control={backgroundForm.control} label="Цвет сублайна"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="headline.text"
-                                            control={backgroundForm.control}
-                                            render={({ field }) =>
-                                                <TextField label={"Текст заголовка"} {...field} />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="divider.text"
-                                            control={backgroundForm.control}
-                                            render={({ field }) =>
-                                                <TextField label={"Текст разделителя"} {...field} />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="tagline.text"
-                                            control={backgroundForm.control}
-                                            render={({ field }) =>
-                                                <TextField label={"Текст тэглайна"} {...field} />
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <Controller
-                                            name="subline.text"
-                                            control={backgroundForm.control}
-                                            render={({ field }) =>
-                                                <TextField label={"Текст сублайна"} {...field} />
-                                            }
-                                        />
-                                    </Grid>
-
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="background.fill" control={celestialForm.control} label="Цвет заливки"></ColorPicker>
+                                    </FormControl>
                                 </Grid>
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion >
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1bh-content"
-                                id="panel1bh-header"
-                            >
-                                <Typography sx={{ width: '33%', flexShrink: 0, }}>
-                                    Вывод JSON
-                                </Typography>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="constellations.lineStyle.stroke" control={celestialForm.control} label="Цвет линий созвездий"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="horizon.stroke" control={celestialForm.control} label="Цвет линии горизонта"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="horizon.fill" control={celestialForm.control} label="Цвет заливки горизонта"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="mw.style.fill" control={celestialForm.control} label="Цвет заливки млечного пути"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="lines.ecliptic.stroke" control={celestialForm.control} label="Цвет линии ecliptic"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="lines.equatorial.stroke" control={celestialForm.control} label="Цвет линии galactic"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            <Typography sx={{ width: '33%', flexShrink: 0 }} align="left">
+                                Параметры фона
+                            </Typography>
 
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <TextField
+                        </AccordionSummary>
+                        <AccordionDetails>
 
-                                    label="Multiline"
-                                    multiline
-                                    maxRows={7}
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="backgroundColor" control={backgroundForm.control} label="Цвет фона"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="mapBackground" control={backgroundForm.control} label="Цвет карты"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
 
-                                    sx={{ width: "100%" }}
-                                    value={JSON.stringify(mapProps, null, 2)}
 
-                                />
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            <Typography sx={{ width: '33%', flexShrink: 0 }} align="left">
+                                Текст
+                            </Typography>
 
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion >
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1bh-content"
-                                id="panel1bh-header"
-                            >
-                                <Typography sx={{ width: '33%', flexShrink: 0, }}>
-                                    CSS
-                                </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="headline.color" control={backgroundForm.control} label="Цвет заголовка"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="divider.color" control={backgroundForm.control} label="Цвет разделителя"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="tagline.color" control={backgroundForm.control} label="Цвет тэглайна"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="subline.color" control={backgroundForm.control} label="Цвет сублайна"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="headline.text"
+                                        control={backgroundForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Текст заголовка"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="divider.text"
+                                        control={backgroundForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Текст разделителя"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="tagline.text"
+                                        control={backgroundForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Текст тэглайна"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="subline.text"
+                                        control={backgroundForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Текст сублайна"} {...field} />
+                                        }
+                                    />
+                                </Grid>
 
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Controller
-                                    name="customCss"
-                                    control={backgroundForm.control}
-                                    render={({ field }) =>
-                                        <TextField
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            <Typography sx={{ width: '33%', flexShrink: 0, }} align="left">
+                                Вывод JSON
+                            </Typography>
 
-                                            label={"Свой CSS"} {...field}
-                                            multiline
-                                            maxRows={20}
-                                            sx={{ width: "100%" }}
-                                        />
-                                    }
-                                />
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <TextField
 
-                            </AccordionDetails>
-                        </Accordion>
+                                label="Multiline"
+                                multiline
+                                maxRows={7}
 
-                        {/* <CheckoutButton /> */}
-                    </CardContent>
-                </Card>
+                                sx={{ width: "100%" }}
+                                value={JSON.stringify(mapProps, null, 2)}
 
+                            />
+
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            <Typography sx={{ width: '33%', flexShrink: 0, }} align="left">
+                                CSS
+                            </Typography>
+
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Controller
+                                name="customCss"
+                                control={backgroundForm.control}
+                                render={({ field }) =>
+                                    <TextField
+
+                                        label={"Свой CSS"} {...field}
+                                        multiline
+                                        maxRows={20}
+                                        sx={{ width: "100%" }}
+                                    />
+                                }
+                            />
+
+                        </AccordionDetails>
+                    </Accordion>
+                </Container>
+                {/* <CheckoutButton /> */}
             </Grid>
         </Grid>
     </div >
