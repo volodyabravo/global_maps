@@ -165,7 +165,9 @@ export default function AppNavBar() {
             <AppBar position="static" sx={{
                 background: "white",
                 color: "#3F557F",
-                boxShadow: "0px 4px 3px rgba(0, 0, 0, 0.01)"
+                boxShadow: "0px 4px 3px rgba(0, 0, 0, 0.01)",
+                zIndex:2,
+                position: "relative"
             }}>
                 <Container>
                     <Toolbar>
@@ -235,15 +237,6 @@ export default function AppNavBar() {
                         >
                             UI
                         </Button>
-                        {/* <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </Search> */}
                         <Box sx={{ flexGrow: 1 }} />
                         <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
                             {/* <IconButton

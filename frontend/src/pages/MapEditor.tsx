@@ -1,27 +1,18 @@
 import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch, Container } from "@mui/material";
-import { Celestial } from "d3-celestial/celestial";
+
 import { useState } from "react";
 import { CelestialReact } from "../components/CelestialForeign";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { CheckoutButton } from "../components/buttons/CheckOutButton";
 import {
     CelestialOptions,
 } from "d3-celestial/celestial";
 
-import { SketchPicker } from 'react-color';
 import { useForm, Controller } from "react-hook-form";
 import { ColorPicker } from "../components/form/ColorPicker";
 import DateTimePicker from '@mui/lab/DateTimePicker';
 
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-
-import MuiAccordionSummary, {
-    AccordionSummaryProps,
-} from '@mui/material/AccordionSummary';
-
-import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
-
 import styled from "@emotion/styled";
+import { Accordion, AccordionSummary } from "../components/editor/Accordion";
 
 const CardArea = styled.div`
     display: flex;
@@ -29,6 +20,7 @@ const CardArea = styled.div`
     align-items: center;
     /* padding-top: 2em; */
     height: calc(100vh - 64px);
+    background-color: #F8F8F8;
 `;
 
 const CardContainer = styled.div`
@@ -55,39 +47,6 @@ const MapContainer = styled.div`
     margin: 3em auto;
 `;
 
-
-const Accordion = styled((props: AccordionProps) => (
-    <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-    border: `1px solid white`,
-    '&:not(:last-child)': {
-        borderBottom: 0,
-    },
-    '&:before': {
-        display: 'none',
-    },
-}));
-
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
-    <MuiAccordionSummary
-        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-        {...props}
-    />
-))(({ theme }) => ({
-    backgroundColor:
-        //@ts-expect-error
-        theme.palette.mode === 'dark'
-            ? 'rgba(255, 255, 255, .05)'
-            : 'rgba(0, 0, 0, .03)',
-    flexDirection: 'row-reverse',
-    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-        transform: 'rotate(90deg)',
-    },
-    '& .MuiAccordionSummary-content': {
-        //@ts-expect-error
-        marginLeft: theme.spacing(1),
-    },
-}));
 
 export function MapEditorPage() {
     // Accordion control
