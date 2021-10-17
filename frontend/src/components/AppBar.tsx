@@ -221,6 +221,15 @@ export default function AppNavBar() {
                             variant="text"
 
                             component={Link}
+                            to={"/editor/"}
+                            sx={{ display: { xs: 'none', sm: 'block', textDecoration: "none" } }}
+                        >
+                            Editor
+                        </Button>
+                        <Button
+                            variant="text"
+
+                            component={Link}
                             to={"/ui"}
                             sx={{ display: { xs: 'none', sm: 'block', textDecoration: "none" } }}
                         >

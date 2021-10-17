@@ -22,6 +22,11 @@ const sanitize = (config: CelestialOptions) => ({
     ],
 });
 
+
+// Modify config
+const baseConfig: CelestialOptions = {
+  datapath: "/celestialdata/",
+}
 interface CelestialReactProps {
   config: CelestialOptions;
   zoom: number;
@@ -54,7 +59,11 @@ export class CelestialReact extends React.Component<
       this.containerMounted = new Date().getTime();
       this.featuresCollections.forEach((fc) => fc(this.celestial));
       const { config, zoom } = this.props;
-      this.celestial.display(sanitize(config));
+
+      this.celestial.display(sanitize({
+        ...baseConfig,
+        ...config,
+      }));
       if (zoom > 0) {
         this.zoom(zoom);
       }
@@ -86,12 +95,16 @@ export class CelestialReact extends React.Component<
   shouldComponentUpdate = (nextProps: CelestialReactProps) => {
     const { config, zoom } = this.props;
     if (nextProps.config != config) {
-      this.updateConfig(config, nextProps.config);
+      let newConfig = {
+        ...baseConfig,
+        ...nextProps.config
+      }
+      this.updateConfig(config, newConfig);
     }
 
     if (config.projection != nextProps.config.projection) {
       console.log("rerender");
-      this.celestial.reproject( nextProps.config);
+      this.celestial.reproject(nextProps.config);
     }
     return false;
   };

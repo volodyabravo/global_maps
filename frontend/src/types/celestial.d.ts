@@ -38,7 +38,7 @@ declare module "d3-celestial/celestial" {
   export interface CelestialOptions {
     location?: boolean;
     projection?: "airy"| "orthographic";
-    datapath?: "../data/";
+    datapath?: string;
 
     /**
      * Date (used by the react component)
