@@ -19,7 +19,6 @@ export const Accordion = styled((props: AccordionProps) => (
         display: 'none',
     },
     '& .MuiAccordionDetails-root': {
-        //@ts-expect-error
         background: theme.palette.mode === 'dark'
             ? 'rgba(255, 255, 255, .05)'
             : '#F9FAFB',
@@ -34,7 +33,6 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
     />
 ))(({ theme }) => ({
     backgroundColor:
-        //@ts-expect-error
         theme.palette.mode === 'dark'
             ? 'rgba(255, 255, 255, .05)'
             : '#fff',
@@ -45,7 +43,6 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
         transform: 'rotate(90deg)',
     },
     '& .MuiAccordionSummary-content': {
-        //@ts-expect-error
         marginLeft: theme.spacing(0),
     },
 }));

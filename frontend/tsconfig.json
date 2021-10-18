@@ -22,5 +22,10 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "typeAcquisition": {
+    "include": [
+      "src/types/*.d.ts"
+    ]
+  }
 }

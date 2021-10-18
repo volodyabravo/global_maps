@@ -1,49 +1,55 @@
 import styled from "@emotion/styled";
-import { Button, ButtonTypeMap, ExtendButtonBase } from "@mui/material";
+import { Button, ButtonTypeMap, ExtendButtonBase, Typography } from "@mui/material";
 import { BsChevronRight } from "react-icons/bs";
 import { FaCartPlus } from "react-icons/fa";
 
-const BootstrapButton = styled(Button)({
-  boxShadow: "none",
-  textTransform: "none",
-  fontSize: 16,
-  padding: "20px",
-  border: "1px solid",
-  lineHeight: 1.5,
-  backgroundColor: "#3F557F",
-  borderColor: "#3F557F",
-  borderRadius: "10px",
-  color: "#FCFCFC",
-  width: "100%",
-  maxWidth: "400px",
+const BootstrapButton = styled(Button)(({ theme }) => {
+  console.log(theme.breakpoints.down("sm"))
+  return ({
+    boxShadow: "none",
+    textTransform: "none",
+    fontSize: "14px",
+    fontWeight: 700,
+    padding: "20px",
+    border: "1px solid",
+    lineHeight: 1.5,
+    backgroundColor: "#3F557F",
+    borderColor: "#3F557F",
+    borderRadius: "10px",
+    color: "#FCFCFC",
+    // width: "100%",
+    maxWidth: "400px",
 
-  margin: "auto",
-  fontFamily: [
-    "-apple-system",
-    "BlinkMacSystemFont",
-    '"Segoe UI"',
-    "Roboto",
-    '"Helvetica Neue"',
-    "Arial",
-    "sans-serif",
-    '"Apple Color Emoji"',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"',
-  ].join(","),
-  fontWeight: 700,
-  "&:hover": {
-    backgroundColor: "#5371A9",
-    borderColor: "#5371A9",
-    boxShadow: "none",
-  },
-  "&:active": {
-    boxShadow: "none",
-    backgroundColor: "#5371A9",
-  },
-  "&:focus": {},
-  "& span": {
-    padding: "0 5px",
-  },
+    margin: "auto",
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    [theme.breakpoints.down("sm")]: {
+      padding: "10px",
+    },
+    "&:hover": {
+      backgroundColor: "#5371A9",
+      borderColor: "#5371A9",
+      boxShadow: "none",
+    },
+    "&:active": {
+      boxShadow: "none",
+      backgroundColor: "#5371A9",
+    },
+    "&:focus": {},
+    "& span": {
+      padding: "0 5px",
+    },
+  })
 });
 
 interface CheckoutButtonProps {
@@ -70,7 +76,7 @@ export function CheckoutButton(props: CheckoutButtonProps) {
       >
         <div>
           <FaCartPlus />
-          <span>1000$</span>
+          <span>{props.price || "1000$"}</span>
         </div>
         <div>
           <span>Add to cart</span>
