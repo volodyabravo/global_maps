@@ -3,9 +3,9 @@ from rest_framework.response import Response
 from rest_framework import viewsets, mixins
 from django.shortcuts import get_object_or_404
 
-from .models import MapTheme, MapSize, MapPrices, MapVersions, MapOrder
+from .models import MapTheme, MapSize, MapPrices, MapVersions, Order
 from .serializers import MapThemeSerializer, MapSizeSerializer, MapPricesSerializer, MapVersionsSerializer,\
-    MapOrderSerializer
+    OrderSerializer
 
 
 class MapThemeView(viewsets.ModelViewSet):
@@ -83,7 +83,7 @@ class MapVersionsView(viewsets.ModelViewSet):
 
 
 class MapOrderView(viewsets.ModelViewSet):
-    queryset = MapVersions.objects.all()
-    serializer_class = MapOrderSerializer
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
     http_method_names = ['post', ]
 

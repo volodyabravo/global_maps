@@ -1,5 +1,5 @@
 from rest_framework import routers, serializers, viewsets
-from .models import MapTheme, MapSize, MapPrices, MapVersions, MapOrder
+from .models import MapTheme, MapSize, MapPrices, MapVersions, Order
 
 
 class MapThemeSerializer(serializers.HyperlinkedModelSerializer):
@@ -11,7 +11,7 @@ class MapThemeSerializer(serializers.HyperlinkedModelSerializer):
 class MapSizeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = MapSize
-        fields = ['version', 'price', 'name', 'height', 'width', 'units']
+        fields = ['version', 'price', 'name', 'height', 'width']
 
 
 class MapPricesSerializer(serializers.HyperlinkedModelSerializer):
@@ -26,7 +26,7 @@ class MapVersionsSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['version', 'price', 'name', 'image']
 
 
-class MapOrderSerializer(serializers.HyperlinkedModelSerializer):
+class OrderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = MapOrder
+        model = Order
         fields = ['data']

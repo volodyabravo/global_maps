@@ -30,8 +30,6 @@ class MapSize(models.Model):
     name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
     height = models.PositiveIntegerField(_('Height'), blank=False, null=False)
     width = models.PositiveIntegerField(_('Width'), blank=False, null=False)
-    units = models.IntegerField(_('Map size units'), default=1, blank=False, null=False,
-                                choices=[(key, value) for key, value in MapSizeUnits.UNITS.items()])
 
     def __str__(self):
         return '{0}'.format(self.name)
@@ -71,7 +69,17 @@ class MapVersions(models.Model):
         verbose_name_plural = 'Версии'
 
 
+class Order(models.Model):
+    date = models.DateTimeField(_('Date and time'), auto_now=True)
+    data = models.JSONField(_('JSON data'), blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+
 class MapOrder(models.Model):
+    order = models.ForeignKey(Order, blank=True, null=True, on_delete=models.RESTRICT)
     status = models.IntegerField(_('Status'), default=1, blank=False, null=False,
                                  choices=[(key, value) for key, value in MapOrderStatuses.STATUSES.items()])
     date = models.DateTimeField(_('Date and time'), auto_now=True)
@@ -82,5 +90,5 @@ class MapOrder(models.Model):
         return '{0} {1}'.format(MapOrderStatuses.STATUSES.get(self.status), self.date)
 
     class Meta:
-        verbose_name = 'Заказ'
-        verbose_name_plural = 'Заказы'
+        verbose_name = 'Генерация карты'
+        verbose_name_plural = 'Генерации карт'
