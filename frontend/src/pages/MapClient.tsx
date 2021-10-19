@@ -1,4 +1,4 @@
-import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch, Container } from "@mui/material";
+import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch, Container, Tabs, Tab } from "@mui/material";
 import { useState } from "react";
 import { CelestialReact } from "../components/CelestialForeign";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -10,6 +10,8 @@ import { ColorPicker } from "../components/form/ColorPicker";
 import styled from "@emotion/styled";
 import { Accordion, AccordionSummary } from "../components/editor/Accordion";
 import { CheckoutButton } from "../components/buttons/CheckOutButton";
+import { TabContext, TabPanel } from "@mui/lab";
+import { ThemePicker } from "../components/form/ThemePicker";
 
 const CardArea = styled.div`
     display: flex;
@@ -49,106 +51,39 @@ export function MapClientPage() {
     // Accordion control
     const [expanded, setExpanded] = useState<string | false>("panel1");
 
-    // Celestial
-    const celestialForm = useForm<CelestialOptions>({
-        defaultValues: {
-            center: [0, 3, 0],
-            projection: "airy",
-            controls: false,
-            zoomlevel: 1,
-            width: 500,
-            constellations: {
-                lines: true,
-                names: false
-            },
-            planets: {
-                show: false,
-                names: false,
-            },
-
-            stars: {
-                show: true
-            },
-            dsos: {
-                show: false,
-            },
-            background: {
-                fill: "#000"
-            },
-            lines: {
-                ecliptic: {
-                    show: false,
-                    stroke: "#66cc66"
-                },
-                equatorial: {
-                    show: false,
-                    stroke: "#aaaaaa"
-                },
-                graticule: { show: false, stroke: "#cccccc", width: 0.6, opacity: 0.8, }
-            },
-            mw: {
-                show: true,
-                style: {
-                    fill: "#ffffff",
-                    opacity: 0.15
-                }
-            },
-            horizon: {
-                show: false,
-                fill: "#000000"
-            },
-
+    const [themes, setThemes] = useState<Array<{
+        id: number;
+        name: string;
+        image: string;
+    }>>([
+        {
+            id: 1,
+            name: "Theme 1",
+            image: ""
+        },
+        {
+            id: 2,
+            name: "Theme 2",
+            image: ""
+        },
+        {
+            id: 3,
+            name: "Theme 3",
+            image: ""
         }
-    });
+    ]);
+
 
     // Celestial
-    const backgroundForm = useForm<{
-        customCss: string;
-        backgroundColor?: string;
-        mapBackground?: string;
-        title?: string;
-        headline: {
-            color: string,
-            text: string
-        },
-        divider: {
-            color: string,
-            text: string
-        }
-        tagline: {
-            color: string,
-            text: string
-        },
-        subline: {
-            color: string,
-            text: string
-        }
-    }>({
+    const celestialForm = useForm({
         defaultValues: {
-            backgroundColor: "#022B30FF",
-            mapBackground: "#022B30FF",
-            headline: {
-                color: "#FFF",
-                text: "Paris"
-            },
-            divider: {
-                color: "#FFF",
-                text: "France"
-            },
-            tagline: {
-                color: "#FFF",
-                text: "SEPTEMBER 10TH 2019"
-            },
-            subline: {
-                color: "#FFF",
-                text: "48.856°N / 2.3522°E"
-            }
+            theme: "1"
 
         }
     });
 
     let mapProps = celestialForm.watch();
-    let backProps = backgroundForm.watch();
+    // let backProps = backgroundForm.watch();
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -156,16 +91,16 @@ export function MapClientPage() {
         };
 
 
+    const [selectedThemeTab, setSelectedThemeTab] = useState(0);
+
     return <div>
-        <style dangerouslySetInnerHTML={{
-            __html: backProps.customCss
-        }} />
+
         <Grid container spacing={1} sx={{
             "minHeight": "100vh"
         }} >
             <Grid container item xs={12} md={8} direction="column" >
 
-                <CardArea className="card-area">
+                {/* <CardArea className="card-area">
                     <CardContainer className="card-container" style={{ background: backProps.backgroundColor }}>
                         <MapContainer className="map-container" style={{ background: backProps.mapBackground }}>
                             <CelestialReact zoom={0} config={mapProps} />
@@ -177,7 +112,7 @@ export function MapClientPage() {
                             <Typography className="text-subline" color={backProps.subline.color} >{backProps.subline.text}</Typography>
                         </CardTextContainer>
                     </CardContainer>
-                </CardArea>
+                </CardArea> */}
             </Grid>
             <Grid item xs={12} md={4} direction="column" style={{
                 padding: "0px 0px"
@@ -198,16 +133,13 @@ export function MapClientPage() {
                                 id="panel1bh-header"
                             >
                                 <Typography sx={{ flexShrink: 0 }} align="left" fontSize="12px">
-                                    Параметры карты
+                                    Choose the location
                                 </Typography>
 
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Grid container spacing={1}>
-
-
-
-                                    <Grid item xs={12} md={6} direction="row">
+                                    {/* <Grid item xs={12} md={6} direction="row">
                                         <FormControl sx={{ width: "100%" }}>
                                             <ColorPicker name="horizon.fill" control={celestialForm.control} label="Цвет заливки горизонта"></ColorPicker>
                                         </FormControl>
@@ -226,7 +158,7 @@ export function MapClientPage() {
                                         <FormControl sx={{ width: "100%" }}>
                                             <ColorPicker name="lines.equatorial.stroke" control={celestialForm.control} label="Цвет линии galactic"></ColorPicker>
                                         </FormControl>
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                             </AccordionDetails>
                         </Accordion>
@@ -237,26 +169,31 @@ export function MapClientPage() {
                                 id="panel1bh-header"
                             >
                                 <Typography sx={{ flexShrink: 0 }} align="left" fontSize="12px">
-                                    Параметры фона
+                                    Customize the theme
                                 </Typography>
 
                             </AccordionSummary>
                             <AccordionDetails>
-
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="backgroundColor" control={backgroundForm.control} label="Цвет фона"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="mapBackground" control={backgroundForm.control} label="Цвет карты"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
+                                <TabContext value={selectedThemeTab.toString()}>
+                                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                        <Tabs value={selectedThemeTab} onChange={(e, value) => setSelectedThemeTab(value)} aria-label="basic tabs example" centered>
+                                            <Tab label="Popular styles" />
+                                            <Tab label="Customize" />
+                                        </Tabs>
+                                    </Box>
+                                    <TabPanel value="0"  >
+                                        <ThemePicker name="theme" control={celestialForm.control} themes={themes} />
 
 
-                                </Grid>
+                                        <Typography fontWeight="400" color="#A8A8A8" fontSize="10px">
+                                            We are all for freedom of choice, if you want to try different combinations than our favorites - go ahead and click customize and roll your own!
+                                        </Typography>
+                                    </TabPanel>
+                                    <TabPanel value="1">
+                                        Item Two
+                                    </TabPanel>
+                                </TabContext>
+
                             </AccordionDetails>
                         </Accordion>
                         <Accordion >
@@ -266,13 +203,14 @@ export function MapClientPage() {
                                 id="panel1bh-header"
                             >
                                 <Typography sx={{ flexShrink: 0 }} align="left" fontSize="12px">
-                                    Текст
+                                    Customize the text
                                 </Typography>
 
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Grid container spacing={1}>
-                                    <Grid item xs={12} md={6} direction="row">
+
+                                    {/* <Grid item xs={12} md={6} direction="row">
                                         <FormControl sx={{ width: "100%" }}>
                                             <ColorPicker name="headline.color" control={backgroundForm.control} label="Цвет заголовка"></ColorPicker>
                                         </FormControl>
@@ -281,13 +219,29 @@ export function MapClientPage() {
                                         <FormControl sx={{ width: "100%" }}>
                                             <ColorPicker name="divider.color" control={backgroundForm.control} label="Цвет разделителя"></ColorPicker>
                                         </FormControl>
-                                    </Grid>
+                                    </Grid> */}
 
                                 </Grid>
                             </AccordionDetails>
                         </Accordion>
+                        <Accordion >
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1bh-content"
+                                id="panel1bh-header"
+                            >
+                                <Typography sx={{ flexShrink: 0 }} align="left" fontSize="12px">
+                                    Customize the poster size
+                                </Typography>
+
+                            </AccordionSummary>
+                            <AccordionDetails>
+
+                            </AccordionDetails>
+                        </Accordion>
+
                     </Typography>
-                    <Box sx={{  padding: "10px", background:"#FFFFFF", border: "1px solid #EEEEEE", }}>
+                    <Box sx={{ padding: "10px", background: "#FFFFFF", border: "1px solid #EEEEEE", }}>
                         <CheckoutButton />
                     </Box>
 
