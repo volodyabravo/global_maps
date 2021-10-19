@@ -40,4 +40,4 @@ jobs:
       - run: ssh-keyscan -H 193.168.48.2 >> ~/.ssh/known_hosts
 
       # Finally, upload your files to server.
-      - run: rsync -avce ssh --delete ./dist/ root@193.168.48.2:/root/global_maps/
+      - run: rsync -avce ssh --delete ./dist/ root@193.168.48.2:/root/global_maps
