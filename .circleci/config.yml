@@ -1,43 +1,14 @@
 version: 2
-jobs:
-  build:
-    docker:
-      - image: circleci/python:3.8
-    steps:
-      - type: shell
-        shell: /bin/sh
-        pwd: /
-        command: sudo apt update && sudo apt install git -y && git --version
-
-      # Update environment
-      - run: sudo apt update
-
-      # Install rsync. It will be used to upload our code to server
-      - run: sudo apt-get install rsync
-
-      # Sync the SSH keys
-      - add_ssh_keys
-
-      # Check out the code in the project directory
-      - checkout
-
-      - restore_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
-      - run:
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements.txt
-      - save_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
-          paths:
-            - "venv"
-      - store_artifacts:
-          path: test-reports/
-          destination: python_app
-
-      # Add the server to known hosts
-      - run: ssh-keyscan -H 193.168.48.2 >> ~/.ssh/known_hosts
-
-      # Finally, upload your files to server.
-      - run: rsync -avce ssh --delete ./dist/ root@193.168.48.2:/root/global_maps
+  jobs:
+    build_backend:
+      steps:
+        - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker build --pull -t "volodyabravo/globalmaps:backend" -f ./nginx.Dockerfile .
+          docker push "volodyabravo/globalmaps:backend"
+    build_frontend:
+      steps:
+        - run: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker build --pull -t "volodyabravo/globalmaps:frontend" -f ./nginx.Dockerfile .
+            docker push "volodyabravo/globalmaps:frontend"
