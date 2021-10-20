@@ -1,8 +1,8 @@
 version: 2
 jobs:
   build:
-    executor:
-      name: machine
+    docker:
+      - image: circleci/python:3.8
     steps:
       - checkout
       - run: |
