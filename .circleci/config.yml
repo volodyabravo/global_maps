@@ -1,14 +1,23 @@
 version: 2
 jobs:
-  build:
+  build_backend:
     steps:
+      - checkout
       - run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASS
         docker build --pull -t "volodyabravo/globalmaps:backend" -f ./nginx.Dockerfile .
         docker push "volodyabravo/globalmaps:backend"
   build_frontend:
     steps:
+      - checkout
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker build --pull -t "volodyabravo/globalmaps:frontend" -f ./nginx.Dockerfile .
           docker push "volodyabravo/globalmaps:frontend"
+
+workflows:
+  version: 2
+  one_and_two: # this is the name of our workflow
+    jobs: # and here we list the jobs we are going to run.
+      - build_backend
+      - build_frontend
