@@ -1,14 +1,14 @@
 version: 2
-  jobs:
-    build_backend:
-      steps:
-        - run: |
+jobs:
+  build:
+    steps:
+      - run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
+        docker build --pull -t "volodyabravo/globalmaps:backend" -f ./nginx.Dockerfile .
+        docker push "volodyabravo/globalmaps:backend"
+  build_frontend:
+    steps:
+      - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker build --pull -t "volodyabravo/globalmaps:backend" -f ./nginx.Dockerfile .
-          docker push "volodyabravo/globalmaps:backend"
-    build_frontend:
-      steps:
-        - run: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker build --pull -t "volodyabravo/globalmaps:frontend" -f ./nginx.Dockerfile .
-            docker push "volodyabravo/globalmaps:frontend"
+          docker build --pull -t "volodyabravo/globalmaps:frontend" -f ./nginx.Dockerfile .
+          docker push "volodyabravo/globalmaps:frontend"
