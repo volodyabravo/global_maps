@@ -1,6 +1,8 @@
 version: 2
 jobs:
   build:
+    executor:
+      name: machine
     steps:
       - checkout
       - run: |
@@ -14,6 +16,6 @@ jobs:
 
 workflows:
   version: 2
-  one_and_two: # this is the name of our workflow
+  production: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
       - build
