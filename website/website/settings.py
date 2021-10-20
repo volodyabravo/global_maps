@@ -96,9 +96,6 @@ DATABASES = {
 }
 
 
-DATABASE_ROUTERS = ['core.db.routers.BitrixRouter']
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
