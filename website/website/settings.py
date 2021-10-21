@@ -87,11 +87,11 @@ WSGI_APPLICATION = 'website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_NAME', 'postgres'),
         'USER': os.getenv('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', '123456'),
-        'HOST': os.getenv('POSTGRES_HOST', '127.0.0.1'),
-        'PORT': int(os.getenv('POSTGRES_PORT', '35432')),
-        'NAME': os.getenv('POSTGRES_NAME', 'postgres')
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': os.getenv('POSTGRES_HOST', 'postgres'),
+        'PORT': int(os.getenv('POSTGRES_PORT', '5432')),
     },
 }
 
@@ -113,10 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-AUTHENTICATION_BACKENDS = (
-    ('django.contrib.auth.backends.ModelBackend')
-)
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

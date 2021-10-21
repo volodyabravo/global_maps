@@ -1,5 +1,6 @@
 version: "3.6"
 services:
+
   django:
     restart: unless-stopped
     build:
@@ -8,12 +9,13 @@ services:
     volumes:
       - ./docker/media/:/app/media/
       - ./docker/static/:/app/static/
-
     environment:
       - SECRET_KEY=secret
       - DEBUG=True
     env_file:
       - ./.env
+    depends_on:
+      - postgres
 
   nginx:
     build:
@@ -25,6 +27,7 @@ services:
     ports:
       - 80:8080
     restart: unless-stopped
+
   postgres:
     restart: unless-stopped
     image: postgres:13.4-alpine
