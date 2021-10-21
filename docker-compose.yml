@@ -2,6 +2,7 @@ version: "3.6"
 services:
 
   django:
+    image: volodyabravo/globalmaps:backend
     restart: unless-stopped
     build:
       context: ./
@@ -18,6 +19,7 @@ services:
       - postgres
 
   nginx:
+    image: volodyabravo/globalmaps:frontend
     build:
       context: ./
       dockerfile: ./nginx.Dockerfile
