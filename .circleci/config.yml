@@ -9,7 +9,7 @@ jobs:
           version: 19.03.13
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker build --pull -t "volodyabravo/globalmaps:backend" -f ./nginx.Dockerfile .
+          docker build --pull -t "volodyabravo/globalmaps:backend" -f ./django.Dockerfile .
           docker push "volodyabravo/globalmaps:backend"
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
