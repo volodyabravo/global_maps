@@ -37,5 +37,12 @@ class MapVersionsAdmin(admin.ModelAdmin):
 admin.site.register(MapVersions, MapVersionsAdmin)
 
 
-admin.site.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('date',)
+    list_filter = ['date']
+
+
+admin.site.register(Order, OrderAdmin)
+
+
 admin.site.register(MapOrder)
