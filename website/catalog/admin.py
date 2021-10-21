@@ -45,4 +45,9 @@ class OrderAdmin(admin.ModelAdmin):
 admin.site.register(Order, OrderAdmin)
 
 
-admin.site.register(MapOrder)
+class MapOrderAdmin(admin.ModelAdmin):
+    list_display = ('date', 'order', 'status')
+    list_filter = ['date']
+
+
+admin.site.register(MapOrder, MapOrderAdmin)
