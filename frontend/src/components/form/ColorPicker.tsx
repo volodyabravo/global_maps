@@ -10,15 +10,15 @@ interface ColorPickerProps<FieldValues> {
 }
 
 let ColorPickerContainer = styled.div`
-padding: 6px;
-display: flex;
-justify-content: space-between;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
 `
 
 let PickerContainer = styled.div`
-position: absolute;
-z-index: 1;
-bottom: 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
 `
 
 export function ColorPicker<FieldValues>({ name, control, label }: ColorPickerProps<FieldValues>) {
@@ -67,5 +67,6 @@ export function ColorPicker<FieldValues>({ name, control, label }: ColorPickerPr
                 />
             </PickerContainer>}
 
-        </ColorPickerContainer>)
+        </ColorPickerContainer>
+    )
 }
