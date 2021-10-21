@@ -9,8 +9,25 @@ class MapThemeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(MapTheme, MapThemeAdmin)
-admin.site.register(MapSize)
-admin.site.register(MapPrices)
+
+
+class MapSizeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'active', 'version', 'height', 'width', 'price')
+    list_filter = ['active', 'version']
+    search_fields = ['name', 'version']
+
+
+admin.site.register(MapSize, MapSizeAdmin)
+
+
+class MapPricesAdmin(admin.ModelAdmin):
+    list_display = ('product', 'price')
+    list_filter = ['product']
+
+
+admin.site.register(MapPrices, MapPricesAdmin)
+
+
 admin.site.register(MapVersions)
 admin.site.register(Order)
 admin.site.register(MapOrder)
