@@ -219,10 +219,7 @@ export function MapEditorPage() {
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
-                            <Typography sx={{ width: '33%', flexShrink: 0 }} align="left">
-                                Параметры карты
-                            </Typography>
-
+                            Параметры карты
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
@@ -402,10 +399,7 @@ export function MapEditorPage() {
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
-                            <Typography sx={{ width: '33%', flexShrink: 0 }} align="left">
-                                Параметры фона
-                            </Typography>
-
+                            Параметры фона
                         </AccordionSummary>
                         <AccordionDetails>
 
@@ -431,10 +425,7 @@ export function MapEditorPage() {
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
-                            <Typography sx={{ width: '33%', flexShrink: 0 }} align="left">
-                                Текст
-                            </Typography>
-
+                            Текст
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
@@ -504,10 +495,7 @@ export function MapEditorPage() {
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
-                            <Typography sx={{ width: '33%', flexShrink: 0, }} align="left">
-                                Вывод JSON
-                            </Typography>
-
+                            Вывод JSON
                         </AccordionSummary>
                         <AccordionDetails>
                             <TextField
@@ -529,10 +517,7 @@ export function MapEditorPage() {
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
-                            <Typography sx={{ width: '33%', flexShrink: 0, }} align="left">
-                                CSS
-                            </Typography>
-
+                            CSS
                         </AccordionSummary>
                         <AccordionDetails>
                             <Controller

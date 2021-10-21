@@ -22,7 +22,8 @@ export const Accordion = styled((props: AccordionProps) => (
         background: theme.palette.mode === 'dark'
             ? 'rgba(255, 255, 255, .05)'
             : '#F9FAFB',
-    }
+    },
+    
 }));
 
 
@@ -39,10 +40,15 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
     flexDirection: 'row-reverse',
     border: "1px solid #EEEEEE",
     borderTop: "none",
+    fontSize: "12px",
+    textAlign:"left",
     '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
         transform: 'rotate(90deg)',
     },
     '& .MuiAccordionSummary-content': {
         marginLeft: theme.spacing(0),
     },
+    '&.Mui-expanded':{
+        fontWeight:700
+    }
 }));

@@ -78,7 +78,6 @@ export function MapClientPage() {
     const celestialForm = useForm({
         defaultValues: {
             theme: "1"
-
         }
     });
 
@@ -126,51 +125,29 @@ export function MapClientPage() {
                 </Box>
                 <Box sx={{ boxShadow: "-5px -5px 10px rgba(0, 0, 0, 0.05)", paddingBottom: "10px" }}>
                     <Typography align="left" fontSize="12px" fontWeight="400">
-                        <Accordion>
+                        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1bh-content"
                                 id="panel1bh-header"
                             >
-                                <Typography sx={{ flexShrink: 0 }} align="left" fontSize="12px">
-                                    Choose the location
-                                </Typography>
-
+                                Choose the location
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Grid container spacing={1}>
-                                    {/* <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="horizon.fill" control={celestialForm.control} label="Цвет заливки горизонта"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="mw.style.fill" control={celestialForm.control} label="Цвет заливки млечного пути"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="lines.ecliptic.stroke" control={celestialForm.control} label="Цвет линии ecliptic"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="lines.equatorial.stroke" control={celestialForm.control} label="Цвет линии galactic"></ColorPicker>
-                                        </FormControl>
-                                    </Grid> */}
+                                   
                                 </Grid>
                             </AccordionDetails>
                         </Accordion>
-                        <Accordion >
+                        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1bh-content"
                                 id="panel1bh-header"
                             >
-                                <Typography sx={{ flexShrink: 0 }} align="left" fontSize="12px">
-                                    Customize the theme
-                                </Typography>
+
+                                Customize the theme
+
 
                             </AccordionSummary>
                             <AccordionDetails>
@@ -196,43 +173,34 @@ export function MapClientPage() {
 
                             </AccordionDetails>
                         </Accordion>
-                        <Accordion >
+                        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1bh-content"
                                 id="panel1bh-header"
                             >
-                                <Typography sx={{ flexShrink: 0 }} align="left" fontSize="12px">
-                                    Customize the text
-                                </Typography>
+
+                                Customize the text
+
 
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Grid container spacing={1}>
 
-                                    {/* <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="headline.color" control={backgroundForm.control} label="Цвет заголовка"></ColorPicker>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
-                                        <FormControl sx={{ width: "100%" }}>
-                                            <ColorPicker name="divider.color" control={backgroundForm.control} label="Цвет разделителя"></ColorPicker>
-                                        </FormControl>
-                                    </Grid> */}
+                                 
 
                                 </Grid>
                             </AccordionDetails>
                         </Accordion>
-                        <Accordion >
+                        <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1bh-content"
                                 id="panel1bh-header"
                             >
-                                <Typography sx={{ flexShrink: 0 }} align="left" fontSize="12px">
-                                    Customize the poster size
-                                </Typography>
+
+                                Customize the poster size
+
 
                             </AccordionSummary>
                             <AccordionDetails>
