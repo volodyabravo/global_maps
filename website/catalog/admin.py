@@ -28,6 +28,14 @@ class MapPricesAdmin(admin.ModelAdmin):
 admin.site.register(MapPrices, MapPricesAdmin)
 
 
-admin.site.register(MapVersions)
+class MapVersionsAdmin(admin.ModelAdmin):
+    list_display = ('name', 'active', 'price', 'version')
+    list_filter = ['active', 'version']
+    search_fields = ['name', 'version']
+
+
+admin.site.register(MapVersions, MapVersionsAdmin)
+
+
 admin.site.register(Order)
 admin.site.register(MapOrder)
