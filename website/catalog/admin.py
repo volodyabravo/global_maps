@@ -12,7 +12,7 @@ admin.site.register(MapTheme, MapThemeAdmin)
 
 
 class MapSizeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'active', 'version', 'height', 'width', 'price')
+    list_display = ('name', 'active', 'version', 'height', 'width')
     list_filter = ['active', 'version']
     search_fields = ['name', 'version']
 
@@ -21,15 +21,15 @@ admin.site.register(MapSize, MapSizeAdmin)
 
 
 class MapPricesAdmin(admin.ModelAdmin):
-    list_display = ('product', 'price')
-    list_filter = ['product']
+    list_display = ('version', 'size', 'price')
+    list_filter = ['version', 'price']
 
 
 admin.site.register(MapPrices, MapPricesAdmin)
 
 
 class MapVersionsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'active', 'price', 'version')
+    list_display = ('name', 'active', 'version')
     list_filter = ['active', 'version']
     search_fields = ['name', 'version']
 
