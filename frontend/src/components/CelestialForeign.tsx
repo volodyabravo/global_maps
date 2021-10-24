@@ -26,7 +26,7 @@ const sanitize = (config: CelestialOptions) => ({
 // Modify config
 const baseConfig: CelestialOptions = {
   datapath: "/celestialdata/",
-  center: [0,0,0],
+  center: [0, 0, 0],
   controls: false
 }
 interface CelestialReactProps {
@@ -112,6 +112,12 @@ export class CelestialReact extends React.Component<
         ...nextProps.config
       }
       this.celestial.reload(config);
+    } else {
+      let config = {
+        ...baseConfig,
+        ...nextProps.config
+      }
+      this.celestial.apply(config);
     }
     return false;
   };

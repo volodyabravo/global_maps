@@ -139,7 +139,9 @@ export function MapClientPage() {
                                             <Tab label="Customize" />
                                         </Tabs>
                                     </Box>
-                                    <TabPanel value="0"  >
+                                    <TabPanel value="0" sx={{
+                                        padding: "0"
+                                    }} >
                                         <ThemePicker name="theme" control={userForm.control} themes={themes} />
 
                                         <Typography fontWeight="400" color="#A8A8A8" fontSize="10px">
@@ -163,7 +165,7 @@ export function MapClientPage() {
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Grid container spacing={1}>
-                
+
 
 
                                 </Grid>

@@ -54,14 +54,25 @@ const ThemeItem = styled("div")(({ theme }) => {
 
             "& .logo": {
                 background: "#818FAB",
-            }
+            },
+
+            "& .description": {
+                fontWeight: 700
+            },
         }
     }
 });
 
+const ThemeImage = styled.img`
+    width:100%;
+    height:100%;
+    object-fit: cover;
+`
+
+
 
 export function ThemePicker<FieldValues>({ name, control, label, themes }: ThemePickerProps<FieldValues>) {
-    
+
     const controller = useController({
         name: name,
         control: control
@@ -70,7 +81,7 @@ export function ThemePicker<FieldValues>({ name, control, label, themes }: Theme
     return (<ThemesContainer>
         {themes.map((theme) =>
         (<ThemeItem onClick={(e) => { controller.field.onChange(theme.id) }} key={theme.id} className={controller.field.value == theme.id.toString() ? "active" : ""}>
-            <div className="logo"><img src={theme.preview} alt="" /></div>
+            <div className="logo"><ThemeImage src={theme.preview} alt="" /></div>
             <div className="description">{theme.name}</div>
         </ThemeItem>))
         }
