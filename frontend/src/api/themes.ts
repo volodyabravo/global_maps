@@ -1,9 +1,14 @@
+import { CelestialOptions } from "d3-celestial/celestial";
+
+export interface MapThemeData {
+    celestial?: CelestialOptions;
+}
+
 export interface MapTheme {
     name: string;
     product: number;
-
     preview?: string;
-    data: object;
+    data: MapThemeData;
     id: number;
 }
 

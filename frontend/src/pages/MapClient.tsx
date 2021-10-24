@@ -1,5 +1,5 @@
 import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch, Container, Tabs, Tab } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CelestialReact } from "../components/CelestialForeign";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
@@ -13,6 +13,7 @@ import { CheckoutButton } from "../components/buttons/CheckOutButton";
 import { TabContext, TabPanel } from "@mui/lab";
 import { ThemePicker } from "../components/form/ThemePicker";
 import { getThemes, MapTheme } from "../api/themes";
+import { MapView, UserCustomizations } from "../components/MapView";
 
 const CardArea = styled.div`
     display: flex;
@@ -54,6 +55,8 @@ export function MapClientPage() {
 
     const [themes, setThemes] = useState<Array<MapTheme>>([]);
 
+    const [currentTheme, setCurrentTheme] = useState<number | null>(null);
+
     useEffect(() => {
         (async () => {
             let themesData = await getThemes();
@@ -64,29 +67,21 @@ export function MapClientPage() {
         }
     }, [])
 
+
     // Celestial
-    const celestialForm = useForm({
+    const userForm = useForm<UserCustomizations>({
         defaultValues: {
-            theme: "1"
+            theme: 0,
         }
     });
 
-
-
-    // let backProps = backgroundForm.watch();
-
-
-    // if (themes.length > 0) {
-    //     let mapProps = celestialForm.watch();
-    // } else {
-    //     // mapProps.me
-    // }
+    let custom = userForm.watch();
+    let theme = useMemo(() => { return themes.find((theme) => theme.id == custom.theme) }, [custom.theme]);
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
-
 
     const [selectedThemeTab, setSelectedThemeTab] = useState(0);
 
@@ -96,19 +91,8 @@ export function MapClientPage() {
             "minHeight": "100vh"
         }} >
             <Grid container item xs={12} md={8} direction="column" >
-                {/* <CardArea className="card-area">
-                    <CardContainer className="card-container" style={{ background: backProps.backgroundColor }}>
-                        <MapContainer className="map-container" style={{ background: backProps.mapBackground }}>
-                            <CelestialReact zoom={0} config={mapProps} />
-                        </MapContainer>
-                        <CardTextContainer className="text-container">
-                            <Typography className="text-headline" color={backProps.headline.color} >{backProps.headline.text}</Typography>
-                            <Typography className="text-divider" color={backProps.divider.color} >{backProps.divider.text}</Typography>
-                            <Typography className="text-tagline" color={backProps.tagline.color} >{backProps.tagline.text}</Typography>
-                            <Typography className="text-subline" color={backProps.subline.color} >{backProps.subline.text}</Typography>
-                        </CardTextContainer>
-                    </CardContainer>
-                </CardArea> */}
+                {theme &&
+                    <MapView theme={theme} custom={{}} />}
             </Grid>
             <Grid item xs={12} md={4} direction="column" style={{
                 padding: "0px 0px"
@@ -156,7 +140,7 @@ export function MapClientPage() {
                                         </Tabs>
                                     </Box>
                                     <TabPanel value="0"  >
-                                        <ThemePicker name="theme" control={celestialForm.control} themes={themes} />
+                                        <ThemePicker name="theme" control={userForm.control} themes={themes} />
 
                                         <Typography fontWeight="400" color="#A8A8A8" fontSize="10px">
                                             We are all for freedom of choice, if you want to try different combinations than our favorites - go ahead and click customize and roll your own!
@@ -175,14 +159,11 @@ export function MapClientPage() {
                                 aria-controls="panel1bh-content"
                                 id="panel1bh-header"
                             >
-
                                 Customize the text
-
-
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Grid container spacing={1}>
-
+                
 
 
                                 </Grid>

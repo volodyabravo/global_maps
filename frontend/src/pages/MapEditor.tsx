@@ -13,39 +13,8 @@ import DateTimePicker from '@mui/lab/DateTimePicker';
 
 import styled from "@emotion/styled";
 import { Accordion, AccordionSummary } from "../components/editor/Accordion";
-
-const CardArea = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* padding-top: 2em; */
-    height: calc(100vh - 64px);
-    background-color: #F8F8F8;
-`;
-
-const CardContainer = styled.div`
-    position: relative;
-    width: 590px;
-    height: 855px;
-    transform: scale(0.75);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-`;
-const CardTextContainer = styled.div`
-    position: absolute;
-   bottom: 0; right: 0; left: 0;
-    /* opacity: 0.5; */
-    /* background-color: black; */
-    padding: 15px;
-    /* width: 100%; */
-`;
-
-const MapContainer = styled.div`
-    width: 500px;
-    height: 500px;
-    overflow: hidden;
-    border-radius: 50%;
-    margin: 3em auto;
-`;
+import { MapTheme, MapThemeData } from "../api/themes";
+import { MapView } from "../components/MapView";
 
 
 export function MapEditorPage() {
@@ -53,53 +22,55 @@ export function MapEditorPage() {
     const [expanded, setExpanded] = useState<string | false>("panel1");
 
     // Celestial
-    const celestialForm = useForm<CelestialOptions>({
+    const celestialForm = useForm<MapThemeData>({
         defaultValues: {
-            center: [0, 3, 0],
-            projection: "airy",
-            controls: false,
-            zoomlevel: 1,
-            width: 500,
-            constellations: {
-                lines: true,
-                names: false
-            },
-            planets: {
-                show: false,
-                names: false,
-            },
+            celestial: {
+                center: [0, 3, 0],
+                projection: "airy",
+                controls: false,
+                zoomlevel: 1,
+                width: 500,
+                constellations: {
+                    lines: true,
+                    names: false
+                },
+                planets: {
+                    show: false,
+                    names: false,
+                },
 
-            stars: {
-                show: true
-            },
-            dsos: {
-                show: false,
-            },
-            background: {
-                fill: "#000"
-            },
-            lines: {
-                ecliptic: {
-                    show: false,
-                    stroke: "#66cc66"
+                stars: {
+                    show: true
                 },
-                equatorial: {
+                dsos: {
                     show: false,
-                    stroke: "#aaaaaa"
                 },
-                graticule: { show: false, stroke: "#cccccc", width: 0.6, opacity: 0.8, }
-            },
-            mw: {
-                show: true,
-                style: {
-                    fill: "#ffffff",
-                    opacity: 0.15
-                }
-            },
-            horizon: {
-                show: false,
-                fill: "#000000"
-            },
+                background: {
+                    fill: "#000"
+                },
+                lines: {
+                    ecliptic: {
+                        show: false,
+                        stroke: "#66cc66"
+                    },
+                    equatorial: {
+                        show: false,
+                        stroke: "#aaaaaa"
+                    },
+                    graticule: { show: false, stroke: "#cccccc", width: 0.6, opacity: 0.8, }
+                },
+                mw: {
+                    show: true,
+                    style: {
+                        fill: "#ffffff",
+                        opacity: 0.15
+                    }
+                },
+                horizon: {
+                    show: false,
+                    fill: "#000000"
+                },
+            }
 
         }
     });
@@ -129,30 +100,30 @@ export function MapEditorPage() {
     }>({
         defaultValues: {
             customCss: `
-.map-container {
+                .map-container {
 
-}
-.card-container {
+                }
+                .card-container {
 
-}
-.card-area {
+                }
+                .card-area {
 
-}
-.text-container {
+                }
+                .text-container {
 
-}
-.text-headline {
+                }
+                .text-headline {
 
-}
-.text-divider {
+                }
+                .text-divider {
 
-}
-.text-tagline {
+                }
+                .text-tagline {
 
-}
-.text-subline {
+                }
+                .text-subline {
 
-}
+                }
 
             `,
             backgroundColor: "#022B30FF",
@@ -196,20 +167,10 @@ export function MapEditorPage() {
             <Grid container item xs={12} md={8} direction="column" sx={{
                 // "pointerEvents": "none"
             }} >
+                <MapView theme={{
+                    data: mapProps
+                }} />
 
-                <CardArea className="card-area">
-                    <CardContainer className="card-container" style={{ background: backProps.backgroundColor }}>
-                        <MapContainer className="map-container" style={{ background: backProps.mapBackground }}>
-                            <CelestialReact zoom={0} config={mapProps} />
-                        </MapContainer>
-                        <CardTextContainer className="text-container">
-                            <Typography className="text-headline" color={backProps.headline.color} >{backProps.headline.text}</Typography>
-                            <Typography className="text-divider" color={backProps.divider.color} >{backProps.divider.text}</Typography>
-                            <Typography className="text-tagline" color={backProps.tagline.color} >{backProps.tagline.text}</Typography>
-                            <Typography className="text-subline" color={backProps.subline.color} >{backProps.subline.text}</Typography>
-                        </CardTextContainer>
-                    </CardContainer>
-                </CardArea>
             </Grid>
             <Grid container item xs={12} md={4} direction="column" >
                 <Container>
@@ -227,7 +188,7 @@ export function MapEditorPage() {
 
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="date"
+                                        name="celestial.date"
                                         control={celestialForm.control}
                                         render={({ field }) =>
                                             <DateTimePicker
@@ -241,7 +202,7 @@ export function MapEditorPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="lines.graticule.show"
+                                        name="celestial.lines.graticule.show"
                                         control={celestialForm.control}
                                         render={({ field }) =>
                                             <FormControlLabel
@@ -253,7 +214,7 @@ export function MapEditorPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="planets.show"
+                                        name="celestial.planets.show"
                                         control={celestialForm.control}
                                         render={({ field }) =>
                                             <FormControlLabel
@@ -265,7 +226,7 @@ export function MapEditorPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="lines.equatorial.show"
+                                        name="celestial.lines.equatorial.show"
                                         control={celestialForm.control}
                                         render={({ field }) =>
                                             <FormControlLabel
@@ -277,7 +238,7 @@ export function MapEditorPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="lines.ecliptic.show"
+                                        name="celestial.lines.ecliptic.show"
                                         control={celestialForm.control}
                                         render={({ field }) =>
                                             <FormControlLabel
@@ -289,7 +250,7 @@ export function MapEditorPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="dsos.show"
+                                        name="celestial.dsos.show"
                                         control={celestialForm.control}
                                         render={({ field }) =>
                                             <FormControlLabel
@@ -301,7 +262,7 @@ export function MapEditorPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="mw.show"
+                                        name="celestial.mw.show"
                                         control={celestialForm.control}
                                         render={({ field }) =>
                                             <FormControlLabel
@@ -313,7 +274,7 @@ export function MapEditorPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="stars.show"
+                                        name="celestial.stars.show"
                                         control={celestialForm.control}
                                         defaultValue={true}
                                         rules={{ required: true }}
@@ -329,7 +290,7 @@ export function MapEditorPage() {
                                     <FormControl sx={{ width: "100%" }}>
                                         <InputLabel htmlFor="age-simple"><Typography>Вид проекции</Typography></InputLabel>
                                         <Controller
-                                            name="projection"
+                                            name="celestial.projection"
                                             control={celestialForm.control}
                                             render={({ field }) =>
                                                 <Select {...field}>
@@ -342,7 +303,7 @@ export function MapEditorPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="constellations.lines"
+                                        name="celestial.constellations.lines"
                                         control={celestialForm.control}
                                         defaultValue={true}
                                         rules={{ required: true }}
@@ -357,37 +318,37 @@ export function MapEditorPage() {
 
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="background.fill" control={celestialForm.control} label="Цвет заливки"></ColorPicker>
+                                        <ColorPicker name="celestial.background.fill" control={celestialForm.control} label="Цвет заливки"></ColorPicker>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="constellations.lineStyle.stroke" control={celestialForm.control} label="Цвет линий созвездий"></ColorPicker>
+                                        <ColorPicker name="celestial.constellations.lineStyle.stroke" control={celestialForm.control} label="Цвет линий созвездий"></ColorPicker>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="horizon.stroke" control={celestialForm.control} label="Цвет линии горизонта"></ColorPicker>
+                                        <ColorPicker name="celestial.horizon.stroke" control={celestialForm.control} label="Цвет линии горизонта"></ColorPicker>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="horizon.fill" control={celestialForm.control} label="Цвет заливки горизонта"></ColorPicker>
+                                        <ColorPicker name="celestial.horizon.fill" control={celestialForm.control} label="Цвет заливки горизонта"></ColorPicker>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="mw.style.fill" control={celestialForm.control} label="Цвет заливки млечного пути"></ColorPicker>
+                                        <ColorPicker name="celestial.mw.style.fill" control={celestialForm.control} label="Цвет заливки млечного пути"></ColorPicker>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="lines.ecliptic.stroke" control={celestialForm.control} label="Цвет линии ecliptic"></ColorPicker>
+                                        <ColorPicker name="celestial.lines.ecliptic.stroke" control={celestialForm.control} label="Цвет линии ecliptic"></ColorPicker>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="lines.equatorial.stroke" control={celestialForm.control} label="Цвет линии galactic"></ColorPicker>
+                                        <ColorPicker name="celestial.lines.equatorial.stroke" control={celestialForm.control} label="Цвет линии galactic"></ColorPicker>
                                     </FormControl>
                                 </Grid>
                             </Grid>
