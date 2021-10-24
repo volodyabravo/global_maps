@@ -64,6 +64,7 @@ class MapPrices(models.Model):
         return '{0} {1}'.format(self.size, self.version)
 
     class Meta:
+        unique_together = [['size', 'version']]
         verbose_name = 'Цена'
         verbose_name_plural = 'Цены'
 
