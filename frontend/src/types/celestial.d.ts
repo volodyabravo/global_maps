@@ -97,9 +97,10 @@ declare module "d3-celestial/celestial" {
     stars?: {
       show?: boolean; // Show stars
       limit?: 6; // Show only stars brighter than limit magnitude
-      colors?: true; // Show stars in spectral colors, if not use default color
-      style?: { fill: "#ffffff"; opacity: 1 }; // Default style for stars
+      colors?: boolean; // Show stars in spectral colors, if not use default color: ;
+      style?: { fill: string; opacity: number }; // Default style for stars
       designation?: true; // Show star names (Bayer, Flamsteed, Variable star, Gliese or designation,
+      opacity: number;
       // i.e. whichever of the previous applies first); may vary with culture setting
       designationType?: "desig"; // Which kind of name is displayed as designation (fieldname in starnames.json)
       designationStyle?: {
@@ -119,7 +120,7 @@ declare module "d3-celestial/celestial" {
         baseline: "bottom";
       };
       propernameLimit?: 1.5; // Show proper names for stars brighter than propernameLimit
-      size?: 7; // Maximum size (radius) of star circle in pixels
+      size?: number; // Maximum size (radius) of star circle in pixels
       exponent?: -0.28; // Scale exponent for star size, larger = more linear
       data?: "stars.6.json"; // Data source for stellar data,
       // number indicates limit magnitude

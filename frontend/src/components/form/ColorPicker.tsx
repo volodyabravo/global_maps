@@ -18,7 +18,7 @@ let ColorPickerContainer = styled.div`
 let PickerContainer = styled.div`
     position: absolute;
     z-index: 1;
-    bottom: 0;
+    top: 0;
 `
 
 export function ColorPicker<FieldValues>({ name, control, label }: ColorPickerProps<FieldValues>) {

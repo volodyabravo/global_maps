@@ -1,4 +1,4 @@
-import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch, Container } from "@mui/material";
+import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch, Container, Slider } from "@mui/material";
 
 import { useState } from "react";
 import { CelestialReact } from "../components/CelestialForeign";
@@ -40,13 +40,19 @@ export function MapEditorPage() {
                 },
 
                 stars: {
-                    show: true
+                    show: true,
+                    colors: false,
+                    style: {
+                        fill: "#FFF",
+                        opacity: 1,
+                    }
                 },
                 dsos: {
                     show: false,
                 },
                 background: {
-                    fill: "#000"
+                    fill: "#000",
+                    opacity: 1
                 },
                 lines: {
                     ecliptic: {
@@ -156,7 +162,6 @@ export function MapEditorPage() {
             setExpanded(isExpanded ? panel : false);
         };
 
-
     return <div>
         <style dangerouslySetInnerHTML={{
             __html: backProps.customCss
@@ -178,12 +183,116 @@ export function MapEditorPage() {
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1bh-content"
+                        >
+                            Звезды
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.stars.show"
+                                        control={celestialForm.control}
+                                        defaultValue={true}
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показывать звезды"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.stars.colors"
+                                        control={celestialForm.control}
+                                        defaultValue={false}
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Разноцветные звезды"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="celestial.stars.style.fill" control={celestialForm.control} label="Цвет звезд"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.stars.style.opacity"
+                                        control={celestialForm.control}
+                                        defaultValue={1}
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Яркость звезды"
+                                                control={<Slider step={0.1} min={0} max={1}  {...field} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                        >
+                            Фон
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="celestial.background.fill" control={celestialForm.control} label="Цвет фона"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.background.opacity"
+                                        control={celestialForm.control}
+                                        defaultValue={1}
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Непрозрачность фона"
+                                                control={<Slider step={0.01} min={0} max={1}  {...field} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
                             Параметры карты
                         </AccordionSummary>
                         <AccordionDetails>
+
                             <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.dsos.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показать Deep Space обьекты"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
                                         name="celestial.date"
@@ -246,18 +355,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <Controller
-                                        name="celestial.dsos.show"
-                                        control={celestialForm.control}
-                                        render={({ field }) =>
-                                            <FormControlLabel
-                                                label="Показать Deep Space обьекты"
-                                                control={<Switch  {...field} checked={field.value} />}
-                                            />
-                                        }
-                                    />
-                                </Grid>
+
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
                                         name="celestial.mw.show"
@@ -270,20 +368,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <Controller
-                                        name="celestial.stars.show"
-                                        control={celestialForm.control}
-                                        defaultValue={true}
-                                        rules={{ required: true }}
-                                        render={({ field }) =>
-                                            <FormControlLabel
-                                                label="Показывать звезды"
-                                                control={<Switch  {...field} checked={field.value} />}
-                                            />
-                                        }
-                                    />
-                                </Grid>
+
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
                                         <InputLabel htmlFor="age-simple"><Typography>Вид проекции</Typography></InputLabel>
@@ -313,6 +398,8 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
+                            </Grid>
+                            <Grid container spacing={1}>
 
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
