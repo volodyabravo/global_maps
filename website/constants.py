@@ -51,7 +51,7 @@ class OrderStatuses:
     STATUS_PICKUP = 43263433
     STATUS_FINISHED = 142
     STATUS_CLOSED = 143
-    Statuses = {
+    STATUSES = {
         STATUS_ORDER: 'Заказ',
         STATUS_PAID: 'Оплачено',
         STATUS_PRINT: 'Печать',
