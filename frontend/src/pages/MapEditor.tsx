@@ -168,7 +168,7 @@ export function MapEditorPage() {
                 // "pointerEvents": "none"
             }} >
                 <MapView theme={{
-                    data: mapProps
+                    data: JSON.parse(JSON.stringify(mapProps))
                 }} />
 
             </Grid>
@@ -184,8 +184,6 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
-
-
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
                                         name="celestial.date"
@@ -375,8 +373,6 @@ export function MapEditorPage() {
                                         <ColorPicker name="mapBackground" control={backgroundForm.control} label="Цвет карты"></ColorPicker>
                                     </FormControl>
                                 </Grid>
-
-
                             </Grid>
                         </AccordionDetails>
                     </Accordion>
@@ -460,16 +456,12 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <TextField
-
                                 label="Multiline"
                                 multiline
                                 maxRows={7}
-
                                 sx={{ width: "100%" }}
                                 value={JSON.stringify(mapProps, null, 2)}
-
                             />
-
                         </AccordionDetails>
                     </Accordion>
                     <Accordion >

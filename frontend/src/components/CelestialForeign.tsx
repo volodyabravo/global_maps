@@ -84,41 +84,38 @@ export class CelestialReact extends React.Component<
     }
     this.updateConfigTimer = setTimeout(() => {
       this.updateConfigTimer = null;
-      this.celestial.apply(sanitize(nextConfig));
+
+      let basedConfig = {
+        ...baseConfig,
+        ...nextConfig
+      }
       if (
         get(prevConfig, "stars.data") != get(nextConfig, "stars.data") ||
-        get(prevConfig, "dsos.data") != get(nextConfig, "dsos.data")
+        get(prevConfig, "dsos.data") != get(nextConfig, "dsos.data") ||
+        get(prevConfig, "projection") != get(nextConfig, "projection")
       ) {
-        this.celestial.reload(sanitize(nextConfig));
+        this.celestial.reload(sanitize(basedConfig));
+      } else {
+        this.celestial.apply(sanitize(basedConfig));
       }
+      console.log("Update runs")
     }, 1000);
   };
 
+  componentWillUnmount = () => {
+    this.celestial.clear();
+    this.celestial.remove();
+    console.log("Map unmounted")
+  }
+
   shouldComponentUpdate = (nextProps: CelestialReactProps) => {
     const { config, zoom } = this.props;
+    console.log("Should Update?")
     if (nextProps.config != config) {
-      let newConfig = {
-        ...baseConfig,
-        ...nextProps.config
-      }
-      this.updateConfig(config, newConfig);
+      console.log("Should Update")
+      this.updateConfig(config, nextProps.config);
     }
-
-    if (config.projection != nextProps.config.projection) {
-      console.log("rerender");
-
-      let config = {
-        ...baseConfig,
-        ...nextProps.config
-      }
-      this.celestial.reload(config);
-    } else {
-      let config = {
-        ...baseConfig,
-        ...nextProps.config
-      }
-      this.celestial.apply(config);
-    }
+    // False because we don't want it to be recreated all the time
     return false;
   };
 
