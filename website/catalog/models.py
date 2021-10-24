@@ -1,7 +1,10 @@
 from djmoney.models.fields import MoneyField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from constants import MapTypes, MapOrderStatuses, MapProducingVersions, MapSizeUnits
+from constants import MapTypes, MapOrderStatuses, MapProducingVersions, MapSizeUnits, OrderStatuses
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .amo import send_order_to_ammo, sync_orders
 
 
 class MapTheme(models.Model):
@@ -70,8 +73,12 @@ class MapPrices(models.Model):
 
 
 class Order(models.Model):
+    status = models.IntegerField(_('Status'), default=1, blank=False, null=False,
+                                 choices=[(key, value) for key, value in MapOrderStatuses.STATUSES.items()])
     date = models.DateTimeField(_('Date and time'), auto_now=True)
     data = models.JSONField(_('JSON data'), blank=True, null=True)
+    ammo_id = models.IntegerField(_('ammo lead id'), blank=True, null=True)
+    name = models.CharField(_('Name'), blank=True, null=True, max_length=500)
 
     class Meta:
         verbose_name = 'Заказ'
@@ -92,3 +99,13 @@ class MapOrder(models.Model):
     class Meta:
         verbose_name = 'Генерация карты'
         verbose_name_plural = 'Генерации карт'
+
+
+@receiver(post_save, sender=Order)
+def order_to_ammo(instance, created, update_fields, **_):
+    if created:
+        send_order_to_ammo(instance)
+    else:
+        if 'status' in update_fields:
+            sync_orders(instance)
+
