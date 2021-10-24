@@ -1,0 +1,48 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run server",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/website/manage.py",
+            "args": [
+                "runserver"
+            ],
+            "django": true
+        },
+        {
+            "name": "Migrate",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/website/manage.py",
+            "args": [
+                "migrate"
+            ],
+            "django": true
+        },
+        {
+            "name": "Make migrations",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/website/manage.py",
+            "args": [
+                "makemigrations"
+            ],
+            "django": true
+        },
+        {
+            "name": "Create super user",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/website/manage.py",
+            "args": [
+                "createsuperuser"
+            ],
+            "django": true
+        }
+    ]
+}

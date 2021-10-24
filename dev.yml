@@ -1,0 +1,22 @@
+version: "3.6"
+services:
+  db:
+    image: postgres:13.4-alpine
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data:Z
+      - local_postgres_data_backups:/backups:z
+    ports:
+      - 5432:5432
+    env_file:
+      - ./.env
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+
+volumes:
+  local_postgres_data_backups:
+  local_postgres_data:

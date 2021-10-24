@@ -1,5 +1,5 @@
 import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch, Container, Tabs, Tab } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CelestialReact } from "../components/CelestialForeign";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
@@ -12,6 +12,7 @@ import { Accordion, AccordionSummary } from "../components/editor/Accordion";
 import { CheckoutButton } from "../components/buttons/CheckOutButton";
 import { TabContext, TabPanel } from "@mui/lab";
 import { ThemePicker } from "../components/form/ThemePicker";
+import { getThemes, MapTheme } from "../api/themes";
 
 const CardArea = styled.div`
     display: flex;
@@ -51,28 +52,17 @@ export function MapClientPage() {
     // Accordion control
     const [expanded, setExpanded] = useState<string | false>("panel1");
 
-    const [themes, setThemes] = useState<Array<{
-        id: number;
-        name: string;
-        image: string;
-    }>>([
-        {
-            id: 1,
-            name: "Theme 1",
-            image: ""
-        },
-        {
-            id: 2,
-            name: "Theme 2",
-            image: ""
-        },
-        {
-            id: 3,
-            name: "Theme 3",
-            image: ""
-        }
-    ]);
+    const [themes, setThemes] = useState<Array<MapTheme>>([]);
 
+    useEffect(() => {
+        (async () => {
+            let themesData = await getThemes();
+            setThemes(themesData);
+        })();
+        return () => {
+            //cleanup
+        }
+    }, [])
 
     // Celestial
     const celestialForm = useForm({
@@ -81,8 +71,16 @@ export function MapClientPage() {
         }
     });
 
-    let mapProps = celestialForm.watch();
+
+
     // let backProps = backgroundForm.watch();
+
+
+    // if (themes.length > 0) {
+    //     let mapProps = celestialForm.watch();
+    // } else {
+    //     // mapProps.me
+    // }
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -98,7 +96,6 @@ export function MapClientPage() {
             "minHeight": "100vh"
         }} >
             <Grid container item xs={12} md={8} direction="column" >
-
                 {/* <CardArea className="card-area">
                     <CardContainer className="card-container" style={{ background: backProps.backgroundColor }}>
                         <MapContainer className="map-container" style={{ background: backProps.mapBackground }}>
@@ -135,7 +132,7 @@ export function MapClientPage() {
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Grid container spacing={1}>
-                                   
+
                                 </Grid>
                             </AccordionDetails>
                         </Accordion>
@@ -160,7 +157,6 @@ export function MapClientPage() {
                                     </Box>
                                     <TabPanel value="0"  >
                                         <ThemePicker name="theme" control={celestialForm.control} themes={themes} />
-
 
                                         <Typography fontWeight="400" color="#A8A8A8" fontSize="10px">
                                             We are all for freedom of choice, if you want to try different combinations than our favorites - go ahead and click customize and roll your own!
@@ -187,7 +183,7 @@ export function MapClientPage() {
                             <AccordionDetails>
                                 <Grid container spacing={1}>
 
-                                 
+
 
                                 </Grid>
                             </AccordionDetails>
@@ -198,10 +194,7 @@ export function MapClientPage() {
                                 aria-controls="panel1bh-content"
                                 id="panel1bh-header"
                             >
-
                                 Customize the poster size
-
-
                             </AccordionSummary>
                             <AccordionDetails>
 
