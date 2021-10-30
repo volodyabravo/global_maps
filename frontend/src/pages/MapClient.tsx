@@ -92,7 +92,7 @@ export function MapClientPage() {
         }} >
             <Grid container item xs={12} md={8} direction="column" >
                 {theme &&
-                    <MapView theme={theme} custom={{}} />}
+                    <MapView theme={theme} custom={custom} />}
             </Grid>
             <Grid item xs={12} md={4} direction="column" style={{
                 padding: "0px 0px"
@@ -165,9 +165,42 @@ export function MapClientPage() {
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Grid container spacing={1}>
-
-
-
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="headline"
+                                            control={userForm.control}
+                                            render={({ field }) =>
+                                                <TextField label={"Текст заголовка"} placeholder={theme?.data?.cardSettings?.defaultText?.headline} {...field} />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="divider"
+                                            control={userForm.control}
+                                            render={({ field }) =>
+                                                <TextField label={"Текст разделителя"} placeholder={theme?.data?.cardSettings?.defaultText?.divider} {...field} />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="tagline"
+                                            control={userForm.control}
+                                            render={({ field }) =>
+                                                <TextField label={"Текст тэглайна"} placeholder={theme?.data?.cardSettings?.defaultText?.tagline}  {...field} />
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} direction="row">
+                                        <Controller
+                                            name="subline"
+                                            control={userForm.control}
+                                            render={({ field }) =>
+                                                <TextField label={"Текст сублайна"} placeholder={theme?.data?.cardSettings?.defaultText?.subline} {...field} />
+                                            }
+                                        />
+                                    </Grid>
                                 </Grid>
                             </AccordionDetails>
                         </Accordion>
@@ -180,7 +213,6 @@ export function MapClientPage() {
                                 Customize the poster size
                             </AccordionSummary>
                             <AccordionDetails>
-
                             </AccordionDetails>
                         </Accordion>
 

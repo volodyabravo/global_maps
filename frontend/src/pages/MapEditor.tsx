@@ -15,11 +15,14 @@ import styled from "@emotion/styled";
 import { Accordion, AccordionSummary } from "../components/editor/Accordion";
 import { MapTheme, MapThemeData } from "../api/themes";
 import { MapView } from "../components/MapView";
+import { toast } from "react-toastify";
 
 
 export function MapEditorPage() {
     // Accordion control
     const [expanded, setExpanded] = useState<string | false>("panel1");
+
+    const [JSONField, setJSONField] = useState<string>("");
 
     // Celestial
     const celestialForm = useForm<MapThemeData>({
@@ -179,6 +182,82 @@ export function MapEditorPage() {
             </Grid>
             <Grid container item xs={12} md={4} direction="column" >
                 <Container>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                        >
+                            Параметры рамки
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="frameSettings.color" control={celestialForm.control} label="Цвет фона рамки"></ColorPicker>
+                                    </FormControl>
+                                </Grid><Grid item xs={12} md={12} direction="row">
+
+                                    <Controller
+                                        name="frameSettings.padding"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField fullWidth label={"Отступы рамки"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                        >
+                            Параметры фона
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="cardSettings.background.color" control={celestialForm.control} label="Цвет фона карточки"></ColorPicker>
+                                    </FormControl>
+                                </Grid><Grid item xs={12} md={12} direction="row">
+
+                                    <Controller
+                                        name="cardSettings.background.image"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField fullWidth label={"Фон изображения"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                        >
+                            Импорт JSON
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <TextField
+                                    label="Multiline"
+                                    multiline
+                                    maxRows={7}
+                                    sx={{ width: "100%" }}
+                                    value={JSONField}
+                                    onChange={(val) => { setJSONField(val.currentTarget.value) }}
+                                />
+                                <Button variant="contained" onClick={() => {
+                                    celestialForm.reset(JSON.parse(JSONField))
+                                    toast("Тема импортирована")
+                                }}>Импорт</Button>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
@@ -475,57 +554,211 @@ export function MapEditorPage() {
                             <Grid container spacing={1}>
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="headline.color" control={backgroundForm.control} label="Цвет заголовка"></ColorPicker>
+                                        <ColorPicker name="cardSettings.fonts.headline.color" control={celestialForm.control} label="Цвет заголовка"></ColorPicker>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="divider.color" control={backgroundForm.control} label="Цвет разделителя"></ColorPicker>
+                                        <ColorPicker name="cardSettings.fonts.divider.color" control={celestialForm.control} label="Цвет разделителя"></ColorPicker>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="tagline.color" control={backgroundForm.control} label="Цвет тэглайна"></ColorPicker>
+                                        <ColorPicker name="cardSettings.fonts.tagline.color" control={celestialForm.control} label="Цвет тэглайна"></ColorPicker>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="subline.color" control={backgroundForm.control} label="Цвет сублайна"></ColorPicker>
+                                        <ColorPicker name="cardSettings.fonts.subline.color" control={celestialForm.control} label="Цвет сублайна"></ColorPicker>
                                     </FormControl>
                                 </Grid>
+
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="headline.text"
-                                        control={backgroundForm.control}
+                                        name="cardSettings.fonts.headline.fontWeight"
+                                        control={celestialForm.control}
                                         render={({ field }) =>
-                                            <TextField label={"Текст заголовка"} {...field} />
+                                            <TextField label={"Толщина headline"} {...field} />
                                         }
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="divider.text"
-                                        control={backgroundForm.control}
+                                        name="cardSettings.fonts.divider.fontWeight"
+                                        control={celestialForm.control}
                                         render={({ field }) =>
-                                            <TextField label={"Текст разделителя"} {...field} />
+                                            <TextField label={"Толщина divider"} {...field} />
                                         }
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="tagline.text"
-                                        control={backgroundForm.control}
+                                        name="cardSettings.fonts.tagline.fontWeight"
+                                        control={celestialForm.control}
                                         render={({ field }) =>
-                                            <TextField label={"Текст тэглайна"} {...field} />
+                                            <TextField label={"Толщина tagline"} {...field} />
                                         }
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="subline.text"
-                                        control={backgroundForm.control}
+                                        name="cardSettings.fonts.subline.fontWeight"
+                                        control={celestialForm.control}
                                         render={({ field }) =>
-                                            <TextField label={"Текст сублайна"} {...field} />
+                                            <TextField label={"Толщина subline"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+
+
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.headline.fontFamily"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Шрифт headline"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.divider.fontFamily"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Шрифт divider"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.tagline.fontFamily"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Шрифт tagline"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.subline.fontFamily"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Шрифт subline"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.headline.fontSize"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Размер шрифта headline"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.divider.fontSize"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Размер шрифта divider"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.tagline.fontSize"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Размер шрифта tagline"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.subline.fontSize"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Размер шрифта subline"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+
+
+
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.headline.padding"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Отступ текста headline"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.divider.padding"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Отступ текста divider"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.tagline.padding"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Отступ текста tagline"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.fonts.subline.padding"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Отступ текста subline"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.defaultText.headline"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Текст заголовка по умолчанию"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+
+
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.defaultText.divider"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Текст разделителя по умолчанию"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.defaultText.tagline"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Текст тэглайна по умолчанию"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.defaultText.subline"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Текст сублайна по умолчанию"} {...field} />
                                         }
                                     />
                                 </Grid>
@@ -549,6 +782,12 @@ export function MapEditorPage() {
                                 sx={{ width: "100%" }}
                                 value={JSON.stringify(mapProps, null, 2)}
                             />
+
+                            <Button variant="contained" onClick={() => {
+                                let text = JSON.stringify(mapProps, null, 2);
+                                navigator.clipboard.writeText(text);
+                                toast("Тема скопирована")
+                            }}>Копировать</Button>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion >
@@ -565,7 +804,6 @@ export function MapEditorPage() {
                                 control={backgroundForm.control}
                                 render={({ field }) =>
                                     <TextField
-
                                         label={"Свой CSS"} {...field}
                                         multiline
                                         maxRows={20}

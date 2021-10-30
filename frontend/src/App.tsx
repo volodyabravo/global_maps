@@ -18,6 +18,8 @@ import { UIKitPage } from './pages/UIKit';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { MapClientPage } from './pages/MapClient';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -44,6 +46,8 @@ function App() {
 
           </Router>
         </div>
+        <ToastContainer />
+        
       </LocalizationProvider>
     </ThemeProvider>
 
