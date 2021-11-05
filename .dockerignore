@@ -180,6 +180,9 @@ promocodes_t.json
 /reference/
 .vscode/
 /frontend/node_modules
+/frontend/build
+/printer/node_modules
 
 db.sqlite3
 venv
+.circleci/

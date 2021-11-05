@@ -8,10 +8,9 @@ COPY ./frontend/package.json ./package.json
 
 COPY ./frontend/  .
 RUN pnpm install
-RUN pnpm install
 RUN pnpm run build
 
 from nginxinc/nginx-unprivileged
 WORKDIR /app
 COPY --from=frontend /app/build/ .
-
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf

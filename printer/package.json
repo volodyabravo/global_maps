@@ -5,13 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsnd index.ts",
-    "watch": "tsnd --respawn index.ts"
+    "start": "node index.ts",
+    "watch": "tsnd --respawn index.ts",
+    "build": "tsc index.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@koa/router": "^10.1.1",
+    "@types/node": "^16.11.6",
     "koa": "^2.13.4",
     "puppeteer": "^11.0.0",
     "ts-node-dev": "^1.1.8",

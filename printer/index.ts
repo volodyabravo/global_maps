@@ -53,7 +53,7 @@ function sleep(ms) {
     .use(router.routes())
     .use(router.allowedMethods());
 
-  app.listen(4000)
+  app.listen(process.env.PUPPET_PORT ||  6969)
 
 
 

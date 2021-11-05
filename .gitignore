@@ -175,3 +175,7 @@ promocodes_t.json
 *.xlsx
 
 /initdb/*.sql
+
+printer/index.js
+
+printer/*.png

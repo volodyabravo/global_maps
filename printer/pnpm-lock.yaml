@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@koa/router': ^10.1.1
+  '@types/node': ^16.11.6
   koa: ^2.13.4
   puppeteer: ^11.0.0
   ts-node-dev: ^1.1.8
@@ -9,6 +10,7 @@ specifiers:
 
 dependencies:
   '@koa/router': 10.1.1
+  '@types/node': 16.11.6
   koa: 2.13.4
   puppeteer: 11.0.0
   ts-node-dev: 1.1.8_typescript@4.4.4
@@ -32,7 +34,6 @@ packages:
   /@types/node/16.11.6:
     resolution: {integrity: sha512-ua7PgUoeQFjmWPcoo9khiPum3Pd60k4/2ZGXt18sm2Slk0W0xZTqt5Y0Ny1NyBiN1EVQ/+FaF9NcY4Qe6rwk5w==}
     dev: false
-    optional: true
 
   /@types/strip-bom/3.0.0:
     resolution: {integrity: sha1-FKjsOVbC6B7bdSB5CuzyHCkK69I=}
