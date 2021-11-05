@@ -55,6 +55,14 @@ export interface MapThemeData {
     frameSettings?: FrameSettings
 }
 
+export interface UserCustomizations {
+    theme?: number,
+    headline?: string,
+    divider?: string,
+    tagline?: string,
+    subline?: string,
+  }
+
 export interface MapTheme {
     name: string;
     product: number;

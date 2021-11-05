@@ -6,7 +6,7 @@
 import { useState } from "react";
 import { CelestialReact } from "./CelestialForeign";
 import styled from "@emotion/styled";
-import { MapTheme } from "../api/themes";
+import { MapTheme, UserCustomizations } from "../api/themes";
 import { MapFrame } from "./frames/Frame";
 import { Typography } from "@mui/material";
 
@@ -55,13 +55,7 @@ top: -175px;
 position: absolute; */
 `;
 
-export interface UserCustomizations {
-  theme?: number,
-  headline?: string,
-  divider?: string,
-  tagline?: string,
-  subline?: string,
-}
+
 
 interface MapViewProps {
   theme: Partial<MapTheme>;

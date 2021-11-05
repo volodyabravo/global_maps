@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-import { getThemes, MapTheme } from "../api/themes";
-import { MapView, UserCustomizations } from "../components/MapView";
+import { getThemes, MapTheme, UserCustomizations } from "../api/themes";
+import { MapView } from "../components/MapView";
 
 export function Demo() {
     const [themes, setThemes] = useState<Array<MapTheme>>([]);

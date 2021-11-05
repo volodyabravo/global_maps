@@ -12,8 +12,8 @@ import { Accordion, AccordionSummary } from "../components/editor/Accordion";
 import { CheckoutButton } from "../components/buttons/CheckOutButton";
 import { TabContext, TabPanel } from "@mui/lab";
 import { ThemePicker } from "../components/form/ThemePicker";
-import { getThemes, MapTheme } from "../api/themes";
-import { MapView, UserCustomizations } from "../components/MapView";
+import { getThemes, MapTheme, UserCustomizations } from "../api/themes";
+import { MapView } from "../components/MapView";
 
 const CardArea = styled.div`
     display: flex;

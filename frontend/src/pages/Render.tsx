@@ -2,9 +2,8 @@ import { Grid } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 
 import { useForm } from "react-hook-form";
-
-import { getThemes, MapTheme } from "../api/themes";
-import { MapView, UserCustomizations } from "../components/MapView";
+import { getThemes, MapTheme, UserCustomizations } from "../api/themes";
+import { MapView } from "../components/MapView";
 
 export function RenderPage() {
     const [themes, setThemes] = useState<Array<MapTheme>>([]);
@@ -16,10 +15,6 @@ export function RenderPage() {
         (async () => {
             let themesData = await getThemes();
             setThemes(themesData);
-            // setCustom({
-            //     divider: "asd",
-            //     theme: 1
-            // })
             // adds custom to the thing
             // @ts-ignore
             window.setCustom = setCustom;
