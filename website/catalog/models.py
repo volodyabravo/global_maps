@@ -33,6 +33,9 @@ class MapSize(models.Model):
     name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
     height = models.PositiveIntegerField(_('Height'), blank=False, null=False)
     width = models.PositiveIntegerField(_('Width'), blank=False, null=False)
+    height_px = models.PositiveIntegerField(_('Height in px upon render'), blank=False, null=False, default=0)
+    width_px = models.PositiveIntegerField(_('Width in px upon render'), blank=False, null=False, default=0)
+    scale = models.PositiveIntegerField(_('Scale upon render'), blank=False, null=False, default=1)
 
     def __str__(self):
         return '{0}'.format(self.name)
@@ -109,4 +112,3 @@ def order_to_ammo(instance, **_):
         previous = Order.objects.get(id=instance.id)
         if previous.status != instance.status:
             sync_orders(instance)
-
