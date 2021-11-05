@@ -31,9 +31,11 @@ services:
       - app
       - proxy
     restart: unless-stopped
+    depends_on:
+      - django
     labels:
       - traefik.enable=true
-      - traefik.network=proxy
+      - traefik.docker.network=proxy
       - traefik.http.routers.maps.rule=Host(`stylemaps.ru`)
       - traefik.http.routers.maps.service=maps@docker
       - traefik.http.services.maps.loadbalancer.server.port=8080
@@ -92,8 +94,15 @@ services:
       - traefik.http.routers.traefik.entrypoints=websecure
       - traefik.http.routers.traefik.tls=true
       - traefik.http.routers.traefik.tls.certresolver=le
+      # HTTPS
+      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:[a-z-.]+}`)"
+      - "traefik.http.routers.http-catchall.entrypoints=web"
+      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
     networks:
       - proxy
+    depends_on:
+      - nginx
     
 
 volumes:
