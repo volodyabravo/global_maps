@@ -15,39 +15,6 @@ import { ThemePicker } from "../components/form/ThemePicker";
 import { getThemes, MapTheme, UserCustomizations } from "../api/themes";
 import { MapView } from "../components/MapView";
 
-const CardArea = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* padding-top: 2em; */
-    height: calc(100vh - 64px);
-`;
-
-const CardContainer = styled.div`
-    position: relative;
-    width: 590px;
-    height: 855px;
-    transform: scale(0.75);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-`;
-const CardTextContainer = styled.div`
-    position: absolute;
-   bottom: 0; right: 0; left: 0;
-    /* opacity: 0.5; */
-    /* background-color: black; */
-    padding: 15px;
-    /* width: 100%; */
-`;
-
-const MapContainer = styled.div`
-    width: 500px;
-    height: 500px;
-    overflow: hidden;
-    border-radius: 50%;
-    margin: 3em auto;
-    
-`;
-
 
 export function MapClientPage() {
     // Accordion control
@@ -88,7 +55,7 @@ export function MapClientPage() {
     return <div>
 
         <Grid container spacing={1} sx={{
-            "minHeight": "100vh"
+            "minHeight": "100vh",
         }} >
             <Grid container item xs={12} md={8} direction="column" >
                 {theme &&

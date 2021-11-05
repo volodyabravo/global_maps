@@ -179,3 +179,4 @@ promocodes_t.json
 printer/index.js
 
 printer/*.png
+!.gitkeep

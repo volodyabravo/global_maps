@@ -1,6 +1,6 @@
-import * as puppeteer from "puppeteer";
+import puppeteer from "puppeteer";
 import Koa from "koa";
-import * as  Router from "@koa/router"
+import Router from "@koa/router"
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -14,8 +14,17 @@ function sleep(ms) {
   const app = new Koa();
   const router = new Router();
 
+  let args = [];
+
+  if (process.env.DOCKER == "true") {
+    args = ['--no-sandbox', '--disable-dev-shm-usage']
+  }
   const browser = await puppeteer.launch({
     headless: true,
+    // If it runs in docker, execute the specific file
+    executablePath: process.env.DOCKER == "true" ? '/usr/bin/chromium-browser' : undefined,
+
+    args: args,
   });
 
   router.get('/generate/', async (ctx, next) => {
@@ -30,21 +39,22 @@ function sleep(ms) {
     let start = Date.now();
 
     await page.setViewport({
-      width: 590, height: 855, deviceScaleFactor:10
+      width: 590, height: 855, deviceScaleFactor: 10
     })
-    await page.goto('http://localhost:3000/render/', {
+    
+    await page.goto('http://google.com', {
       waitUntil: "networkidle2"
     });
 
-    await page.evaluate(() => {
-      // @ts-ignore
-      window.setCustom({
-        divider: "asd",
-        theme: 1
-      })
-    })
+    // await page.evaluate(() => {
+    //   // @ts-ignore
+    //   window.setCustom({
+    //     divider: "asd",
+    //     theme: 1
+    //   })
+    // })
 
-    await page.screenshot({ path: 'example.png' });
+    await page.screenshot({ path: 'images/example.png' });
     let end = Date.now();
     console.log("Time taken: ", end - start, "ms")
   });
@@ -53,31 +63,31 @@ function sleep(ms) {
     .use(router.routes())
     .use(router.allowedMethods());
 
-  app.listen(process.env.PUPPET_PORT ||  6969)
+  app.listen(process.env.PUPPET_PORT || 6969)
 
 
 
-  const page = await browser.newPage();
+  // const page = await browser.newPage();
 
-  let start = Date.now();
-  await page.setViewport({
-    width: 590, height: 855, deviceScaleFactor:12
-  })
-  await page.goto('http://localhost:3000/render/', {
-    waitUntil: "networkidle2"
-  });
+  // let start = Date.now();
+  // await page.setViewport({
+  //   width: 590, height: 855, deviceScaleFactor:12
+  // })
+  // await page.goto('http://localhost:3000/render/', {
+  //   waitUntil: "networkidle2"
+  // });
 
-  await page.evaluate(() => {
-    // @ts-ignore
-    window.setCustom({
-      divider: "asd",
-      theme: 1
-    })
-  })
+  // await page.evaluate(() => {
+  //   // @ts-ignore
+  //   window.setCustom({
+  //     divider: "asd",
+  //     theme: 1
+  //   })
+  // })
 
-  await sleep(5000)
+  // await sleep(5000)
 
-  await page.screenshot({ path: 'example.png' });
-  let end = Date.now();
-  console.log("Time taken: ", end - start, "ms")
+  // await page.screenshot({ path: 'example.png' });
+  // let end = Date.now();
+  // console.log("Time taken: ", end - start, "ms")
 })();

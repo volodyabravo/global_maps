@@ -25,7 +25,8 @@ services:
       - ./.env
     ports:
       - 6969:6969
-
+    volumes:
+      - ./printer/images/:/app/images/
 
 volumes:
   local_postgres_data_backups:
