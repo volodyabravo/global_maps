@@ -20,7 +20,7 @@ const CardArea = styled.div`
 
 const CardContainer = styled.div`
     position: relative;
-   
+    overflow: hidden;
     
   
 `;
@@ -39,7 +39,20 @@ const MapContainer = styled.div`
     overflow: hidden;
     border-radius: 50%;
     margin: 3em auto;
-    
+    /* two */
+    /* width: 850px;
+height: 850px;
+left: -130px;
+top: -180px;
+position: absolute; */
+
+
+/* One */
+/* width: 1200px;
+height: 1184px;
+left: -305px;
+top: -175px;
+position: absolute; */
 `;
 
 export interface UserCustomizations {
@@ -55,10 +68,11 @@ interface MapViewProps {
   custom?: UserCustomizations;
   width?: string;
   height?: string;
+  print?: boolean
 }
 
 
-export function MapView({ theme, custom, height = "855px", width = "590px" }: MapViewProps) {
+export function MapView({ theme, custom, height = "855px", width = "590px", print = false }: MapViewProps) {
   const [state, setstate] = useState("#fff");
 
   // Think about headlines
@@ -69,26 +83,37 @@ export function MapView({ theme, custom, height = "855px", width = "590px" }: Ma
 
   console.log(typeof custom?.headline, custom?.headline, theme.data?.cardSettings?.defaultText.headline, headline)
 
-  return (
-    <CardArea className="card-area">
+
+
+  let Card = <CardContainer className="card-container" style={{
+    width: width,
+    height: height,
+    backgroundColor: theme.data?.cardSettings?.background?.color,
+    backgroundImage: theme.data?.cardSettings?.background?.image,
+  }}>
+
+    <MapContainer className="map-container" >
+      {theme?.data?.celestial && <CelestialReact zoom={0} config={{
+        ...theme.data.celestial,
+      }} />}
+    </MapContainer>
+    <CardTextContainer className="text-container">
+      {headline && <Typography {...theme.data?.cardSettings?.fonts?.headline}  >{headline}</Typography>}
+      {divider && <Typography {...theme.data?.cardSettings?.fonts?.divider} >{divider}</Typography>}
+      {tagline && <Typography {...theme.data?.cardSettings?.fonts?.tagline} >{tagline}</Typography>}
+      {subline && <Typography {...theme.data?.cardSettings?.fonts?.subline}>{subline}</Typography>}
+    </CardTextContainer>
+  </CardContainer>
+
+  if (!print) {
+    Card = <CardArea className="card-area">
       <MapFrame {...theme.data?.frameSettings} >
-        <CardContainer className="card-container" style={{
-          width: width,
-          height: height,
-          backgroundColor: theme.data?.cardSettings?.background?.color,
-          backgroundImage: theme.data?.cardSettings?.background?.image,
-        }}>
-          <MapContainer className="map-container" >
-            {theme?.data?.celestial && <CelestialReact zoom={0} config={theme.data.celestial} />}
-          </MapContainer>
-          <CardTextContainer className="text-container">
-            {headline && <Typography {...theme.data?.cardSettings?.fonts?.headline}  >{headline}</Typography>}
-            {divider && <Typography {...theme.data?.cardSettings?.fonts?.divider} >{divider}</Typography>}
-            {tagline && <Typography {...theme.data?.cardSettings?.fonts?.tagline} >{tagline}</Typography>}
-            {subline && <Typography {...theme.data?.cardSettings?.fonts?.subline}>{subline}</Typography>}
-          </CardTextContainer>
-        </CardContainer>
+        {Card}
       </MapFrame>
     </CardArea>
+  }
+
+  return (
+    Card
   );
 }
