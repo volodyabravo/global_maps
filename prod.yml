@@ -1,6 +1,5 @@
 version: "3.6"
 services:
-
   django:
     image: volodyabravo/globalmaps:backend
     restart: unless-stopped
@@ -10,13 +9,13 @@ services:
     volumes:
       - ./docker/media/:/app/media/
       - ./docker/static/:/app/static/
-    environment:
-      - SECRET_KEY=secret
-      - DEBUG=True
     env_file:
       - ./.env
     depends_on:
       - postgres
+    networks:
+      - app
+      - db
 
   nginx:
     image: volodyabravo/globalmaps:frontend
@@ -27,8 +26,20 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./docker/static/:/app/djangostatic/
     ports:
-      - 80:8080
+      - 8080
+    networks:
+      - app
+      - proxy
     restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.network=proxy
+      - traefik.http.routers.maps.rule=Host(`stylemaps.ru`)
+      - traefik.http.routers.maps.service=maps@docker
+      - traefik.http.services.maps.loadbalancer.server.port=8080
+      - traefik.http.routers.maps.entrypoints=websecure
+      - traefik.http.routers.maps.tls=true
+      - traefik.http.routers.maps.tls.certresolver=le
 
   postgres:
     restart: unless-stopped
@@ -38,10 +49,59 @@ services:
       - local_postgres_data_backups:/backups:z
     ports:
       - 5432
+    networks:
+      - db
     env_file:
       - ./.env
 
+  #puppet:
+  #  image: volodyabravo/globalmaps:puppet
+  #  restart: unless-stopped
+  #  networks:
+  #    - app
+  #  env_file:
+  #    - ./.env
+  #  ports:
+  #    - 6969
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: always
+    command:
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --providers.docker
+      - --api
+      - --api.dashboard=true
+      - --log.level=DEBUG
+      - --providers.docker.exposedbydefault=false
+      - --certificatesresolvers.le.acme.email=alex@frozenalex.com
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme-le.json
+      - --certificatesresolvers.le.acme.tlschallenge=true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.rule=Host(`traefik.stylemaps.ru`)
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.routers.traefik.entrypoints=websecure
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.routers.traefik.tls.certresolver=le
+    networks:
+      - proxy
+    
 
 volumes:
   local_postgres_data_backups:
   local_postgres_data:
+
+networks:
+  db:
+  app:
+  proxy:
+    external: true
