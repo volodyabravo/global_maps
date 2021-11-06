@@ -30,9 +30,10 @@ export function Demo() {
                 tagline: "Теглайн",
                 theme: parseInt(router.theme)
             })
-            
+
             // adds custom to the thing
             // @ts-ignore
+            
             window.setCustom = setCustom;
         })();
         return () => {
@@ -45,6 +46,6 @@ export function Demo() {
 
     return <div>
         {custom && theme &&
-            <MapView theme={theme} custom={custom} print width={router.width + "px"} height={router.height + "px"} />}
+            <MapView theme={theme} custom={custom} print width={parseInt(router.width)} height={parseInt(router.height)} />}
     </div >
 }

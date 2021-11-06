@@ -60,16 +60,19 @@ position: absolute; */
 interface MapViewProps {
   theme: Partial<MapTheme>;
   custom?: UserCustomizations;
-  width?: string;
-  height?: string;
+  width?: number;
+  height?: number;
   print?: boolean
 }
 
 
-export function MapView({ theme, custom, height = "855px", width = "590px", print = false }: MapViewProps) {
+export function MapView({ theme, custom, height = 855, width = 590, print = false }: MapViewProps) {
+
   const [state, setstate] = useState("#fff");
 
-  // Think about headlines
+  
+  let orientation = (height > width)? "portrait": "landscape";
+   
   let headline = ((typeof custom?.headline) !== "undefined") ? custom?.headline : theme.data?.cardSettings?.defaultText.headline
   let divider = ((typeof custom?.divider) !== "undefined") ? custom?.divider : theme.data?.cardSettings?.defaultText.divider
   let tagline = ((typeof custom?.tagline) !== "undefined") ? custom?.tagline : theme.data?.cardSettings?.defaultText.tagline
@@ -80,13 +83,13 @@ export function MapView({ theme, custom, height = "855px", width = "590px", prin
 
 
   let Card = <CardContainer className="card-container" style={{
-    width: width,
-    height: height,
+    width: width + "px",
+    height: height + "px",
     backgroundColor: theme.data?.cardSettings?.background?.color,
     backgroundImage: theme.data?.cardSettings?.background?.image,
   }}>
 
-    <MapContainer className="map-container" >
+    <MapContainer className="map-container"  >
       {theme?.data?.celestial && <CelestialReact zoom={0} config={{
         ...theme.data.celestial,
       }} />}

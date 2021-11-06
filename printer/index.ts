@@ -70,12 +70,12 @@ interface RenderData {
 
     await page.evaluate((data) => {
       // @ts-ignore
-      window.setCustom(data.custom)
+      window.initializeMap(data)
       // @ts-expect-error
     }, data)
 
 
-    
+
 
     // Waits for render to be finished (TODO: Figure out how to find out that it finished)
     await sleep(4000)
