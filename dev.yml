@@ -16,17 +16,17 @@ services:
     ports:
       - 8080:8080
 
-  puppet:
-    build:
-      context: ./
-      dockerfile: puppet.Dockerfile
-    restart: unless-stopped
-    env_file:
-      - ./.env
-    ports:
-      - 6969:6969
-    volumes:
-      - ./printer/images/:/app/images/
+  # puppet:
+  #   build:
+  #     context: ./
+  #     dockerfile: puppet.Dockerfile
+  #   restart: unless-stopped
+  #   env_file:
+  #     - ./.env
+  #   ports:
+  #     - 6969:6969
+  #   volumes:
+  #     - ./printer/images/:/app/images/
 
 volumes:
   local_postgres_data_backups:
