@@ -75,10 +75,12 @@ interface RenderData {
     }, data)
 
 
-    const imageFileName = Date.now() + ".png";
+    
 
+    // Waits for render to be finished (TODO: Figure out how to find out that it finished)
     await sleep(4000)
 
+    const imageFileName = Date.now() + ".png";
     await page.screenshot({ path: join('images', imageFileName) });
     await page.close();
 
@@ -87,11 +89,6 @@ interface RenderData {
     const src = fs.createReadStream(path);
     ctx.response.set("content-type", mimeType);
     ctx.body = src;
-
-    // ctx.body = JSON.stringify({
-    //   images: "/images/" + imageFileName
-    // })
-
 
 
     let end = Date.now();
@@ -103,30 +100,4 @@ interface RenderData {
     .use(router.allowedMethods());
 
   app.listen(process.env.PUPPET_PORT || 6969)
-
-
-
-  // const page = await browser.newPage();
-
-  // let start = Date.now();
-  // await page.setViewport({
-  //   width: 590, height: 855, deviceScaleFactor:12
-  // })
-  // await page.goto('http://localhost:3000/render/', {
-  //   waitUntil: "networkidle2"
-  // });
-
-  // await page.evaluate(() => {
-  //   // @ts-ignore
-  //   window.setCustom({
-  //     divider: "asd",
-  //     theme: 1
-  //   })
-  // })
-
-  // await sleep(5000)
-
-  // await page.screenshot({ path: 'example.png' });
-  // let end = Date.now();
-  // console.log("Time taken: ", end - start, "ms")
 })();
