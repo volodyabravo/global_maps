@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import "@fontsource/roboto";
 import { CelestialReact } from './components/CelestialForeign';
 import { useEffect, useState } from 'react';
 

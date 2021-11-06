@@ -3,6 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@emotion/react': ^11.4.1
   '@emotion/styled': ^11.3.0
+  '@fontsource/roboto': ^4.5.1
   '@material-ui/system': ^5.0.0-beta.5
   '@mui/icons-material': ^5.0.3
   '@mui/lab': ^5.0.0-alpha.50
@@ -34,6 +35,7 @@ specifiers:
 dependencies:
   '@emotion/react': 11.4.1_b094b78811fc8d2f00a90f13d0251fb6
   '@emotion/styled': 11.3.0_5c2d7d4b854c783938f3cfe7091c0f9b
+  '@fontsource/roboto': 4.5.1
   '@material-ui/system': 5.0.0-beta.5_7b0c288ee1a1e07f392d7acfbf356824
   '@mui/icons-material': 5.0.3_107aa2f4cceef7f2e8409a33ff9ab66f
   '@mui/lab': 5.0.0-alpha.50_f1676f9c95a2b8f0feea4144697f49ba
@@ -1786,6 +1788,10 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@fontsource/roboto/4.5.1:
+    resolution: {integrity: sha512-3mhfL+eNPG/woMNqwD/OHaW5qMpeGEBsDwzmhFmjB1yUV+M+M9P0NhP/AyHvnGz3DrqkvZ7CPzNMa+UkVLeELg==}
     dev: false
 
   /@gar/promisify/1.1.2:
