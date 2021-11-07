@@ -7,6 +7,8 @@ export interface FontSettings {
     fontFamily?: string;
     padding?: string;
     fontSize?: string;
+    paddingBottom?: string;
+    letterSpacing?:string;
 }
 
 export interface FrameSettings {
@@ -52,7 +54,8 @@ export interface MapThemeData {
     /**
      * Settings for the frame
      */
-    frameSettings?: FrameSettings
+    frameSettings?: FrameSettings;
+    customCss?: string;
 }
 
 export interface UserCustomizations {
@@ -61,7 +64,7 @@ export interface UserCustomizations {
     divider?: string,
     tagline?: string,
     subline?: string,
-  }
+}
 
 export interface MapTheme {
     name: string;

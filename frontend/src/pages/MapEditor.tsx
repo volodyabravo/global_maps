@@ -35,13 +35,17 @@ export function MapEditorPage() {
                 width: 500,
                 constellations: {
                     lines: true,
-                    names: false
+                    names: false,
+                    lineStyle: {
+                        opacity: 0.6,
+                        stroke: "#cccccc",
+                        width: 1
+                    }
                 },
                 planets: {
                     show: false,
                     names: false,
                 },
-
                 stars: {
                     show: true,
                     colors: false,
@@ -77,88 +81,77 @@ export function MapEditorPage() {
                 },
                 horizon: {
                     show: false,
+                    stroke: "#ccc",
                     fill: "#000000"
                 },
-            }
+            },
+            cardSettings: {
+                fonts: {
+                    headline: {
+                        letterSpacing: "0.15em",
+                        color: "black",
+                        fontFamily: "Roboto",
+                        fontWeight: 500,
+                    },
+                    subline: {
+                        letterSpacing: "0.2em",
+                        color: "black",
+                        fontFamily: "Roboto",
+                        fontWeight: 500,
+                    },
+                    divider: {
+                        letterSpacing: "0.2em",
+                        color: "black",
+                        fontFamily: "Roboto",
+                        fontWeight: 500,
 
-        }
-    });
+                    },
 
-    // Celestial
-    const backgroundForm = useForm<{
-        customCss: string;
-        backgroundColor?: string;
-        mapBackground?: string;
-        title?: string;
-        headline: {
-            color: string,
-            text: string
-        },
-        divider: {
-            color: string,
-            text: string
-        }
-        tagline: {
-            color: string,
-            text: string
-        },
-        subline: {
-            color: string,
-            text: string
-        }
-    }>({
-        defaultValues: {
+
+                    tagline: {
+                        letterSpacing: "0.2em",
+                        color: "black",
+                        fontFamily: "Roboto",
+                        fontWeight: 500,
+                    }
+                }
+            },
+
             customCss: `
-                .map-container {
+            .map-container {
 
-                }
-                .card-container {
-
-                }
-                .card-area {
-
-                }
-                .text-container {
-
-                }
-                .text-headline {
-
-                }
-                .text-divider {
-
-                }
-                .text-tagline {
-
-                }
-                .text-subline {
-
-                }
-
-            `,
-            backgroundColor: "#022B30FF",
-            mapBackground: "#022B30FF",
-            headline: {
-                color: "#FFF",
-                text: "Paris"
-            },
-            divider: {
-                color: "#FFF",
-                text: "France"
-            },
-            tagline: {
-                color: "#FFF",
-                text: "SEPTEMBER 10TH 2019"
-            },
-            subline: {
-                color: "#FFF",
-                text: "48.856°N / 2.3522°E"
             }
+            .card-container {
 
-        }
+            }
+            .card-area {
+
+            }
+            .text-container {
+
+            }
+            .text-headline {
+
+            }
+            .text-divider {
+
+            }
+            .text-tagline {
+
+            }
+            .text-subline {
+
+            }
+            `
+
+        },
+
     });
+
+
 
     let mapProps = celestialForm.watch();
-    let backProps = backgroundForm.watch();
+
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -166,9 +159,6 @@ export function MapEditorPage() {
         };
 
     return <div>
-        <style dangerouslySetInnerHTML={{
-            __html: backProps.customCss
-        }} />
         <Grid container spacing={1} sx={{
             "minHeight": "100vh"
         }} >
@@ -524,30 +514,6 @@ export function MapEditorPage() {
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
-                            Параметры фона
-                        </AccordionSummary>
-                        <AccordionDetails>
-
-                            <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="backgroundColor" control={backgroundForm.control} label="Цвет фона"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="mapBackground" control={backgroundForm.control} label="Цвет карты"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
-                            </Grid>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion >
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1bh-content"
-                            id="panel1bh-header"
-                        >
                             Текст
                         </AccordionSummary>
                         <AccordionDetails>
@@ -689,7 +655,7 @@ export function MapEditorPage() {
 
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="cardSettings.fonts.headline.padding"
+                                        name="cardSettings.fonts.headline.paddingBottom"
                                         control={celestialForm.control}
                                         render={({ field }) =>
                                             <TextField label={"Отступ текста headline"} {...field} />
@@ -698,7 +664,7 @@ export function MapEditorPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="cardSettings.fonts.divider.padding"
+                                        name="cardSettings.fonts.divider.paddingBottom"
                                         control={celestialForm.control}
                                         render={({ field }) =>
                                             <TextField label={"Отступ текста divider"} {...field} />
@@ -707,7 +673,7 @@ export function MapEditorPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="cardSettings.fonts.tagline.padding"
+                                        name="cardSettings.fonts.tagline.paddingBottom"
                                         control={celestialForm.control}
                                         render={({ field }) =>
                                             <TextField label={"Отступ текста tagline"} {...field} />
@@ -716,7 +682,7 @@ export function MapEditorPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <Controller
-                                        name="cardSettings.fonts.subline.padding"
+                                        name="cardSettings.fonts.subline.paddingBottom"
                                         control={celestialForm.control}
                                         render={({ field }) =>
                                             <TextField label={"Отступ текста subline"} {...field} />
@@ -801,7 +767,7 @@ export function MapEditorPage() {
                         <AccordionDetails>
                             <Controller
                                 name="customCss"
-                                control={backgroundForm.control}
+                                control={celestialForm.control}
                                 render={({ field }) =>
                                     <TextField
                                         label={"Свой CSS"} {...field}

@@ -70,16 +70,15 @@ export function MapView({ theme, custom, height = 855, width = 590, print = fals
 
   const [state, setstate] = useState("#fff");
 
-  
-  let orientation = (height > width)? "portrait": "landscape";
-   
-  let headline = ((typeof custom?.headline) !== "undefined") ? custom?.headline : theme.data?.cardSettings?.defaultText.headline
-  let divider = ((typeof custom?.divider) !== "undefined") ? custom?.divider : theme.data?.cardSettings?.defaultText.divider
-  let tagline = ((typeof custom?.tagline) !== "undefined") ? custom?.tagline : theme.data?.cardSettings?.defaultText.tagline
-  let subline = ((typeof custom?.subline) !== "undefined") ? custom?.subline : theme.data?.cardSettings?.defaultText.subline
 
-  console.log(typeof custom?.headline, custom?.headline, theme.data?.cardSettings?.defaultText.headline, headline)
+  let orientation = (height > width) ? "portrait" : "landscape";
 
+  let headline = ((typeof custom?.headline) !== "undefined") ? custom?.headline : theme.data?.cardSettings?.defaultText?.headline
+  let divider = ((typeof custom?.divider) !== "undefined") ? custom?.divider : theme.data?.cardSettings?.defaultText?.divider
+  let tagline = ((typeof custom?.tagline) !== "undefined") ? custom?.tagline : theme.data?.cardSettings?.defaultText?.tagline
+  let subline = ((typeof custom?.subline) !== "undefined") ? custom?.subline : theme.data?.cardSettings?.defaultText?.subline
+
+  console.log(typeof custom?.headline, custom?.headline, theme.data?.cardSettings?.defaultText?.headline, headline)
 
 
   let Card = <CardContainer className="card-container" style={{
@@ -104,6 +103,9 @@ export function MapView({ theme, custom, height = 855, width = 590, print = fals
 
   if (!print) {
     Card = <CardArea className="card-area">
+      <style dangerouslySetInnerHTML={{
+        __html: theme.data?.customCss || ""
+      }} />
       <MapFrame {...theme.data?.frameSettings} >
         {Card}
       </MapFrame>
