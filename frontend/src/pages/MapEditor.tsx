@@ -113,48 +113,42 @@ export function MapEditorPage() {
                         color: "black",
                         fontFamily: "Roboto",
                         fontWeight: 500,
-
                     },
-
-
                     tagline: {
                         letterSpacing: "0.2em",
                         color: "black",
                         fontFamily: "Roboto",
                         fontWeight: 500,
                     }
+                },
+                defaultText: {
+                    headline: "Заголовок",
+                    subline: "Саблайн",
+                    divider: "Разделитель",
+                    tagline: "Тэглайн"
                 }
             },
 
             customCss: `
             .map-container {
-
             }
             .card-container {
-
             }
             .card-area {
-
             }
             .text-container {
-
             }
             .text-headline {
-
             }
             .text-divider {
-
             }
             .text-tagline {
-
             }
             .text-subline {
-
             }
             `
 
         },
-
     });
 
 
@@ -478,40 +472,9 @@ export function MapEditorPage() {
                                 </Grid>
                             </Grid>
                             <Grid container spacing={1}>
-
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="celestial.background.fill" control={celestialForm.control} label="Цвет заливки"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
                                 <Grid item xs={12} md={6} direction="row">
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="celestial.constellations.lineStyle.stroke" control={celestialForm.control} label="Цвет линий созвездий"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="celestial.horizon.stroke" control={celestialForm.control} label="Цвет линии горизонта"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="celestial.horizon.fill" control={celestialForm.control} label="Цвет заливки горизонта"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="celestial.mw.style.fill" control={celestialForm.control} label="Цвет заливки млечного пути"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="celestial.lines.ecliptic.stroke" control={celestialForm.control} label="Цвет линии ecliptic"></ColorPicker>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} md={6} direction="row">
-                                    <FormControl sx={{ width: "100%" }}>
-                                        <ColorPicker name="celestial.lines.equatorial.stroke" control={celestialForm.control} label="Цвет линии galactic"></ColorPicker>
                                     </FormControl>
                                 </Grid>
                             </Grid>
@@ -954,6 +917,51 @@ export function MapEditorPage() {
                                                 label="Ширина прозрачность линии"
                                                 control={<Slider step={0.1} min={0} max={1}  {...field} />}
                                             />
+                                        }
+                                    />
+                                </Grid>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion expanded={expanded === '13'} onChange={handleChange('13')}  >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            Млечный путь
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.mw.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показать"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="celestial.mw.style.fill" control={celestialForm.control} label="Цвет"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={12} direction="row">
+                                    <Controller
+                                        name="celestial.mw.style.opacity"
+                                        control={celestialForm.control}
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <div style={{ width: "100%" }}>
+                                                <Typography id="input-slider" gutterBottom>
+                                                    Volume
+                                                </Typography>
+                                                <Slider  step={0.1} min={0} max={1}  {...field} />
+                                            </div>
                                         }
                                     />
                                 </Grid>
