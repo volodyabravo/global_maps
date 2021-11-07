@@ -244,7 +244,7 @@ declare module "d3-celestial/celestial" {
      * Milky way
      */
     mw?: {
-      show: true; // Show Milky Way as filled multi-polygon outlines
+      show: boolean; // Show Milky Way as filled multi-polygon outlines
       style: { fill: string; opacity: number }; // Style for MW layers
     };
     lines?: {

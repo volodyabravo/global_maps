@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 
 export function MapEditorPage() {
     // Accordion control
-    const [expanded, setExpanded] = useState<string | false>("panel1");
+    const [expanded, setExpanded] = useState<string | false>("1");
 
     const [JSONField, setJSONField] = useState<string>("");
 
@@ -64,16 +64,25 @@ export function MapEditorPage() {
                 lines: {
                     ecliptic: {
                         show: false,
-                        stroke: "#66cc66"
+                        stroke: "#66cc66",
+                        width: 1.3,
+                        opacity: 0.7,
                     },
                     equatorial: {
                         show: false,
-                        stroke: "#aaaaaa"
+                        stroke: "#aaaaaa",
+                        width: 1.3,
+                        opacity: 0.7,
                     },
-                    graticule: { show: false, stroke: "#cccccc", width: 0.6, opacity: 0.8, }
+                    graticule: {
+                        show: false,
+                        stroke: "#cccccc",
+                        width: 0.6,
+                        opacity: 0.8,
+                    }
                 },
                 mw: {
-                    show: true,
+                    show: false,
                     style: {
                         fill: "#ffffff",
                         opacity: 0.15
@@ -172,7 +181,7 @@ export function MapEditorPage() {
             </Grid>
             <Grid container item xs={12} md={4} direction="column" >
                 <Container>
-                    <Accordion>
+                    <Accordion expanded={expanded === '1'} onChange={handleChange('1')}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1bh-content"
@@ -198,7 +207,7 @@ export function MapEditorPage() {
                             </Grid>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion>
+                    <Accordion expanded={expanded === '2'} onChange={handleChange('2')} >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1bh-content"
@@ -224,7 +233,7 @@ export function MapEditorPage() {
                             </Grid>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion>
+                    <Accordion expanded={expanded === '3'} onChange={handleChange('3')} >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1bh-content"
@@ -248,7 +257,7 @@ export function MapEditorPage() {
                             </Grid>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion>
+                    <Accordion expanded={expanded === '4'} onChange={handleChange('4')} >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1bh-content"
@@ -308,7 +317,7 @@ export function MapEditorPage() {
                             </Grid>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion>
+                    <Accordion expanded={expanded === '5'} onChange={handleChange('5')} >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1bh-content"
@@ -339,7 +348,7 @@ export function MapEditorPage() {
                             </Grid>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion>
+                    <Accordion expanded={expanded === '6'} onChange={handleChange('6')} >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1bh-content"
@@ -508,7 +517,7 @@ export function MapEditorPage() {
                             </Grid>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion >
+                    <Accordion expanded={expanded === '7'} onChange={handleChange('7')}  >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1bh-content"
@@ -732,7 +741,7 @@ export function MapEditorPage() {
                             </Grid>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion >
+                    <Accordion expanded={expanded === '8'} onChange={handleChange('8')} >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1bh-content"
@@ -756,7 +765,7 @@ export function MapEditorPage() {
                             }}>Копировать</Button>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion >
+                    <Accordion expanded={expanded === '9'} onChange={handleChange('9')} >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1bh-content"
@@ -778,6 +787,177 @@ export function MapEditorPage() {
                                 }
                             />
 
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion expanded={expanded === '10'} onChange={handleChange('10')}  >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            Сетка
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="celestial.lines.graticule.stroke" control={celestialForm.control} label="Цвет"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.lines.graticule.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показать"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.lines.graticule.width"
+                                        control={celestialForm.control}
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Ширина линии"
+                                                control={<Slider step={0.1} min={0} max={3}  {...field} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.lines.graticule.opacity"
+                                        control={celestialForm.control}
+
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Ширина прозрачность линии"
+                                                control={<Slider step={0.1} min={0} max={1}  {...field} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion expanded={expanded === '11'} onChange={handleChange('11')}  >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            Экватор
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="celestial.lines.equatorial.stroke" control={celestialForm.control} label="Цвет"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.lines.equatorial.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показать"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.lines.equatorial.width"
+                                        control={celestialForm.control}
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Ширина линии"
+                                                control={<Slider step={0.1} min={0} max={3}  {...field} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.lines.equatorial.opacity"
+                                        control={celestialForm.control}
+
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Ширина прозрачность линии"
+                                                control={<Slider step={0.1} min={0} max={1}  {...field} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion expanded={expanded === '12'} onChange={handleChange('12')}  >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            Линия затмения
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="celestial.lines.ecliptic.stroke" control={celestialForm.control} label="Цвет"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.lines.ecliptic.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показать"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.lines.ecliptic.width"
+                                        control={celestialForm.control}
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Ширина линии"
+                                                control={<Slider step={0.1} min={0} max={3}  {...field} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.lines.ecliptic.opacity"
+                                        control={celestialForm.control}
+
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Ширина прозрачность линии"
+                                                control={<Slider step={0.1} min={0} max={1}  {...field} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                            </Grid>
                         </AccordionDetails>
                     </Accordion>
                 </Container>
