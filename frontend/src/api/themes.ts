@@ -42,6 +42,12 @@ export interface MapThemeData {
             tagline?: string;
             subline?: string;
         }
+        textContainer: {
+            background: string;
+            padding: string;
+            margin: string;
+            opacity: number;
+        }
     }
     // Turn on and turn off fields in the client UI
     fields?: {

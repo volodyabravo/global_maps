@@ -27,6 +27,7 @@ export function MapEditorPage() {
     // Celestial
     const celestialForm = useForm<MapThemeData>({
         defaultValues: {
+
             maptype: "celestial",
             layout: "CelestialFullBackground",
             celestial: {
@@ -130,6 +131,12 @@ export function MapEditorPage() {
                     subline: "Саблайн",
                     divider: "Разделитель",
                     tagline: "Тэглайн"
+                },
+                textContainer: {
+                    background: "white",
+                    margin: "20px",
+                    padding: "5px",
+                    opacity: 0.6
                 }
             },
 
@@ -1008,10 +1015,73 @@ export function MapEditorPage() {
                                         render={({ field }) =>
                                             <div style={{ width: "100%" }}>
                                                 <Typography id="input-slider" gutterBottom>
-                                                    Volume
+                                                    Непрозрачность
                                                 </Typography>
                                                 <Slider step={0.1} min={0} max={1}  {...field} />
                                             </div>
+                                        }
+                                    />
+                                </Grid>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion expanded={expanded === '14'} onChange={handleChange('14')}  >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            Контейнер текста
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="celestial.mw.show"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <FormControlLabel
+                                                label="Показать"
+                                                control={<Switch  {...field} checked={field.value} />}
+                                            />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <ColorPicker name="cardSettings.textContainer.background" control={celestialForm.control} label="Фон"></ColorPicker>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={12} direction="row">
+                                    <Controller
+                                        name="cardSettings.textContainer.opacity"
+                                        control={celestialForm.control}
+                                        rules={{ required: true }}
+                                        render={({ field }) =>
+                                            <div style={{ width: "100%" }}>
+                                                <Typography id="input-slider" gutterBottom>
+                                                    Непрозрачность фона
+                                                </Typography>
+                                                <Slider step={0.1} min={0} max={1}  {...field} />
+                                            </div>
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.textContainer.margin"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Margin"} {...field} />
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <Controller
+                                        name="cardSettings.textContainer.padding"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField label={"Padding"} {...field} />
                                         }
                                     />
                                 </Grid>

@@ -43,7 +43,9 @@ export function CelestialFullBackground({ orientation, theme, custom, height, pr
         width: mapWidth,
       }} />}
     </MapContainer>
-    <CardTextContainer className="text-container">
+    <CardTextContainer className="text-container" style={
+      theme.data?.cardSettings?.textContainer
+    }>
       {headline && <Typography {...theme.data?.cardSettings?.fonts?.headline}  >{headline}</Typography>}
       {divider && <Typography {...theme.data?.cardSettings?.fonts?.divider} >{divider}</Typography>}
       {tagline && <Typography {...theme.data?.cardSettings?.fonts?.tagline} >{tagline}</Typography>}
@@ -60,11 +62,7 @@ const CardContainer = styled.div`
 `;
 const CardTextContainer = styled.div`
     position: absolute;
-   bottom: 0; right: 0; left: 0;
-    opacity: 0.5;
-    margin: 20px;
-    background-color: black;
-    padding: 15px;
+    bottom: 0; right: 0; left: 0;
 `;
 
 const MapContainer = styled.div`

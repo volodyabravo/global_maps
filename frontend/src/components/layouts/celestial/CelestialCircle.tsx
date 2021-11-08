@@ -26,7 +26,9 @@ export function CelestialCircle({ orientation, theme, custom, height, print, wid
         ...theme.data.celestial,
       }} />}
     </MapContainer>
-    <CardTextContainer className="text-container">
+    <CardTextContainer className="text-container"  style={
+      theme.data?.cardSettings?.textContainer
+    }>
       {headline && <Typography {...theme.data?.cardSettings?.fonts?.headline}  >{headline}</Typography>}
       {divider && <Typography {...theme.data?.cardSettings?.fonts?.divider} >{divider}</Typography>}
       {tagline && <Typography {...theme.data?.cardSettings?.fonts?.tagline} >{tagline}</Typography>}
