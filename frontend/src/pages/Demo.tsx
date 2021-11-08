@@ -46,6 +46,6 @@ export function Demo() {
 
     return <div>
         {custom && theme &&
-            <MapView layout="CelestialFullBackground" theme={theme} custom={custom} print width={parseInt(router.width)} height={parseInt(router.height)} />}
+            <MapView layout="CelestialHalf" theme={theme} custom={custom} print width={parseInt(router.width)} height={parseInt(router.height)} />}
     </div >
 }

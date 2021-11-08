@@ -63,7 +63,7 @@ export interface MapThemeData {
     frameSettings?: FrameSettings;
     customCss?: string;
     maptype: "celestial",
-    layout: "CelestialFullBackground" | "CelestialCircle",
+    layout: "CelestialFullBackground" | "CelestialCircle"  | "CelestialHalf",
 }
 
 export interface UserCustomizations {

@@ -11,6 +11,7 @@ import { MapFrame } from "./frames/Frame";
 import { Typography } from "@mui/material";
 import { CelestialFullBackground } from "./layouts/celestial/CelestialFullBackground";
 import { CelestialCircle } from "./layouts/celestial/CelestialCircle";
+import { CelestialHalf } from "./layouts/celestial/CelestialHalf";
 
 export interface CelestialMapView {
   theme: Partial<MapTheme>;
@@ -26,7 +27,6 @@ const CardArea = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    /* padding-top: 2em; */
     height: calc(100vh - 64px);
 `;
 
@@ -36,7 +36,7 @@ interface MapViewProps {
   width?: number;
   height?: number;
   print?: boolean;
-  layout?: "CelestialFullBackground" | "СelestialCircle",
+  layout?: "CelestialFullBackground" | "СelestialCircle" | "CelestialHalf",
   maptype?: "celestial";
 }
 
@@ -45,6 +45,7 @@ let layouts = {
   "celestial": {
     "CelestialFullBackground": CelestialFullBackground,
     "CelestialCircle": CelestialCircle,
+    "CelestialHalf": CelestialHalf
   }
 
 }
@@ -58,10 +59,10 @@ export function MapView(props: MapViewProps) {
 
 
   if (props.theme.data?.layout) {
-    layout=props.theme.data?.layout
+    layout = props.theme.data?.layout
   }
   if (props.theme.data?.maptype) {
-    maptype=props.theme.data?.maptype
+    maptype = props.theme.data?.maptype
   }
 
   let orientation: "portrait" | "landscape" = (height > width) ? "portrait" : "landscape";

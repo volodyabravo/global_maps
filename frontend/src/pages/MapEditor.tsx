@@ -29,7 +29,7 @@ export function MapEditorPage() {
         defaultValues: {
 
             maptype: "celestial",
-            layout: "CelestialFullBackground",
+            layout: "CelestialCircle",
             celestial: {
                 // disableAnimations: true,
                 follow:"center",
@@ -208,6 +208,7 @@ export function MapEditorPage() {
                                                 <Select {...field}>
                                                     <MenuItem value={"CelestialFullBackground"}>Полный фон</MenuItem>
                                                     <MenuItem value={"CelestialCircle"}>С кругом</MenuItem>
+                                                    <MenuItem value={"CelestialHalf"}>Половинный</MenuItem>
                                                 </Select>
                                             }
                                         />
