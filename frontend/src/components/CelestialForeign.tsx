@@ -92,6 +92,7 @@ export class CelestialReact extends React.Component<
       if (
         get(prevConfig, "stars.data") != get(nextConfig, "stars.data") ||
         get(prevConfig, "dsos.data") != get(nextConfig, "dsos.data") ||
+        get(prevConfig, "width") != get(nextConfig, "width") ||
         get(prevConfig, "projection") != get(nextConfig, "projection")
       ) {
         this.celestial.reload(sanitize(basedConfig));
