@@ -12,6 +12,7 @@ import { Typography } from "@mui/material";
 import { CelestialFullBackground } from "./layouts/celestial/CelestialFullBackground";
 import { CelestialCircle } from "./layouts/celestial/CelestialCircle";
 import { CelestialHalf } from "./layouts/celestial/CelestialHalf";
+import { StreetMapDefault } from "./layouts/streetmaps/StreetMapDefault";
 
 export interface CelestialMapView {
   theme: Partial<MapTheme>;
@@ -24,10 +25,10 @@ export interface CelestialMapView {
 
 
 const CardArea = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 64px);
 `;
 
 interface MapViewProps {
@@ -36,8 +37,8 @@ interface MapViewProps {
   width?: number;
   height?: number;
   print?: boolean;
-  layout?: "CelestialFullBackground" | "СelestialCircle" | "CelestialHalf",
-  maptype?: "celestial";
+  layout?: "CelestialFullBackground" | "СelestialCircle" | "CelestialHalf"| "StreetMapDefault",
+  maptype?: "celestial"| "streetmap";
 }
 
 
@@ -46,6 +47,9 @@ let layouts = {
     "CelestialFullBackground": CelestialFullBackground,
     "CelestialCircle": CelestialCircle,
     "CelestialHalf": CelestialHalf
+  },
+  "streetmap": {
+    "StreetMapDefault": StreetMapDefault
   }
 
 }
@@ -69,6 +73,10 @@ export function MapView(props: MapViewProps) {
 
   // @ts-expect-error
   let Layout = layouts[maptype][layout];
+
+  if (!Layout) {
+    return <div>Выберите другую карту</div>
+  }
 
   let RenderedLayout = <Layout {...props} orientation={orientation} width={width} custom={props.custom} height={height} print={print}></Layout>
 
@@ -98,3 +106,6 @@ export function MapView(props: MapViewProps) {
 
 
 }
+
+
+

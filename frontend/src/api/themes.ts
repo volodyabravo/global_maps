@@ -16,8 +16,13 @@ export interface FrameSettings {
     color?: string;
 }
 
+export interface MapboxProps {
+    style: string;
+}
+
 export interface MapThemeData {
     celestial?: CelestialOptions;
+    mapbox: MapboxProps;
     celestialOverlay?: {
         opacity?: number;
         background: string;
@@ -62,8 +67,8 @@ export interface MapThemeData {
      */
     frameSettings?: FrameSettings;
     customCss?: string;
-    maptype: "celestial",
-    layout: "CelestialFullBackground" | "CelestialCircle"  | "CelestialHalf",
+    maptype: "celestial"| "streetmap",
+    layout: "CelestialFullBackground" | "CelestialCircle" | "CelestialHalf"| "StreetMapDefault",
 }
 
 export interface UserCustomizations {

@@ -28,11 +28,14 @@ export function MapEditorPage() {
     const celestialForm = useForm<MapThemeData>({
         defaultValues: {
 
-            maptype: "celestial",
-            layout: "CelestialCircle",
+            maptype: "streetmap",
+            layout: "StreetMapDefault",
+            mapbox: {
+                style: "mapbox://styles/volodyabravo/ckvq0pjx1fnpp15o8637keni9"
+            },
             celestial: {
                 // disableAnimations: true,
-                follow:"center",
+                follow: "center",
                 center: [0, 3, 0],
                 projection: "airy",
                 controls: false,
@@ -196,7 +199,7 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <InputLabel htmlFor="age-simple">
                                             <Typography>Разметка</Typography>
@@ -209,12 +212,14 @@ export function MapEditorPage() {
                                                     <MenuItem value={"CelestialFullBackground"}>Полный фон</MenuItem>
                                                     <MenuItem value={"CelestialCircle"}>С кругом</MenuItem>
                                                     <MenuItem value={"CelestialHalf"}>Половинный</MenuItem>
+                                                    <MenuItem value={"StreetMapDefault"}>Уличная</MenuItem>
+                                                    
                                                 </Select>
                                             }
                                         />
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <InputLabel htmlFor="age-simple">
                                             <Typography>Тип карты</Typography>
@@ -225,6 +230,7 @@ export function MapEditorPage() {
                                             render={({ field }) =>
                                                 <Select {...field}>
                                                     <MenuItem value={"celestial"}>Звездная карта</MenuItem>
+                                                    <MenuItem value={"streetmap"}>Карта улиц</MenuItem>
                                                 </Select>
                                             }
                                         />
@@ -242,11 +248,11 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="frameSettings.color" control={celestialForm.control} label="Цвет фона рамки"></ColorPicker>
                                     </FormControl>
-                                </Grid><Grid item xs={12} md={12} direction="row">
+                                </Grid><Grid item xs={12} md={12}>
 
                                     <Controller
                                         name="frameSettings.padding"
@@ -268,11 +274,11 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6} >
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="cardSettings.background.color" control={celestialForm.control} label="Цвет фона карточки"></ColorPicker>
                                     </FormControl>
-                                </Grid><Grid item xs={12} md={12} direction="row">
+                                </Grid><Grid item xs={12} md={12}>
 
                                     <Controller
                                         name="cardSettings.background.image"
@@ -319,7 +325,7 @@ export function MapEditorPage() {
                         <AccordionDetails>
                             <Grid container spacing={1}>
 
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.stars.show"
                                         control={celestialForm.control}
@@ -333,7 +339,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.stars.colors"
                                         control={celestialForm.control}
@@ -347,12 +353,12 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="celestial.stars.style.fill" control={celestialForm.control} label="Цвет звезд"></ColorPicker>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.stars.style.opacity"
                                         control={celestialForm.control}
@@ -378,12 +384,12 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="celestial.background.fill" control={celestialForm.control} label="Цвет фона"></ColorPicker>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.background.opacity"
                                         control={celestialForm.control}
@@ -411,7 +417,7 @@ export function MapEditorPage() {
                         <AccordionDetails>
 
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.dsos.show"
                                         control={celestialForm.control}
@@ -423,7 +429,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.date"
                                         control={celestialForm.control}
@@ -437,7 +443,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.graticule.show"
                                         control={celestialForm.control}
@@ -449,7 +455,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.planets.show"
                                         control={celestialForm.control}
@@ -461,7 +467,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.equatorial.show"
                                         control={celestialForm.control}
@@ -473,7 +479,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.ecliptic.show"
                                         control={celestialForm.control}
@@ -486,7 +492,7 @@ export function MapEditorPage() {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.mw.show"
                                         control={celestialForm.control}
@@ -499,7 +505,7 @@ export function MapEditorPage() {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <InputLabel htmlFor="age-simple"><Typography>Вид проекции</Typography></InputLabel>
                                         <Controller
@@ -514,7 +520,7 @@ export function MapEditorPage() {
                                         />
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.constellations.lines"
                                         control={celestialForm.control}
@@ -530,7 +536,7 @@ export function MapEditorPage() {
                                 </Grid>
                             </Grid>
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="celestial.constellations.lineStyle.stroke" control={celestialForm.control} label="Цвет линий созвездий"></ColorPicker>
                                     </FormControl>
@@ -548,28 +554,28 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="cardSettings.fonts.headline.color" control={celestialForm.control} label="Цвет заголовка"></ColorPicker>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="cardSettings.fonts.divider.color" control={celestialForm.control} label="Цвет разделителя"></ColorPicker>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="cardSettings.fonts.tagline.color" control={celestialForm.control} label="Цвет тэглайна"></ColorPicker>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="cardSettings.fonts.subline.color" control={celestialForm.control} label="Цвет сублайна"></ColorPicker>
                                     </FormControl>
                                 </Grid>
 
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.headline.fontWeight"
                                         control={celestialForm.control}
@@ -578,7 +584,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.divider.fontWeight"
                                         control={celestialForm.control}
@@ -587,7 +593,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.tagline.fontWeight"
                                         control={celestialForm.control}
@@ -596,7 +602,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.subline.fontWeight"
                                         control={celestialForm.control}
@@ -607,7 +613,7 @@ export function MapEditorPage() {
                                 </Grid>
 
 
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.headline.fontFamily"
                                         control={celestialForm.control}
@@ -616,7 +622,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.divider.fontFamily"
                                         control={celestialForm.control}
@@ -625,7 +631,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.tagline.fontFamily"
                                         control={celestialForm.control}
@@ -634,7 +640,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.subline.fontFamily"
                                         control={celestialForm.control}
@@ -644,7 +650,7 @@ export function MapEditorPage() {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.headline.fontSize"
                                         control={celestialForm.control}
@@ -653,7 +659,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.divider.fontSize"
                                         control={celestialForm.control}
@@ -662,7 +668,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.tagline.fontSize"
                                         control={celestialForm.control}
@@ -671,7 +677,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.subline.fontSize"
                                         control={celestialForm.control}
@@ -683,7 +689,7 @@ export function MapEditorPage() {
 
 
 
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.headline.paddingBottom"
                                         control={celestialForm.control}
@@ -692,7 +698,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.divider.paddingBottom"
                                         control={celestialForm.control}
@@ -701,7 +707,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.tagline.paddingBottom"
                                         control={celestialForm.control}
@@ -710,7 +716,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.fonts.subline.paddingBottom"
                                         control={celestialForm.control}
@@ -720,7 +726,7 @@ export function MapEditorPage() {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.defaultText.headline"
                                         control={celestialForm.control}
@@ -731,7 +737,7 @@ export function MapEditorPage() {
                                 </Grid>
 
 
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.defaultText.divider"
                                         control={celestialForm.control}
@@ -740,7 +746,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.defaultText.tagline"
                                         control={celestialForm.control}
@@ -749,7 +755,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.defaultText.subline"
                                         control={celestialForm.control}
@@ -820,12 +826,12 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="celestial.lines.graticule.stroke" control={celestialForm.control} label="Цвет"></ColorPicker>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.graticule.show"
                                         control={celestialForm.control}
@@ -837,7 +843,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.graticule.width"
                                         control={celestialForm.control}
@@ -850,7 +856,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.graticule.opacity"
                                         control={celestialForm.control}
@@ -877,12 +883,12 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="celestial.lines.equatorial.stroke" control={celestialForm.control} label="Цвет"></ColorPicker>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.equatorial.show"
                                         control={celestialForm.control}
@@ -894,7 +900,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.equatorial.width"
                                         control={celestialForm.control}
@@ -907,7 +913,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.equatorial.opacity"
                                         control={celestialForm.control}
@@ -934,12 +940,12 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="celestial.lines.ecliptic.stroke" control={celestialForm.control} label="Цвет"></ColorPicker>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.ecliptic.show"
                                         control={celestialForm.control}
@@ -951,7 +957,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.ecliptic.width"
                                         control={celestialForm.control}
@@ -964,7 +970,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.lines.ecliptic.opacity"
                                         control={celestialForm.control}
@@ -991,7 +997,7 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.mw.show"
                                         control={celestialForm.control}
@@ -1003,12 +1009,12 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="celestial.mw.style.fill" control={celestialForm.control} label="Цвет"></ColorPicker>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={12} direction="row">
+                                <Grid item xs={12} md={12}>
                                     <Controller
                                         name="celestial.mw.style.opacity"
                                         control={celestialForm.control}
@@ -1036,7 +1042,7 @@ export function MapEditorPage() {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="celestial.mw.show"
                                         control={celestialForm.control}
@@ -1048,12 +1054,12 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <FormControl sx={{ width: "100%" }}>
                                         <ColorPicker name="cardSettings.textContainer.background" control={celestialForm.control} label="Фон"></ColorPicker>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={12} direction="row">
+                                <Grid item xs={12} md={12}>
                                     <Controller
                                         name="cardSettings.textContainer.opacity"
                                         control={celestialForm.control}
@@ -1068,7 +1074,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.textContainer.margin"
                                         control={celestialForm.control}
@@ -1077,7 +1083,7 @@ export function MapEditorPage() {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={12} md={6} direction="row">
+                                <Grid item xs={12} md={6}>
                                     <Controller
                                         name="cardSettings.textContainer.padding"
                                         control={celestialForm.control}

@@ -61,7 +61,7 @@ export function MapClientPage() {
                 {theme &&
                     <MapView theme={theme} custom={custom} />}
             </Grid>
-            <Grid item xs={12} md={4} direction="column" style={{
+            <Grid item xs={12} md={4} style={{
                 padding: "0px 0px"
             }} spacing={0}>
                 <Box sx={{
@@ -132,7 +132,7 @@ export function MapClientPage() {
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Grid container spacing={1}>
-                                    <Grid item xs={12} md={6} direction="row">
+                                    <Grid item xs={12} md={6}>
                                         <Controller
                                             name="headline"
                                             control={userForm.control}
@@ -141,7 +141,7 @@ export function MapClientPage() {
                                             }
                                         />
                                     </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
+                                    <Grid item xs={12} md={6}>
                                         <Controller
                                             name="divider"
                                             control={userForm.control}
@@ -150,7 +150,7 @@ export function MapClientPage() {
                                             }
                                         />
                                     </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
+                                    <Grid item xs={12} md={6}>
                                         <Controller
                                             name="tagline"
                                             control={userForm.control}
@@ -159,7 +159,7 @@ export function MapClientPage() {
                                             }
                                         />
                                     </Grid>
-                                    <Grid item xs={12} md={6} direction="row">
+                                    <Grid item xs={12} md={6}>
                                         <Controller
                                             name="subline"
                                             control={userForm.control}
