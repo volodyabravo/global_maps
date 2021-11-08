@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 
 export function MapEditorPage() {
     // Accordion control
-    const [expanded, setExpanded] = useState<string | false>("1");
+    const [expanded, setExpanded] = useState<string | false>("0");
 
     const [JSONField, setJSONField] = useState<string>("");
 
@@ -189,7 +189,6 @@ export function MapEditorPage() {
             </Grid>
             <Grid container item xs={12} md={4} direction="column" >
                 <Container>
-
                     <Accordion expanded={expanded === '0'} onChange={handleChange('0')}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
@@ -235,6 +234,28 @@ export function MapEditorPage() {
                                             }
                                         />
                                     </FormControl>
+                                </Grid>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion expanded={expanded === 'lololol'} onChange={handleChange('lololol')}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                        >
+                            Параметры карты улиц
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={12}>
+
+                                    <Controller
+                                        name="mapbox.style"
+                                        control={celestialForm.control}
+                                        render={({ field }) =>
+                                            <TextField fullWidth label={"Стиль"} {...field} />
+                                        }
+                                    />
                                 </Grid>
                             </Grid>
                         </AccordionDetails>

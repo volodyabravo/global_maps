@@ -28,7 +28,11 @@ export function MapBoxMap(props: MapBoxMapProps) {
                 map.current.resize();
         })
         console.log(map.current)
-    }, []);
+        return ()=>{
+            map.current?.remove();
+            map.current = null
+        }
+    }, [props.style]);
 
     return <div style={{ width: "100%", height: "100%" }}>
         <MapContainer ref={mapContainer} />
@@ -39,7 +43,7 @@ export function MapBoxMap(props: MapBoxMapProps) {
 const MapContainer = styled.div`
     width: 100%;
     height:100%;
-/* 
+
     & .mapboxgl-canvas-container {
         width: 100%;
     height:100%;
@@ -47,9 +51,10 @@ const MapContainer = styled.div`
 
     & .mapboxgl-control-container {
         display: none;
-    } */
+    } 
 
     & .mapboxgl-canvas {
-        left: 0;
+        width:  100% !important;
+        height: 100% !important;
     }
 `;
