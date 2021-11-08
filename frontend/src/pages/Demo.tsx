@@ -33,7 +33,7 @@ export function Demo() {
 
             // adds custom to the thing
             // @ts-ignore
-            
+
             window.setCustom = setCustom;
         })();
         return () => {
@@ -46,6 +46,6 @@ export function Demo() {
 
     return <div>
         {custom && theme &&
-            <MapView theme={theme} custom={custom} print width={parseInt(router.width)} height={parseInt(router.height)} />}
+            <MapView layout="CelestialFullBackground" theme={theme} custom={custom} print width={parseInt(router.width)} height={parseInt(router.height)} />}
     </div >
 }

@@ -8,7 +8,7 @@ export interface FontSettings {
     padding?: string;
     fontSize?: string;
     paddingBottom?: string;
-    letterSpacing?:string;
+    letterSpacing?: string;
 }
 
 export interface FrameSettings {
@@ -56,6 +56,8 @@ export interface MapThemeData {
      */
     frameSettings?: FrameSettings;
     customCss?: string;
+    maptype: "celestial",
+    layout: "CelestialFullBackground" | "CelestialCircle",
 }
 
 export interface UserCustomizations {

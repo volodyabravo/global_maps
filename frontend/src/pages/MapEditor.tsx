@@ -27,12 +27,16 @@ export function MapEditorPage() {
     // Celestial
     const celestialForm = useForm<MapThemeData>({
         defaultValues: {
+            maptype: "celestial",
+            layout: "CelestialFullBackground",
             celestial: {
+                // disableAnimations: true,
+                follow:"center",
                 center: [0, 3, 0],
                 projection: "airy",
                 controls: false,
                 zoomlevel: 1,
-                width: 500,
+                // width: 500,
                 constellations: {
                     lines: true,
                     names: false,
@@ -175,6 +179,52 @@ export function MapEditorPage() {
             </Grid>
             <Grid container item xs={12} md={4} direction="column" >
                 <Container>
+
+                    <Accordion expanded={expanded === '0'} onChange={handleChange('0')}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                        >
+                            Основные параметры
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <InputLabel htmlFor="age-simple">
+                                            <Typography>Разметка</Typography>
+                                        </InputLabel>
+                                        <Controller
+                                            name="layout"
+                                            control={celestialForm.control}
+                                            render={({ field }) =>
+                                                <Select {...field}>
+                                                    <MenuItem value={"CelestialFullBackground"}>Полный фон</MenuItem>
+                                                    <MenuItem value={"CelestialCircle"}>С кругом</MenuItem>
+                                                </Select>
+                                            }
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} md={6} direction="row">
+                                    <FormControl sx={{ width: "100%" }}>
+                                        <InputLabel htmlFor="age-simple">
+                                            <Typography>Тип карты</Typography>
+                                        </InputLabel>
+                                        <Controller
+                                            name="maptype"
+                                            control={celestialForm.control}
+                                            render={({ field }) =>
+                                                <Select {...field}>
+                                                    <MenuItem value={"celestial"}>Звездная карта</MenuItem>
+                                                </Select>
+                                            }
+                                        />
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
                     <Accordion expanded={expanded === '1'} onChange={handleChange('1')}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
@@ -960,7 +1010,7 @@ export function MapEditorPage() {
                                                 <Typography id="input-slider" gutterBottom>
                                                     Volume
                                                 </Typography>
-                                                <Slider  step={0.1} min={0} max={1}  {...field} />
+                                                <Slider step={0.1} min={0} max={1}  {...field} />
                                             </div>
                                         }
                                     />
