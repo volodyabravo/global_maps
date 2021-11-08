@@ -75,8 +75,6 @@ interface RenderData {
     }, data)
 
 
-
-
     // Waits for render to be finished (TODO: Figure out how to find out that it finished)
     await sleep(4000)
 

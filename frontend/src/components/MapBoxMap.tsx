@@ -18,7 +18,7 @@ export function MapBoxMap(props: MapBoxMapProps) {
             // @ts-expect-error
             container: mapContainer.current,
             style: props.style,
-            center: [50, 50],
+            center: [55, 37],
             zoom: 5,
         });
 
