@@ -15,7 +15,7 @@ class MapSizeSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = MapSize
-        fields = ['version', 'price', 'name', 'height', 'width', 'id']
+        fields = ['version', 'name', 'height', 'width', 'id']
 
 
 class MapPricesSerializer(serializers.HyperlinkedModelSerializer):
