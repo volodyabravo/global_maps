@@ -28,6 +28,7 @@ export function Demo() {
                 headline: "Заголовок",
                 subline: "Саблайн",
                 tagline: "Теглайн",
+                orientation: "portrait",
                 theme: parseInt(router.theme)
             })
 

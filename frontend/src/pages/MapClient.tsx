@@ -12,7 +12,7 @@ import { Accordion, AccordionSummary } from "../components/editor/Accordion";
 import { CheckoutButton } from "../components/buttons/CheckOutButton";
 import { TabContext, TabPanel } from "@mui/lab";
 import { ThemePicker } from "../components/form/ThemePicker";
-import { getThemes, MapTheme, UserCustomizations } from "../api/themes";
+import { getSizes, getThemes, MapTheme, Size, UserCustomizations } from "../api/themes";
 import { MapView } from "../components/MapView";
 
 
@@ -21,24 +21,16 @@ export function MapClientPage() {
     const [expanded, setExpanded] = useState<string | false>("panel1");
 
     const [themes, setThemes] = useState<Array<MapTheme>>([]);
+    const [sizes, setSizes] = useState<Array<Size>>([]);
 
-    const [currentTheme, setCurrentTheme] = useState<number | null>(null);
 
-    useEffect(() => {
-        (async () => {
-            let themesData = await getThemes();
-            setThemes(themesData);
-        })();
-        return () => {
-            //cleanup
-        }
-    }, [])
 
 
     // Celestial
     const userForm = useForm<UserCustomizations>({
         defaultValues: {
-            theme: 0,
+            // theme: 0,
+            orientation: "portrait"
         }
     });
 
@@ -51,6 +43,32 @@ export function MapClientPage() {
         };
 
     const [selectedThemeTab, setSelectedThemeTab] = useState(0);
+
+    let size: Size | null = null;
+    if (custom.sizeId != null) {
+        size = sizes[custom.sizeId];
+    }
+
+    useEffect(() => {
+        (async () => {
+            let themesData = await getThemes();
+            setThemes(themesData);
+            let sizesData = await getSizes();
+            setSizes(sizesData)
+
+            if (!custom.theme && themesData) {
+                setTimeout(() => {
+                    console.log(custom.theme)
+                    userForm.setValue("theme", themesData[0].id);
+                }, 500)
+
+            }
+
+        })();
+        return () => {
+            //cleanup
+        }
+    }, [])
 
     return <div>
 
@@ -180,6 +198,25 @@ export function MapClientPage() {
                                 Customize the poster size
                             </AccordionSummary>
                             <AccordionDetails>
+                                Select poster size
+                                <SizesContainer>
+                                    <Controller control={userForm.control} name="sizeId" render={(form) => {
+                                        return (<>{sizes.length > 0 && sizes.map((item, index) => {
+                                            return (
+                                                <SizeButton className={index == form.field.value ? "active" : ""} key={item.id} onClick={() => { form.field.onChange(index) }}>{item.name}</SizeButton>
+                                            )
+                                        })}</>)
+                                    }} />
+                                </SizesContainer>
+                                Select orientation
+                                <SizesContainer>
+                                    <Controller control={userForm.control} name="orientation" render={(form) => {
+                                        return (<>
+                                            <SizeButton className={form.field.value == "landscape" ? "active" : ""} onClick={() => { form.field.onChange("landscape") }}>Landscape</SizeButton>
+                                            <SizeButton className={form.field.value == "portrait" ? "active" : ""} onClick={() => { form.field.onChange("portrait") }}>Portrait</SizeButton>
+                                        </>)
+                                    }} />
+                                </SizesContainer>
                             </AccordionDetails>
                         </Accordion>
 
@@ -194,3 +231,26 @@ export function MapClientPage() {
         </Grid>
     </div >
 }
+
+const SizesContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+`
+
+const SizeButton = styled.div`
+    display: block;
+    background: #F3F3F3;
+    padding: 9px;
+    text-align: center;
+    cursor: pointer;
+    color: #3F557F;
+    margin: 9px 0;
+    flex-basis: 33%;
+    max-width: 150px;
+
+    &.active {
+        color: #FFFFFF;
+        background: #818FAB;
+    }
+`

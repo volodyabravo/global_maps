@@ -67,8 +67,8 @@ export interface MapThemeData {
      */
     frameSettings?: FrameSettings;
     customCss?: string;
-    maptype: "celestial"| "streetmap",
-    layout: "CelestialFullBackground" | "CelestialCircle" | "CelestialHalf"| "StreetMapDefault",
+    maptype: "celestial" | "streetmap",
+    layout: "CelestialFullBackground" | "CelestialCircle" | "CelestialHalf" | "StreetMapDefault",
 }
 
 export interface UserCustomizations {
@@ -77,6 +77,8 @@ export interface UserCustomizations {
     divider?: string,
     tagline?: string,
     subline?: string,
+    sizeId?: number,
+    orientation: "portrait" | "landscape"
 }
 
 export interface MapTheme {
@@ -98,8 +100,16 @@ export async function getThemes(): Promise<Array<MapTheme>> {
 
 }
 
-export async function getSizes(): Promise<Array<object>> {
-    let request = await fetch("/api/sizes");
+export interface Size {
+    "version": number,
+    "name": string,
+    "height": number,
+    "width": number,
+    "id": number
+}
+
+export async function getSizes(): Promise<Array<Size>> {
+    let request = await fetch("/api/sizes/");
     if (!request.ok) {
         throw Error("Server did not return any themes");
     }
