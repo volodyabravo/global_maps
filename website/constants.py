@@ -10,15 +10,6 @@ class MapTypes:
     }
 
 
-class MapProducingVersions:
-    VERSION_WEB = 1
-    VERSION_PRINT = 2
-    VERSIONS = {
-        VERSION_WEB: _('Web version'),
-        VERSION_PRINT: _('Print version')
-    }
-
-
 class MapOrderStatuses:
     STATUS_CREATED = 1
     STATUS_GENERATED = 2

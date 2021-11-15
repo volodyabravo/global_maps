@@ -19,7 +19,7 @@ from django.conf.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
-from catalog.views import MapThemeView, MapSizeView, MapPricesView, MapVersionsView, MapOrderView
+from catalog.views import MapThemeView, MapSizeView, MapPricesView, MapVersionsView, MapOrderView, DeliveryTypeView
 
 router = routers.DefaultRouter()
 router.register(r'themes', MapThemeView)
@@ -27,6 +27,7 @@ router.register(r'sizes', MapSizeView)
 router.register(r'prices', MapPricesView)
 router.register(r'versions', MapVersionsView)
 router.register(r'orders', MapOrderView)
+router.register(r'delivery', DeliveryTypeView)
 
 
 urlpatterns = [

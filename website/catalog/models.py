@@ -1,7 +1,7 @@
 from djmoney.models.fields import MoneyField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from constants import MapTypes, MapOrderStatuses, MapProducingVersions, MapSizeUnits, OrderStatuses
+from constants import MapTypes, MapOrderStatuses, MapSizeUnits, OrderStatuses
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from .amo import send_order_to_ammo, sync_orders
@@ -25,11 +25,25 @@ class MapTheme(models.Model):
         verbose_name_plural = 'Темы'
 
 
+class MapVersions(models.Model):
+    active = models.BooleanField(_('Is this active'), default=True)
+    order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
+    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.RESTRICT)
+    name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
+    image = models.ImageField(_('Image'), upload_to='uploads/images/static/', blank=True)
+
+    def __str__(self):
+        return '{0}'.format(self.name)
+
+    class Meta:
+        verbose_name = 'Версия'
+        verbose_name_plural = 'Версии'
+
+
 class MapSize(models.Model):
     active = models.BooleanField(_('Is this active'), default=True)
     order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
-    version = models.IntegerField(_('Map Producing Version'), default=1, blank=False, null=False,
-                                  choices=[(key, value) for key, value in MapProducingVersions.VERSIONS.items()])
+    version = models.ForeignKey(MapVersions, blank=True, null=True, on_delete=models.RESTRICT)
     name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
     height = models.PositiveIntegerField(_('Height'), blank=False, null=False)
     width = models.PositiveIntegerField(_('Width'), blank=False, null=False)
@@ -43,22 +57,6 @@ class MapSize(models.Model):
     class Meta:
         verbose_name = 'Размер'
         verbose_name_plural = 'Размеры'
-
-
-class MapVersions(models.Model):
-    active = models.BooleanField(_('Is this active'), default=True)
-    order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
-    version = models.IntegerField(_('Map Producing Version'), default=1, blank=False, null=False,
-                                  choices=[(key, value) for key, value in MapProducingVersions.VERSIONS.items()])
-    name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
-    image = models.ImageField(_('Image'), upload_to='uploads/images/static/', blank=True)
-
-    def __str__(self):
-        return '{0}'.format(self.name)
-
-    class Meta:
-        verbose_name = 'Версия'
-        verbose_name_plural = 'Версии'
 
 
 class MapPrices(models.Model):
@@ -75,13 +73,35 @@ class MapPrices(models.Model):
         verbose_name_plural = 'Цены'
 
 
+class DeliveryType(models.Model):
+    active = models.BooleanField(_('Is this active'), default=True)
+    order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
+    name = models.CharField(_('Name'), blank=True, null=True, max_length=500)
+    description = models.CharField(_('Description'), blank=True, null=True, max_length=500)
+    price = MoneyField(_('Price'), max_digits=10, decimal_places=2, null=True, default_currency='RUB')
+
+    def __str__(self):
+        return '{0} {1}'.format(self.name, self.price)
+
+    class Meta:
+        verbose_name = 'Способ доставки'
+        verbose_name_plural = 'Способы доставки'
+
+
 class Order(models.Model):
     status = models.IntegerField(_('Status'), default=1, blank=False, null=False,
                                  choices=[(key, value) for key, value in OrderStatuses.STATUSES.items()])
     date = models.DateTimeField(_('Date and time'), auto_now=True)
-    data = models.JSONField(_('JSON data'), blank=True, null=True)
+    card_data = models.JSONField(_('JSON data'), blank=True, null=True)
     ammo_id = models.IntegerField(_('ammo lead id'), blank=True, null=True)
     name = models.CharField(_('Name'), blank=True, null=True, max_length=500)
+    surname = models.CharField(_('Surname'), blank=True, null=True, max_length=500)
+    phone = models.CharField(_('Phone'), blank=True, null=True, max_length=20)
+    email = models.EmailField(_('Email'), blank=True, null=True, max_length=500)
+    country = models.CharField(_('Country'), blank=True, null=True, max_length=500)
+    city = models.CharField(_('City'), blank=True, null=True, max_length=500)
+    address = models.CharField(_('Address'), blank=True, null=True, max_length=500)
+    delivery_type = models.ForeignKey(DeliveryType, related_name='orders', blank=True, null=True, on_delete=models.RESTRICT)
 
     class Meta:
         verbose_name = 'Заказ'

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, MapOrder
+from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, MapOrder, DeliveryType
 
 
 class MapThemeAdmin(admin.ModelAdmin):
@@ -41,9 +41,9 @@ admin.site.register(MapPrices, MapPricesAdmin)
 
 
 class MapVersionsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'active', 'version')
-    list_filter = ['active', 'version']
-    search_fields = ['name', 'version']
+    list_display = ('name', 'active')
+    list_filter = ['active', 'parent']
+    search_fields = ['name', 'parent']
 
 
 admin.site.register(MapVersions, MapVersionsAdmin)
@@ -63,3 +63,10 @@ class MapOrderAdmin(admin.ModelAdmin):
 
 
 admin.site.register(MapOrder, MapOrderAdmin)
+
+
+class DeliveryTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price')
+
+
+admin.site.register(DeliveryType, DeliveryTypeAdmin)

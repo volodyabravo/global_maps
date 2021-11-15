@@ -3,9 +3,9 @@ from rest_framework.response import Response
 from rest_framework import viewsets, mixins
 from django.shortcuts import get_object_or_404
 
-from .models import MapTheme, MapSize, MapPrices, MapVersions, Order
+from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, DeliveryType
 from .serializers import MapThemeSerializer, MapSizeSerializer, MapPricesSerializer, MapVersionsSerializer,\
-    OrderSerializer
+    OrderSerializer, DeliveryTypeSerializer
 
 
 class MapThemeView(viewsets.ModelViewSet):
@@ -23,8 +23,8 @@ class MapThemeView(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         queryset = MapTheme.objects.filter(active=True).order_by('order')
-        user = get_object_or_404(queryset, pk=pk)
-        serializer = MapThemeSerializer(user)
+        _object = get_object_or_404(queryset, pk=pk)
+        serializer = MapThemeSerializer(_object)
         return Response(serializer.data)
 
 
@@ -43,8 +43,8 @@ class MapSizeView(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         queryset = MapSize.objects.filter(active=True).order_by('order')
-        user = get_object_or_404(queryset, pk=pk)
-        serializer = MapSizeSerializer(user)
+        _object = get_object_or_404(queryset, pk=pk)
+        serializer = MapSizeSerializer(_object)
         return Response(serializer.data)
 
 
@@ -59,9 +59,9 @@ class MapPricesView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None, *args, **kwargs):
-        queryset = MapPrices.objects.filter(active=True).order_by('order')
-        user = get_object_or_404(queryset, pk=pk)
-        serializer = MapPricesSerializer(user)
+        queryset = MapPrices.objects.all()
+        _object = get_object_or_404(queryset, pk=pk)
+        serializer = MapPricesSerializer(_object)
         return Response(serializer.data)
 
 
@@ -77,8 +77,8 @@ class MapVersionsView(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         queryset = MapVersions.objects.filter(active=True).order_by('order')
-        user = get_object_or_404(queryset, pk=pk)
-        serializer = MapVersionsSerializer(user)
+        _object = get_object_or_404(queryset, pk=pk)
+        serializer = MapVersionsSerializer(_object)
         return Response(serializer.data)
 
 
@@ -86,4 +86,21 @@ class MapOrderView(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     http_method_names = ['post', ]
+
+
+class DeliveryTypeView(viewsets.ModelViewSet):
+    queryset = DeliveryType.objects.filter(active=True).order_by('order')
+    serializer_class = DeliveryTypeSerializer
+    http_method_names = ['get', ]
+
+    def list(self, request, *args, **kwargs):
+        queryset = DeliveryType.objects.filter(active=True).order_by('order')
+        serializer = DeliveryTypeSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        queryset = DeliveryType.objects.filter(active=True).order_by('order')
+        _object = get_object_or_404(queryset, pk=pk)
+        serializer = DeliveryTypeSerializer(_object)
+        return Response(serializer.data)
 
