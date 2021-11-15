@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from constants import MapTypes, MapOrderStatuses, MapSizeUnits, OrderStatuses
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from colorfield.fields import ColorField
 from .amo import send_order_to_ammo, sync_orders
 
 
@@ -15,7 +16,7 @@ class MapTheme(models.Model):
     name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
     preview = models.ImageField(_('Preview image'), upload_to='uploads/images/preview/', blank=True)
     data = models.JSONField(_('JSON data'), blank=True, null=True)
-    image = models.ImageField(_('Image'), upload_to='uploads/images/static/', blank=True)
+    image = models.ImageField(_('Image'), upload_to='uploads/images/themes/', blank=True)
 
     def __str__(self):
         return '{0} для {1}'.format(self.name, MapTypes.TYPES.get(self.product))
@@ -30,7 +31,7 @@ class MapVersions(models.Model):
     order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.RESTRICT)
     name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
-    image = models.ImageField(_('Image'), upload_to='uploads/images/static/', blank=True)
+    image = models.ImageField(_('Image'), upload_to='uploads/images/versions/', blank=True)
 
     def __str__(self):
         return '{0}'.format(self.name)
@@ -122,6 +123,28 @@ class MapOrder(models.Model):
     class Meta:
         verbose_name = 'Генерация карты'
         verbose_name_plural = 'Генерации карт'
+
+
+class VectorImages(models.Model):
+    active = models.BooleanField(_('Is this active'), default=True)
+    order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
+    image = models.TextField(_('Image SVG'), blank=True, null=True, max_length=100000)
+
+    class Meta:
+        verbose_name = 'Изображение векторной карты'
+        verbose_name_plural = 'Изображения векторных карт'
+
+
+class VectorColors(models.Model):
+    active = models.BooleanField(_('Is this active'), default=True)
+    order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
+    color_background = ColorField(default='#FF0000')
+    color_vector = ColorField(default='#FF0000')
+    color_text = ColorField(default='#FF0000')
+
+    class Meta:
+        verbose_name = 'Цвет векторной карты'
+        verbose_name_plural = 'Цвета векторных карт'
 
 
 @receiver(pre_save, sender=Order)

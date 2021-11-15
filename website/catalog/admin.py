@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, MapOrder, DeliveryType
+from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, MapOrder, DeliveryType, VectorImages, VectorColors
 
 
 class MapThemeAdmin(admin.ModelAdmin):
@@ -70,3 +70,6 @@ class DeliveryTypeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(DeliveryType, DeliveryTypeAdmin)
+
+admin.site.register(VectorImages)
+admin.site.register(VectorColors)

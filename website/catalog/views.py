@@ -3,9 +3,9 @@ from rest_framework.response import Response
 from rest_framework import viewsets, mixins
 from django.shortcuts import get_object_or_404
 
-from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, DeliveryType
+from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, DeliveryType, VectorImages, VectorColors
 from .serializers import MapThemeSerializer, MapSizeSerializer, MapPricesSerializer, MapVersionsSerializer,\
-    OrderSerializer, DeliveryTypeSerializer
+    OrderSerializer, DeliveryTypeSerializer, VectorImagesSerializer, VectorColorsSerializer
 
 
 class MapThemeView(viewsets.ModelViewSet):
@@ -102,5 +102,39 @@ class DeliveryTypeView(viewsets.ModelViewSet):
         queryset = DeliveryType.objects.filter(active=True).order_by('order')
         _object = get_object_or_404(queryset, pk=pk)
         serializer = DeliveryTypeSerializer(_object)
+        return Response(serializer.data)
+
+
+class VectorImagesView(viewsets.ModelViewSet):
+    queryset = VectorImages.objects.filter(active=True).order_by('order')
+    serializer_class = VectorImagesSerializer
+    http_method_names = ['get', ]
+
+    def list(self, request, *args, **kwargs):
+        queryset = VectorImages.objects.filter(active=True).order_by('order')
+        serializer = VectorImagesSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        queryset = VectorImages.objects.filter(active=True).order_by('order')
+        _object = get_object_or_404(queryset, pk=pk)
+        serializer = VectorImagesSerializer(_object)
+        return Response(serializer.data)
+
+
+class VectorColorsView(viewsets.ModelViewSet):
+    queryset = VectorColors.objects.filter(active=True).order_by('order')
+    serializer_class = VectorColorsSerializer
+    http_method_names = ['get', ]
+
+    def list(self, request, *args, **kwargs):
+        queryset = VectorColors.objects.filter(active=True).order_by('order')
+        serializer = VectorColorsSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        queryset = VectorColors.objects.filter(active=True).order_by('order')
+        _object = get_object_or_404(queryset, pk=pk)
+        serializer = VectorColorsSerializer(_object)
         return Response(serializer.data)
 

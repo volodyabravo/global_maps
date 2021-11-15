@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djmoney',
     'catalog',
+    'colorfield'
 ]
 
 MIDDLEWARE = [

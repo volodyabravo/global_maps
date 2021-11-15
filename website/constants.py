@@ -4,9 +4,12 @@ from django.utils.translation import ugettext_lazy as _
 class MapTypes:
     TYPE_SKY_MAP = 1
     TYPE_STREET_MAP = 2
+    TYPE_VECTOR = 3
     TYPES = {
         TYPE_SKY_MAP: _('Sky map'),
-        TYPE_STREET_MAP: _('Street map')
+        TYPE_STREET_MAP: _('Street map'),
+        TYPE_VECTOR: _('Vector image')
+
     }
 
 
