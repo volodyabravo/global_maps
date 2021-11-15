@@ -45,6 +45,8 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class DeliveryTypeSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = DeliveryType
-        fields = ['name', 'description', 'price']
+        fields = ['name', 'description', 'price', 'id']
