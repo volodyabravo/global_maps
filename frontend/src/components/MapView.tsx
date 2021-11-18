@@ -81,7 +81,7 @@ export function MapView(props: MapViewProps) {
 
   if (!print) {
     return (
-      <CardArea className="card-area">
+      <CardArea className="card-area" style={{maxWidth: "100vw"}}>
         <style dangerouslySetInnerHTML={{
           __html: props.theme.data?.customCss || ""
         }} />
