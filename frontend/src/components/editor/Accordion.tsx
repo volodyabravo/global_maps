@@ -11,7 +11,6 @@ import styled from "@emotion/styled";
 export const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
-    border: `1px solid white`,
     '&:not(:last-child)': {
         borderBottom: 0,
     },
@@ -38,7 +37,6 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
             ? 'rgba(255, 255, 255, .05)'
             : '#fff',
     flexDirection: 'row-reverse',
-    border: "1px solid #EEEEEE",
     borderTop: "none",
     fontSize: "12px",
     textAlign:"left",
