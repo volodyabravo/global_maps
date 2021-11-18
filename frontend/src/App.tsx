@@ -2,6 +2,9 @@ import './App.css';
 import "@fontsource/roboto";
 import "@fontsource/montserrat";
 
+import { Provider } from 'mobx-react';
+import DevTools from 'mobx-react-devtools';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -23,39 +26,47 @@ import { RenderPage } from './pages/Render';
 import { Demo } from './pages/Demo';
 import { CartPage } from './pages/Cart';
 
+
+import cartStore from './cart/cart.store';
+import productsStore from './cart/products.store';
+
 function App() {
   return (
+
     <ThemeProvider theme={theme}>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <AppNavBar />
-              <MapClientPage />
-            </Route>
-            <Route exact path="/ui/">
-              <AppNavBar />
-              <UIKitPage />
-            </Route>
-            <Route exact path="/editor/">
-              <AppNavBar />
-              <MapEditorPage />
-            </Route>
-            <Route exact path="/render/">
-              <RenderPage />
-            </Route>
-            <Route path="/demo/:width/:height/:theme/">
-              <Demo />
-            </Route>
-            <Route exact path="/cart/">
-              <AppNavBar />
-              <CartPage />
-            </Route>
-          </Switch>
-        </Router>
-        <ToastContainer />
-      </LocalizationProvider>
+      <Provider {...{ cartStore, productsStore }}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Router>
+            <Switch>
+              <Route exact path="/">
+                <AppNavBar />
+                <MapClientPage />
+              </Route>
+              <Route exact path="/ui/">
+                <AppNavBar />
+                <UIKitPage />
+              </Route>
+              <Route exact path="/editor/">
+                <AppNavBar />
+                <MapEditorPage />
+              </Route>
+              <Route exact path="/render/">
+                <RenderPage />
+              </Route>
+              <Route path="/demo/:width/:height/:theme/">
+                <Demo />
+              </Route>
+              <Route exact path="/cart/">
+                <AppNavBar />
+                <CartPage />
+              </Route>
+            </Switch>
+          </Router>
+          <ToastContainer />
+        </LocalizationProvider>
+      </Provider>
     </ThemeProvider>
+
   );
 }
 

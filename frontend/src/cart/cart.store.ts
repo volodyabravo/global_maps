@@ -1,9 +1,9 @@
 import { action, observable, computed, autorun, toJS, getDependencyTree, trace } from 'mobx';
 import { values, forEach } from 'lodash/fp';
-import productsStore from './products.store';
+import productsStore, { Product } from './products.store';
 
 export class CartItem {
-    @observable productId?: string;
+    @observable productId?: number;
     @observable quantity?: number;
 
     constructor(data: any) {
@@ -14,23 +14,23 @@ export class CartItem {
         this.quantity = Math.max(1, quantity);
     }
 
-    @computed get totalPrice() {
-        if (this.quantity) {
-            return this.product.price * this.quantity;
-
-        } else {
-            return 0;
-        }
-
-    }
-
-    @computed get product() {
+    @computed get product(): Product | null {
         if (this.productId) {
             return productsStore.getProductById(this.productId);
         } else {
-            return {}
+            return null
         }
     }
+
+    @computed get totalPrice() {
+        if (this.quantity && this.product) {
+            return this.product.price * this.quantity;
+        } else {
+            return 0;
+        }
+    }
+
+    
 }
 
 export class Cart {
@@ -44,10 +44,12 @@ export class Cart {
                 this.items.set(item.productId, new CartItem(item))
             }, savedItems);
         }
+
+        // Persist cart to local storage
         const reaction = autorun(() => {
             localStorage.cart = JSON.stringify(toJS(this.items));
-            // trace();
-            // console.log(getDependencyTree(reaction));
+            trace();
+            console.log(getDependencyTree(reaction));
         });
         // }, { delay: 2000, name: 'Persist' });
     }

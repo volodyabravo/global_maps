@@ -19,6 +19,7 @@ import ShoppingBag from '@mui/icons-material/ShoppingBag';
 import { Link } from 'react-router-dom';
 import { Button, Container } from '@mui/material';
 import { BsFillBagCheckFill } from 'react-icons/bs';
+import { Observer } from 'mobx-react';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -257,6 +258,11 @@ export default function AppNavBar() {
                                     <NotificationsIcon />
                                 </Badge>
                             </IconButton> */}
+                            {/* <Observer
+                                render={() => {
+                                    return (<div></div>) as any
+                                }}
+                            /> */}
                             <IconButton size="small" aria-label="show 4 new mails" color="inherit">
                                 <Badge badgeContent={0} color="error">
                                     <BsFillBagCheckFill />

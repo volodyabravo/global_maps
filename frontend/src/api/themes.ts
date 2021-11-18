@@ -113,7 +113,7 @@ export interface Size {
 export async function getSizes(): Promise<Array<Size>> {
     let request = await fetch("/api/sizes/");
     if (!request.ok) {
-        throw Error("Server did not return any themes");
+        throw Error("Server did not return any sizes");
     }
     let json = await request.json();
 
@@ -122,9 +122,29 @@ export async function getSizes(): Promise<Array<Size>> {
 
 export async function getVersions(): Promise<Array<object>> {
     let request = await fetch("/api/versions");
+    if (!request.ok) {
+        throw Error("Server did not return any versions");
+    }
+    let json = await request.json();
+
+    return json;
+}
+
+
+
+export interface PricingOption {
+    "price": string,
+    "size_id": string,
+    "version_id": string,
+    "id": 1
+}
+
+export async function getPrices(): Promise<Array<PricingOption>> {
+    let params = new URLSearchParams();
+    let request = await fetch("/api/prices/");
 
     if (!request.ok) {
-        throw Error("Server did not return any themes");
+        throw Error("Server did not return any prices");
     }
 
     let json = await request.json();

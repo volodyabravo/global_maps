@@ -24,6 +24,7 @@ specifiers:
   material-ui-color-picker: ^3.5.1
   mobx: ^6.3.7
   mobx-react: ^7.2.1
+  mobx-react-devtools: ^6.1.1
   react: ^17.0.2
   react-color: ^2.19.3
   react-dom: ^17.0.2
@@ -61,6 +62,7 @@ dependencies:
   material-ui-color-picker: 3.5.1_12a6012245369fd5be825566be975ff0
   mobx: 6.3.7
   mobx-react: 7.2.1_17a9a2b9737f188c3f2d8ece9728da86
+  mobx-react-devtools: 6.1.1_mobx-react@7.2.1+mobx@6.3.7
   react: 17.0.2
   react-color: 2.19.3_react@17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -8854,6 +8856,16 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
+    dev: false
+
+  /mobx-react-devtools/6.1.1_mobx-react@7.2.1+mobx@6.3.7:
+    resolution: {integrity: sha512-nc5IXLdEUFLn3wZal65KF3/JFEFd+mbH4KTz/IG5BOPyw7jo8z29w/8qm7+wiCyqVfUIgJ1gL4+HVKmcXIOgqA==}
+    peerDependencies:
+      mobx: ^4.3.1 || ^5.0.0
+      mobx-react: ^4.0.0 || ^5.0.0
+    dependencies:
+      mobx: 6.3.7
+      mobx-react: 7.2.1_17a9a2b9737f188c3f2d8ece9728da86
     dev: false
 
   /mobx-react-lite/3.2.2_17a9a2b9737f188c3f2d8ece9728da86:

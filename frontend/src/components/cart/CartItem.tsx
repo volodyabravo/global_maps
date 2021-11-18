@@ -2,9 +2,6 @@ import styled from "@emotion/styled";
 import { FaChevronRight, FaTimes } from "react-icons/fa";
 import { Item } from "../../pages/Cart";
 
-
-
-
 interface CartItemProps {
     item: Item;
     onDelete?: (item: Item) => void;
