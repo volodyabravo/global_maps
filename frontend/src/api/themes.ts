@@ -1,5 +1,7 @@
 import { CelestialOptions } from "d3-celestial/celestial";
 
+export type MapLayouts = "CelestialFullBackground" | "СelestialCircle" | "CelestialHalf" | "StreetMapDefault" | "SimpleVector";
+export type MapTypes = "celestial" | "streetmap" | "vector";
 
 export interface FontSettings {
     color?: string;
@@ -22,7 +24,7 @@ export interface MapboxProps {
 
 export interface MapThemeData {
     celestial?: CelestialOptions;
-    mapbox: MapboxProps;
+    mapbox?: MapboxProps;
     celestialOverlay?: {
         opacity?: number;
         background: string;
@@ -67,8 +69,8 @@ export interface MapThemeData {
      */
     frameSettings?: FrameSettings;
     customCss?: string;
-    maptype: "celestial" | "streetmap",
-    layout: "CelestialFullBackground" | "CelestialCircle" | "CelestialHalf" | "StreetMapDefault",
+    maptype: MapTypes,
+    layout: MapLayouts,
 }
 
 export interface UserCustomizations {

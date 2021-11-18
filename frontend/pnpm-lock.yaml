@@ -3,6 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@emotion/react': ^11.4.1
   '@emotion/styled': ^11.3.0
+  '@fontsource/montserrat': ^4.5.1
   '@fontsource/roboto': ^4.5.1
   '@material-ui/system': ^5.0.0-beta.5
   '@mui/icons-material': ^5.0.3
@@ -21,6 +22,8 @@ specifiers:
   lodash: ^4.17.21
   mapbox-gl: ^2.5.1
   material-ui-color-picker: ^3.5.1
+  mobx: ^6.3.7
+  mobx-react: ^7.2.1
   react: ^17.0.2
   react-color: ^2.19.3
   react-dom: ^17.0.2
@@ -37,6 +40,7 @@ specifiers:
 dependencies:
   '@emotion/react': 11.4.1_b094b78811fc8d2f00a90f13d0251fb6
   '@emotion/styled': 11.3.0_5c2d7d4b854c783938f3cfe7091c0f9b
+  '@fontsource/montserrat': 4.5.1
   '@fontsource/roboto': 4.5.1
   '@material-ui/system': 5.0.0-beta.5_7b0c288ee1a1e07f392d7acfbf356824
   '@mui/icons-material': 5.0.3_107aa2f4cceef7f2e8409a33ff9ab66f
@@ -55,6 +59,8 @@ dependencies:
   lodash: 4.17.21
   mapbox-gl: 2.5.1
   material-ui-color-picker: 3.5.1_12a6012245369fd5be825566be975ff0
+  mobx: 6.3.7
+  mobx-react: 7.2.1_17a9a2b9737f188c3f2d8ece9728da86
   react: 17.0.2
   react-color: 2.19.3_react@17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -1792,6 +1798,10 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@fontsource/montserrat/4.5.1:
+    resolution: {integrity: sha512-xdMkzsnFlzDt5Vj9+AWuUp4Vd9F3hYN2I0GTZZYscWN/bQ20wVOGtdWLO8Okfv7SZ9t/z39/EayAAt+f/8tAvw==}
     dev: false
 
   /@fontsource/roboto/4.5.1:
@@ -8844,6 +8854,47 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
+    dev: false
+
+  /mobx-react-lite/3.2.2_17a9a2b9737f188c3f2d8ece9728da86:
+    resolution: {integrity: sha512-FxJJMqmHcnQYOVVs2DdjNHioGlFsXF5/9VHztS9NAfIT3DYrxNZzVi119Zr/OmlWKkWNkAsssSNzPkqautfL4A==}
+    peerDependencies:
+      mobx: ^6.1.0
+      react: ^16.8.0 || ^17
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      mobx: 6.3.7
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
+
+  /mobx-react/7.2.1_17a9a2b9737f188c3f2d8ece9728da86:
+    resolution: {integrity: sha512-LZS99KFLn75VWDXPdRJhILzVQ7qLcRjQbzkK+wVs0Qg4kWw5hOI2USp7tmu+9zP9KYsVBmKyx2k/8cTTBfsymw==}
+    peerDependencies:
+      mobx: ^6.1.0
+      react: ^16.8.0 || ^17
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      mobx: 6.3.7
+      mobx-react-lite: 3.2.2_17a9a2b9737f188c3f2d8ece9728da86
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
+
+  /mobx/6.3.7:
+    resolution: {integrity: sha512-X7yU7eOEyxIBk4gjIi2UIilwdw48gXh0kcZ5ex3Rc+COJsJmJ4SNpf42uYea3aUqb1hedTv5xzJrq5Q55p0P5g==}
     dev: false
 
   /move-concurrently/1.0.1:

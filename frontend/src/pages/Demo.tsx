@@ -18,6 +18,17 @@ export function Demo() {
     }>();
 
     let theme = useMemo(() => { return themes.find((theme) => theme.id == custom?.theme) }, [custom?.theme]);
+    
+    theme = {
+        data: {
+            layout: "SimpleVector",
+            maptype: "vector"
+        },
+        name: "demo",
+        id:1,
+        product: 2,
+        preview: ""
+    };
 
     useEffect(() => {
         (async () => {
@@ -34,7 +45,6 @@ export function Demo() {
 
             // adds custom to the thing
             // @ts-ignore
-
             window.setCustom = setCustom;
         })();
         return () => {
@@ -47,6 +57,6 @@ export function Demo() {
 
     return <div>
         {custom && theme &&
-            <MapView layout="CelestialHalf" theme={theme} custom={custom} print width={parseInt(router.width)} height={parseInt(router.height)} />}
+            <MapView layout="SimpleVector" theme={theme} custom={custom} print width={parseInt(router.width)} height={parseInt(router.height)} />}
     </div >
 }

@@ -3,9 +3,6 @@ import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, 
 import { useState } from "react";
 import { CelestialReact } from "../components/CelestialForeign";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {
-    CelestialOptions,
-} from "d3-celestial/celestial";
 
 import { useForm, Controller } from "react-hook-form";
 import { ColorPicker } from "../components/form/ColorPicker";
@@ -27,7 +24,6 @@ export function MapEditorPage() {
     // Celestial
     const celestialForm = useForm<MapThemeData>({
         defaultValues: {
-
             maptype: "streetmap",
             layout: "StreetMapDefault",
             mapbox: {
@@ -1117,7 +1113,6 @@ export function MapEditorPage() {
                         </AccordionDetails>
                     </Accordion>
                 </Container>
-                {/* <CheckoutButton /> */}
             </Grid>
         </Grid>
     </div >

@@ -23,13 +23,9 @@ export function MapClientPage() {
     const [themes, setThemes] = useState<Array<MapTheme>>([]);
     const [sizes, setSizes] = useState<Array<Size>>([]);
 
-
-
-
     // Celestial
     const userForm = useForm<UserCustomizations>({
         defaultValues: {
-            // theme: 0,
             orientation: "portrait"
         }
     });
@@ -56,9 +52,11 @@ export function MapClientPage() {
             let sizesData = await getSizes();
             setSizes(sizesData)
 
-            if (!custom.theme && themesData) {
+            if (!custom.theme && themesData && themesData.length > 0 ) {
                 setTimeout(() => {
+                   
                     console.log(custom.theme)
+                    
                     userForm.setValue("theme", themesData[0].id);
                 }, 500)
 
@@ -215,8 +213,8 @@ export function MapClientPage() {
                                             <SizeButton className={form.field.value == "landscape" ? "active" : ""} onClick={() => { form.field.onChange("landscape") }}>Landscape</SizeButton>
                                             <SizeButton className={form.field.value == "portrait" ? "active" : ""} onClick={() => { form.field.onChange("portrait") }}>Portrait</SizeButton>
                                         </>)
-                                    }} />
-                                </SizesContainer>
+                                            }} />
+                                        </SizesContainer>
                             </AccordionDetails>
                         </Accordion>
 

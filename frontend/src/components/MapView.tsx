@@ -3,16 +3,14 @@
  * @returns
  */
 
-import { useState } from "react";
-import { CelestialReact } from "./CelestialForeign";
 import styled from "@emotion/styled";
-import { MapTheme, UserCustomizations } from "../api/themes";
+import { MapLayouts, MapTheme, MapTypes, UserCustomizations } from "../api/themes";
 import { MapFrame } from "./frames/Frame";
-import { Typography } from "@mui/material";
 import { CelestialFullBackground } from "./layouts/celestial/CelestialFullBackground";
 import { CelestialCircle } from "./layouts/celestial/CelestialCircle";
 import { CelestialHalf } from "./layouts/celestial/CelestialHalf";
 import { StreetMapDefault } from "./layouts/streetmaps/StreetMapDefault";
+import { SimpleVector } from "./layouts/vector/SimpleVector";
 
 export interface CelestialMapView {
   theme: Partial<MapTheme>;
@@ -37,10 +35,9 @@ interface MapViewProps {
   width?: number;
   height?: number;
   print?: boolean;
-  layout?: "CelestialFullBackground" | "СelestialCircle" | "CelestialHalf"| "StreetMapDefault",
-  maptype?: "celestial"| "streetmap";
+  layout?: MapLayouts,
+  maptype?: MapTypes;
 }
-
 
 let layouts = {
   "celestial": {
@@ -50,8 +47,10 @@ let layouts = {
   },
   "streetmap": {
     "StreetMapDefault": StreetMapDefault
+  },
+  "vector": {
+    "SimpleVector": SimpleVector
   }
-
 }
 
 export function MapView(props: MapViewProps) {
@@ -103,8 +102,6 @@ export function MapView(props: MapViewProps) {
       </div>
     );
   }
-
-
 }
 
 

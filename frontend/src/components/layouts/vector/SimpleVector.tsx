@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { CelestialReact } from "../../CelestialForeign";
 import styled from "@emotion/styled";
-import { MapTheme, UserCustomizations } from "../../../api/themes";
-import { MapFrame } from "../../frames/Frame";
 import { Typography } from "@mui/material";
 import { CelestialMapView } from "../../MapView";
-import { MapBoxMap } from "../../maps/MapBoxMap";
+import { SVGMap } from "../../maps/SVGMap";
 
 
-export function StreetMapDefault({ orientation, theme, custom, height, print, width }: CelestialMapView) {
+export function SimpleVector({ orientation, theme, custom, height, print, width }: CelestialMapView) {
     // Calculate height of the map
-
     let headline = ((typeof custom?.headline) !== "undefined") ? custom?.headline : theme.data?.cardSettings?.defaultText?.headline
     let divider = ((typeof custom?.divider) !== "undefined") ? custom?.divider : theme.data?.cardSettings?.defaultText?.divider
     let tagline = ((typeof custom?.tagline) !== "undefined") ? custom?.tagline : theme.data?.cardSettings?.defaultText?.tagline
@@ -22,9 +19,8 @@ export function StreetMapDefault({ orientation, theme, custom, height, print, wi
         backgroundColor: theme.data?.cardSettings?.background?.color,
         backgroundImage: theme.data?.cardSettings?.background?.image,
     }}>
-
         <MapContainer className="map-container">
-            {theme?.data?.mapbox && <MapBoxMap style={theme.data.mapbox.style} />}
+            <SVGMap />
         </MapContainer>
         <CardTextContainer className="text-container" style={
             theme.data?.cardSettings?.textContainer
@@ -51,10 +47,8 @@ const CardTextContainer = styled.div`
 
 const MapContainer = styled.div`
     overflow: hidden;
-    position: absolute;
-    left: 0;
-     top: 0;
-      width: 100%;
-                height:100%;
+    width: 100%;
+    height:100%;
+    display: flex;
 `;
 

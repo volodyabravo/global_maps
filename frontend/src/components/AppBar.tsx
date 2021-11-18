@@ -166,7 +166,7 @@ export default function AppNavBar() {
                 background: "white",
                 color: "#3F557F",
                 boxShadow: "0px 4px 3px rgba(0, 0, 0, 0.01)",
-                zIndex:2,
+                zIndex: 2,
                 position: "relative"
             }}>
                 <Container>
@@ -237,6 +237,15 @@ export default function AppNavBar() {
                         >
                             UI
                         </Button>
+                        <Button
+                            variant="text"
+
+                            component={Link}
+                            to={"/cart/"}
+                            sx={{ display: { xs: 'none', sm: 'block', textDecoration: "none" } }}
+                        >
+                            Cart
+                        </Button>
                         <Box sx={{ flexGrow: 1 }} />
                         <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
                             {/* <IconButton
@@ -249,7 +258,9 @@ export default function AppNavBar() {
                                 </Badge>
                             </IconButton> */}
                             <IconButton size="small" aria-label="show 4 new mails" color="inherit">
-                                <BsFillBagCheckFill />
+                                <Badge badgeContent={0} color="error">
+                                    <BsFillBagCheckFill />
+                                </Badge>
                             </IconButton>
 
                             {/* <IconButton
