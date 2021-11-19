@@ -51,10 +51,7 @@ export function Demo() {
             //cleanup
         }
     }, [])
-
-
-
-
+    
     return <div>
         {custom && theme &&
             <MapView layout="SimpleVector" theme={theme} custom={custom} print width={parseInt(router.width)} height={parseInt(router.height)} />}
