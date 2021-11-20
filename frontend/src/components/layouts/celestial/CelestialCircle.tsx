@@ -22,11 +22,11 @@ export function CelestialCircle({ orientation, theme, custom, height, print, wid
   }}>
 
     <MapContainer className="map-container"  >
-      {theme?.data?.celestial && <CelestialReact zoom={0} config={{
+      {theme?.data?.celestial && <CelestialReact zoom={0} custom={custom} config={{
         ...theme.data.celestial,
       }} />}
     </MapContainer>
-    <CardTextContainer className="text-container"  style={
+    <CardTextContainer className="text-container" style={
       theme.data?.cardSettings?.textContainer
     }>
       {headline && <Typography {...theme.data?.cardSettings?.fonts?.headline}  >{headline}</Typography>}

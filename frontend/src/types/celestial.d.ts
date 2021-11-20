@@ -11,7 +11,7 @@ declare module "d3-celestial/celestial" {
       callback: () => any;
       redraw: () => any;
     }) => void;
-    addCallback: () => void;
+    addCallback: (func: () => void) => void;
     euler: () => void;
     eulerAngles: () => void;
     exportSVG: () => void;
@@ -30,15 +30,22 @@ declare module "d3-celestial/celestial" {
     reload: (config?: CelestialOptions) => void;
     apply: (config?: CelestialOptions) => void;
     redraw: () => void;
-    reproject: (params : {projection?: string}) => void;
+    reproject: (params: { projection?: string }) => void;
     context: any;
     setTextStyle: (style: any) => any;
+
+    /**
+     * 
+     */
+    rotate: (config?: {
+      center: Array<number>
+    }) => Array<number>;
   }
 
   export interface CelestialOptions {
     disableAnimations?: boolean;
     location?: boolean;
-    projection?: "airy"| "orthographic";
+    projection?: "airy" | "orthographic";
     datapath?: string;
 
     /**
@@ -67,7 +74,7 @@ declare module "d3-celestial/celestial" {
     orientationfixed?: true; // Keep orientation angle the same as center[2]
     geopos?: null; // optional initial geographic position [lat,lon] in degrees,
     // overrides center
-    follow?: "zenith"| "center"; // on which coordinates to center the map, default: zenith, if location enabled,
+    follow?: "zenith" | "center"; // on which coordinates to center the map, default: zenith, if location enabled,
     // otherwise center
     zoomlevel?: number; // initial zoom level 0...zoomextend; 0|null = default, 1 = 100%, 0 < x <= zoomextend
     zoomextend?: 10; // maximum zoom level
@@ -270,7 +277,7 @@ declare module "d3-celestial/celestial" {
       };
       equatorial: { show: boolean; stroke: string; width: 1.3; opacity: 0.7 };
       ecliptic: { show: boolean; stroke: string; width: 1.3; opacity: 0.7 };
-      galactic: { show: boolean; stroke:string; width: 1.3; opacity: 0.7 };
+      galactic: { show: boolean; stroke: string; width: 1.3; opacity: 0.7 };
       supergalactic: {
         show: boolean;
         stroke: string;

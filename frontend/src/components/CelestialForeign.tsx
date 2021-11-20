@@ -8,6 +8,7 @@ import {
 } from "d3-celestial/celestial";
 import { get } from "lodash";
 import "d3-celestial/lib/d3.geo.projection.js";
+import { UserCustomizations } from "../api/themes";
 
 const hour2CelestialDegree = (ra: number) =>
   ra > 12 ? (ra - 24) * 15 : ra * 15;
@@ -32,6 +33,8 @@ const baseConfig: CelestialOptions = {
 interface CelestialReactProps {
   config: CelestialOptions;
   zoom: number;
+  custom?: UserCustomizations;
+  onLocationChange?: (location: Array<number>) => void;
 }
 
 interface CelestialReactState { }
@@ -44,6 +47,7 @@ export class CelestialReact extends React.Component<
   featuresCollections: Array<any>;
   containerMounted?: number;
   updateConfigTimer: NodeJS.Timeout | null = null;
+  custom?: UserCustomizations;
 
   FeaturesCollection: any = CelestialFeaturesCollection;
   Point: any = CelestialComponentPoint;
@@ -52,6 +56,15 @@ export class CelestialReact extends React.Component<
     super(props);
     this.celestial = Celestial(d3);
     this.featuresCollections = [];
+    this.custom = props.custom;
+    // Callback to get map position
+    if (props.onLocationChange != undefined) {
+      this.celestial.addCallback(()=> {
+        // @ts-ignore
+        props.onLocationChange(this.celestial.rotate());
+      })
+    }
+   
   }
 
   addFeaturesCollection = (fc: any) => this.featuresCollections.push(fc);
@@ -89,6 +102,13 @@ export class CelestialReact extends React.Component<
         ...baseConfig,
         ...nextConfig
       }
+
+      // Move map if location has changed
+      if (get(prevConfig, "center") != get(nextConfig, "center")) {
+        if (nextConfig.center){
+          this.celestial.rotate({center: nextConfig.center})
+        }
+      }
       if (
         get(prevConfig, "stars.data") != get(nextConfig, "stars.data") ||
         get(prevConfig, "dsos.data") != get(nextConfig, "dsos.data") ||
@@ -110,15 +130,17 @@ export class CelestialReact extends React.Component<
   }
 
   shouldComponentUpdate = (nextProps: CelestialReactProps) => {
-    const { config, zoom } = this.props;
-    console.log("Should Update?")
-    if (nextProps.config != config) {
-      console.log("Should Update")
-      this.updateConfig(config, nextProps.config);
+    const { config, zoom, custom } = this.props;
+    if (nextProps.config != config || custom != this.custom) {
+      let next = ApplyCustomToConfig(nextProps.config, nextProps.custom);
+      this.updateConfig(config, next);
     }
     // False because we don't want it to be recreated all the time
     return false;
   };
+
+
+
 
   render = () => (
     <div id="celestial-map">
@@ -129,6 +151,16 @@ export class CelestialReact extends React.Component<
       )}
     </div>
   );
+}
+
+function ApplyCustomToConfig(config: CelestialOptions, custom?: UserCustomizations): CelestialOptions {
+  if (!custom) return config;
+
+  if (custom.location) {
+    config.center = [custom.location.lng, custom.location.lat, 0]
+  }
+
+  return config;
 }
 
 interface CelestialFeaturesCollectionProps {

@@ -38,7 +38,7 @@ export function CelestialHalf({ orientation, theme, custom, height, print, width
         bottom: "30%",
       }
     } >
-      {theme?.data?.celestial && <CelestialReact zoom={1} config={{
+      {theme?.data?.celestial && <CelestialReact zoom={1} custom={custom} config={{
         ...theme.data.celestial,
         width: mapWidth,
       }} />}

@@ -15,6 +15,9 @@ import { ThemePicker } from "../components/form/ThemePicker";
 import { getSizes, getThemes, MapTheme, Size, UserCustomizations } from "../api/themes";
 import { MapView } from "../components/MapView";
 import { LocationSelector } from "../components/geocoder/LocationSelector";
+import { toast } from "react-toastify";
+
+const hasGeo = 'geolocation' in navigator;
 
 
 export function MapClientPage() {
@@ -56,9 +59,7 @@ export function MapClientPage() {
                 setTimeout(() => {
                     userForm.setValue("theme", themesData[0].id);
                 }, 500)
-
             }
-
         })();
         return () => {
             //cleanup
@@ -94,19 +95,31 @@ export function MapClientPage() {
                                 <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel1bh-content"
-                                        id="panel1bh-header"
                                     >
                                         Choose the location
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <LocationSelector/>
-                                        <LocationBlock>
+                                        <LocationSelector />
+                                        {hasGeo && <LocationBlock>
                                             <span>or use your current GPS position</span>
-                                            <button>locate me</button>
+                                            <button onClick={() => {
+                                                navigator.geolocation.getCurrentPosition((position) => {
+                                                    console.log(position);
+                                                    toast("Локация успешно получена")
 
-                                        </LocationBlock>
-                                        <p>Pro tip! You can also drag/drop and zoom on the map to get the exact position you want on your poster.</p>
+                                                    userForm.setValue("location", {
+                                                        lat: position.coords.latitude,
+                                                        lng: position.coords.longitude
+                                                    })
+                                                
+                                                }, (ss) => {
+                                                    console.log(ss)
+                                                    toast("Ошибка получения локации")
+                                                })
+                                            }}>Locate Me</button>
+                                        </LocationBlock>}
+                                        {/* <p>Pro tip! You can also drag/drop and zoom on the map to get the exact position you want on your poster.</p> */}
+                                        <p>{JSON.stringify(custom.location)}</p>
                                     </AccordionDetails>
                                 </Accordion>
                             </Box>
@@ -114,13 +127,8 @@ export function MapClientPage() {
                                 <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel1bh-content"
-                                        id="panel1bh-header"
                                     >
-
                                         Customize the theme
-
-
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <TabContext value={selectedThemeTab.toString()}>
@@ -151,8 +159,6 @@ export function MapClientPage() {
                                 <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel1bh-content"
-                                        id="panel1bh-header"
                                     >
                                         Customize the text
                                     </AccordionSummary>
@@ -242,8 +248,6 @@ export function MapClientPage() {
                             <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel1bh-content"
-                                    id="panel1bh-header"
                                 >
                                     Customize the poster size
                                 </AccordionSummary>
@@ -320,6 +324,7 @@ const LocationBlock = styled.div`
 
     button {
         /* background  */
+        cursor: pointer;
         padding: 8px;
         font-family: Roboto;
         font-style: normal;

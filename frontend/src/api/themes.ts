@@ -80,7 +80,15 @@ export interface UserCustomizations {
     tagline?: string,
     subline?: string,
     sizeId?: number,
-    orientation: "portrait" | "landscape"
+    orientation: "portrait" | "landscape";
+    // Map properties
+    location?: {
+        lng: number;
+        lat: number;
+        cityName?: string;
+    };
+    date?: Date;
+    zoom?: number;
 }
 
 export interface MapTheme {
