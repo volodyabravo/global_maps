@@ -3,10 +3,9 @@
  * @returns 
  */
 import styled from "@emotion/styled";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 import throttle from 'lodash/throttle';
-import { loadScript } from "../../utils";
 import { FindPlaces, OSMPlace } from "../../api/nominatim";
 
 export interface LocationSelectorProps {
@@ -79,9 +78,7 @@ export function LocationSelector(props: LocationSelectorProps) {
 
 
     return <Autocomplete
-        id="disabled-options-demo"
         options={options}
-
         getOptionLabel={(option) =>
             typeof option === 'string' ? option : option.display_name
         }

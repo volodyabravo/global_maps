@@ -100,7 +100,13 @@ export function MapClientPage() {
                                         Choose the location
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <LocationSelector></LocationSelector>
+                                        <LocationSelector/>
+                                        <LocationBlock>
+                                            <span>or use your current GPS position</span>
+                                            <button>locate me</button>
+
+                                        </LocationBlock>
+                                        <p>Pro tip! You can also drag/drop and zoom on the map to get the exact position you want on your poster.</p>
                                     </AccordionDetails>
                                 </Accordion>
                             </Box>
@@ -299,5 +305,27 @@ const SizeButton = styled.div`
     &.active {
         color: #FFFFFF;
         background: #818FAB;
+    }
+`
+
+const LocationBlock = styled.div`
+    margin-top: 1em;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    span {
+        color: #818FAB;
+        /* span */
+    }
+
+    button {
+        /* background  */
+        padding: 8px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        color: #818FAB;
+        background: #FFFFFF;
+        border: 1px solid #EEEEEE;
     }
 `
