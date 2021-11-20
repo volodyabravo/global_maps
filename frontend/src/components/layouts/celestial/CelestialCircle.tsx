@@ -40,21 +40,20 @@ export function CelestialCircle({ orientation, theme, custom, height, print, wid
 }
 
 const CardArea = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* padding-top: 2em; */
-    height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* padding-top: 2em; */
+  height: calc(100vh - 64px);
 `;
 const CardContainer = styled.div`
     position: relative;
     overflow: hidden;
 `;
 const CardTextContainer = styled.div`
-    position: absolute;
-    bottom: 0; right: 0; left: 0;
-    padding: 15px;
-
+  position: absolute;
+  bottom: 0; right: 0; left: 0;
+  padding: 15px;
 `;
 
 const MapContainer = styled.div`

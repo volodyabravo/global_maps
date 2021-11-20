@@ -1,10 +1,12 @@
 import styled from "@emotion/styled";
 import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import { useEffect, useRef } from 'react';
+import { UserCustomizations } from "../../api/themes";
 mapboxgl.accessToken = 'pk.eyJ1Ijoidm9sb2R5YWJyYXZvIiwiYSI6ImNrbHJ5YzkwZDFyODAybnF5YjMyYXd2dHAifQ.r8osMfsMnoe89b3qJ3g8uA';
 
 export interface MapBoxMapProps {
     style: string;
+    custom?: UserCustomizations;
 }
 
 export function MapBoxMap(props: MapBoxMapProps) {
@@ -14,25 +16,55 @@ export function MapBoxMap(props: MapBoxMapProps) {
     useEffect(() => {
         if (map.current != null) return; // initialize map only once
         if (mapContainer == null) return;
+
+        let center = {
+            lat: 55,
+            lon: 37
+        };
+        if (props.custom?.location) {
+            let location = props.custom?.location;
+            center = {
+                lat: location.lat,
+                lon: location.lng
+            }
+        }
         map.current = new mapboxgl.Map({
             // @ts-expect-error
             container: mapContainer.current,
             style: props.style,
-            center: [55, 37],
+            center: center,
             zoom: 5,
         });
 
         map.current.on("load", (e) => {
             console.log()
-            if (map.current)
+
+            if (map.current) {
                 map.current.resize();
+                if (props.custom?.location) {
+                    let location = props.custom?.location;
+                    map.current?.panTo({
+                        lat: location.lat,
+                        lon: location.lng
+                    })
+                }
+            }
+
+
         })
         console.log(map.current)
-        return ()=>{
+        return () => {
             map.current?.remove();
+
             map.current = null
+
+
         }
-    }, [props.style]);
+
+
+    }, [props.style, props.custom]);
+
+    // let location = 
 
     return <div style={{ width: "100%", height: "100%" }}>
         <MapContainer ref={mapContainer} />

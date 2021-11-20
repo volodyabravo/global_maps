@@ -24,7 +24,7 @@ export function StreetMapDefault({ orientation, theme, custom, height, print, wi
     }}>
 
         <MapContainer className="map-container">
-            {theme?.data?.mapbox && <MapBoxMap style={theme.data.mapbox.style} />}
+            {theme?.data?.mapbox && <MapBoxMap style={theme.data.mapbox.style} custom={custom} />}
         </MapContainer>
         <CardTextContainer className="text-container" style={
             theme.data?.cardSettings?.textContainer
