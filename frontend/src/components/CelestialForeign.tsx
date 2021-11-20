@@ -73,12 +73,14 @@ export class CelestialReact extends React.Component<
     setTimeout(() => {
       this.containerMounted = new Date().getTime();
       this.featuresCollections.forEach((fc) => fc(this.celestial));
-      const { config, zoom } = this.props;
+      const { config, zoom, custom } = this.props;
 
-      this.celestial.display(sanitize({
+      let mergedConfig = ApplyCustomToConfig({
         ...baseConfig,
         ...config,
-      }));
+      }, custom)
+
+      this.celestial.display(mergedConfig);
       if (zoom > 0) {
         this.zoom(zoom);
       }
