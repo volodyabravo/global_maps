@@ -6,13 +6,13 @@ import { FaCartPlus } from "react-icons/fa";
 const BootstrapButton = styled(Button)(({ theme }) => {
   console.log(theme.breakpoints.down("sm"))
   return ({
-    width: "200px",
-    height: "40px",
+    width: "100%",
+    height: "60px",
+    fontSize: "14px",
     boxShadow: "none",
     textTransform: "none",
-    fontSize: "12px",
     fontWeight: 700,
-    padding: "20px",
+    padding: "20px 40px!important",
     border: "1px solid",
     lineHeight: 1.5,
     backgroundColor: "#3F557F",

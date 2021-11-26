@@ -69,27 +69,35 @@ export function MapClientPage() {
     return <div style={{ "backgroundColor": "#F8F8F8", }}>
         <Container sx={{
             "backgroundColor": "#F8F8F8",
+            "paddingLeft": "0!important",
+            "paddingRight": "0!important",
+            "maxWidth": "100%!important"
         }}>
             <Grid container spacing={1} sx={{
-                "minHeight": "100vh",
+                "minHeight": "calc(100vh - 64px)",
                 "backgroundColor": "#F8F8F8",
-                "paddingTop": "10px"
+                "width": "100%",
+                "marginTop": "0px",
+                "marginLeft": "0px",
             }} >
-                <Grid container item xs={12} md={8} direction="column" >
+                <Grid container item xs={12} md={9} direction="column" >
                     {theme &&
                         <MapView theme={theme} custom={custom} />}
                 </Grid>
-                <Grid item xs={12} md={4} style={{
-                    padding: "0px 0px"
+                <Grid item xs={12} md={3} style={{
+                    padding: "0px 0px",
+                    height: "100% - 64px",
+
                 }} spacing={0}>
                     <Box sx={{
-                        padding: "10px 0px 5px 20px"
+                        padding: "20px 0px 5px 20px",
+                        height: "40px"
                     }}>
 
                         <Typography fontSize="12px" fontWeight="700" align="left" color="#C5C5C5">Customize your star map</Typography>
                         <Typography fontSize="12px" fontWeight="700" align="left" color="#C5C5C5">Change zodiac, labels and appearance</Typography>
                     </Box>
-                    <Box sx={{ boxShadow: "-5px -5px 10px rgba(0, 0, 0, 0.05)", paddingBottom: "10px" }}>
+                    <Box sx={{ boxShadow: "-5px -5px 10px rgba(0, 0, 0, 0.05)", height: "calc(100% - 75px)", "background": "#FFFFFF", "display": "flex", "flexDirection": "column", "justifyContent": "space-between" }}>
                         <Typography align="left" fontSize="12px" fontWeight="400">
                             <Box sx={{ borderBottom: "1px solid #E5E5E5" }}>
                                 <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
@@ -275,7 +283,7 @@ export function MapClientPage() {
                             </Accordion>
 
                         </Typography>
-                        <Box sx={{ padding: "10px", background: "#FFFFFF", borderTop: "1px solid #EEEEEE", }}>
+                        <Box sx={{ padding: "10px", background: "#FFFFFF" }}>
                             <Grid container>
                                 <CheckoutButton />
                             </Grid>
