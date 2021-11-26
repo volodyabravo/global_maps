@@ -44,10 +44,11 @@ class MapVersions(models.Model):
 class MapSize(models.Model):
     active = models.BooleanField(_('Is this active'), default=True)
     order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
-    version = models.ForeignKey(MapVersions, blank=True, null=True, on_delete=models.RESTRICT)
+    # version = models.ForeignKey(MapVersions, blank=True, null=True, on_delete=models.RESTRICT)
     name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
     height = models.PositiveIntegerField(_('Height'), blank=False, null=False)
     width = models.PositiveIntegerField(_('Width'), blank=False, null=False)
+    depth = models.PositiveIntegerField(_('Depth'), blank=False, null=False, default=5)
     height_px = models.PositiveIntegerField(_('Height in px upon render'), blank=False, null=False, default=0)
     width_px = models.PositiveIntegerField(_('Width in px upon render'), blank=False, null=False, default=0)
     scale = models.PositiveIntegerField(_('Scale upon render'), blank=False, null=False, default=1)
@@ -74,21 +75,6 @@ class MapPrices(models.Model):
         verbose_name_plural = 'Цены'
 
 
-class DeliveryType(models.Model):
-    active = models.BooleanField(_('Is this active'), default=True)
-    order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
-    name = models.CharField(_('Name'), blank=True, null=True, max_length=500)
-    description = models.CharField(_('Description'), blank=True, null=True, max_length=500)
-    price = MoneyField(_('Price'), max_digits=10, decimal_places=2, null=True, default_currency='RUB')
-
-    def __str__(self):
-        return '{0} {1}'.format(self.name, self.price)
-
-    class Meta:
-        verbose_name = 'Способ доставки'
-        verbose_name_plural = 'Способы доставки'
-
-
 class Order(models.Model):
     status = models.IntegerField(_('Status'), default=1, blank=False, null=False,
                                  choices=[(key, value) for key, value in OrderStatuses.STATUSES.items()])
@@ -102,7 +88,7 @@ class Order(models.Model):
     country = models.CharField(_('Country'), blank=True, null=True, max_length=500)
     city = models.CharField(_('City'), blank=True, null=True, max_length=500)
     address = models.CharField(_('Address'), blank=True, null=True, max_length=500)
-    delivery_type = models.ForeignKey(DeliveryType, related_name='orders', blank=True, null=True, on_delete=models.RESTRICT)
+    delivery = models.CharField(_('Delivery'), blank=True, null=True, max_length=500)
 
     class Meta:
         verbose_name = 'Заказ'

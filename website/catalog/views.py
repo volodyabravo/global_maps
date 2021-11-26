@@ -3,9 +3,9 @@ from rest_framework.response import Response
 from rest_framework import viewsets, mixins
 from django.shortcuts import get_object_or_404
 
-from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, DeliveryType, VectorImages, VectorColors
+from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, VectorImages, VectorColors
 from .serializers import MapThemeSerializer, MapSizeSerializer, MapPricesSerializer, MapVersionsSerializer,\
-    OrderSerializer, DeliveryTypeSerializer, VectorImagesSerializer, VectorColorsSerializer
+    OrderSerializer, VectorImagesSerializer, VectorColorsSerializer
 
 
 class MapThemeView(viewsets.ModelViewSet):
@@ -86,23 +86,6 @@ class MapOrderView(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     http_method_names = ['post', ]
-
-
-class DeliveryTypeView(viewsets.ModelViewSet):
-    queryset = DeliveryType.objects.filter(active=True).order_by('order')
-    serializer_class = DeliveryTypeSerializer
-    http_method_names = ['get', ]
-
-    def list(self, request, *args, **kwargs):
-        queryset = DeliveryType.objects.filter(active=True).order_by('order')
-        serializer = DeliveryTypeSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None, *args, **kwargs):
-        queryset = DeliveryType.objects.filter(active=True).order_by('order')
-        _object = get_object_or_404(queryset, pk=pk)
-        serializer = DeliveryTypeSerializer(_object)
-        return Response(serializer.data)
 
 
 class VectorImagesView(viewsets.ModelViewSet):

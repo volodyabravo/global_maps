@@ -1,5 +1,5 @@
 from rest_framework import routers, serializers, viewsets
-from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, DeliveryType, VectorImages, VectorColors
+from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, VectorImages, VectorColors
 
 
 class MapThemeSerializer(serializers.HyperlinkedModelSerializer):
@@ -12,11 +12,10 @@ class MapThemeSerializer(serializers.HyperlinkedModelSerializer):
 
 class MapSizeSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
-    version_id = serializers.CharField(source='version.id', read_only=True)
 
     class Meta:
         model = MapSize
-        fields = ['version_id', 'name', 'height', 'width', 'id']
+        fields = ['name', 'height', 'width', 'depth', 'height_px', 'width_px', 'id']
 
 
 class MapPricesSerializer(serializers.HyperlinkedModelSerializer):
@@ -42,14 +41,6 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Order
         fields = ['card_data', 'name', 'surname', 'phone', 'email', 'country', 'city', 'address', 'delivery_type']
-
-
-class DeliveryTypeSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.ReadOnlyField()
-
-    class Meta:
-        model = DeliveryType
-        fields = ['name', 'description', 'price', 'id']
 
 
 class VectorImagesSerializer(serializers.HyperlinkedModelSerializer):

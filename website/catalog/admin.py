@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, MapOrder, DeliveryType, VectorImages, VectorColors
+from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, MapOrder, VectorImages, VectorColors
 
 
 class MapThemeAdmin(admin.ModelAdmin):
@@ -24,9 +24,9 @@ class MapSizeForm(forms.ModelForm):
 
 class MapSizeAdmin(admin.ModelAdmin):
     form = MapSizeForm
-    list_display = ('name', 'active', 'version', 'height', 'width', 'height_px', 'width_px', 'scale')
-    list_filter = ['active', 'version']
-    search_fields = ['name', 'version']
+    list_display = ('name', 'active', 'height', 'width', 'depth', 'height_px', 'width_px', 'scale')
+    list_filter = ['active', ]
+    search_fields = ['name', ]
 
 
 admin.site.register(MapSize, MapSizeAdmin)
@@ -63,13 +63,6 @@ class MapOrderAdmin(admin.ModelAdmin):
 
 
 admin.site.register(MapOrder, MapOrderAdmin)
-
-
-class DeliveryTypeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price')
-
-
-admin.site.register(DeliveryType, DeliveryTypeAdmin)
 
 admin.site.register(VectorImages)
 admin.site.register(VectorColors)

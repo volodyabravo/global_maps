@@ -20,7 +20,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
 from catalog.views import MapThemeView, MapSizeView, MapPricesView, MapVersionsView, MapOrderView,\
-    DeliveryTypeView, VectorImagesView, VectorColorsView
+    VectorImagesView, VectorColorsView
+from catalog.delivery import get_cities, get_delivery_methods_by_city
 
 router = routers.DefaultRouter()
 router.register(r'themes', MapThemeView)
@@ -28,15 +29,16 @@ router.register(r'sizes', MapSizeView)
 router.register(r'prices', MapPricesView)
 router.register(r'versions', MapVersionsView)
 router.register(r'orders', MapOrderView)
-router.register(r'delivery', DeliveryTypeView)
 router.register(r'vector_images', VectorImagesView)
 router.register(r'vector_colors', VectorColorsView)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls'))
+    path(r'api/', include(router.urls)),
+    path(r'api-auth/', include('rest_framework.urls')),
+    path(r'api/delivery/get_cities/', get_cities, name="get_cities"),
+    path(r'api/delivery/get_delivery_methods_by_city/', get_delivery_methods_by_city, name="get_delivery_methods_by_city")
 ]
 
 if settings.DEBUG:
