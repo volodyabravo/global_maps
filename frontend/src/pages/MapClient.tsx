@@ -16,11 +16,15 @@ import { getSizes, getThemes, MapTheme, Size, UserCustomizations } from "../api/
 import { MapView } from "../components/MapView";
 import { LocationSelector } from "../components/geocoder/LocationSelector";
 import { toast } from "react-toastify";
+import { inject, observer } from 'mobx-react';
+import { Cart } from "../cart/cart.store";
 
 const hasGeo = 'geolocation' in navigator;
 
 
-export function MapClientPage() {
+function MapClientPage({cartStore}: {
+    cartStore?: Cart
+}) {
     // Accordion control
     const [expanded, setExpanded] = useState<string | false>("panel1");
 
@@ -265,7 +269,7 @@ export function MapClientPage() {
                                         <Controller control={userForm.control} name="sizeId" render={(form) => {
                                             return (<>{sizes.length > 0 && sizes.map((item, index) => {
                                                 return (
-                                                    <SizeButton className={index == form.field.value ? "active" : ""} key={item.id} onClick={() => { form.field.onChange(index) }}>{item.name}</SizeButton>
+                                                    <SizeButton className={index === form.field.value ? "active" : ""} key={item.id} onClick={() => { form.field.onChange(index) }}>{item.name}</SizeButton>
                                                 )
                                             })}</>)
                                         }} />
@@ -274,8 +278,8 @@ export function MapClientPage() {
                                     <SizesContainer>
                                         <Controller control={userForm.control} name="orientation" render={(form) => {
                                             return (<>
-                                                <SizeButton className={form.field.value == "landscape" ? "active" : ""} onClick={() => { form.field.onChange("landscape") }}>Landscape</SizeButton>
-                                                <SizeButton className={form.field.value == "portrait" ? "active" : ""} onClick={() => { form.field.onChange("portrait") }}>Portrait</SizeButton>
+                                                <SizeButton className={form.field.value === "landscape" ? "active" : ""} onClick={() => { form.field.onChange("landscape") }}>Landscape</SizeButton>
+                                                <SizeButton className={form.field.value === "portrait" ? "active" : ""} onClick={() => { form.field.onChange("portrait") }}>Portrait</SizeButton>
                                             </>)
                                         }} />
                                     </SizesContainer>
@@ -285,7 +289,15 @@ export function MapClientPage() {
                         </Typography>
                         <Box sx={{ padding: "10px", background: "#FFFFFF" }}>
                             <Grid container>
-                                <CheckoutButton />
+                                <CheckoutButton onClick={()=> {cartStore?.addItem({
+                                    name:"Map 1",
+                                    price: 2000,
+                                    productId: 231,
+                                    properties: [{
+                                        name: "ass",
+                                        value: "bass"
+                                    }]
+                                })}} />
                             </Grid>
                         </Box>
 
@@ -342,3 +354,5 @@ const LocationBlock = styled.div`
         border: 1px solid #EEEEEE;
     }
 `
+
+export default inject("cartStore")(observer(MapClientPage)) 

@@ -11,41 +11,21 @@ import { FaCross, FaTimes } from "react-icons/fa";
 
 import demo from "./../assets/demo-pic.png"
 import { CartItem } from "../components/cart/CartItem";
+import { inject, observer } from "mobx-react";
+import cartStore, { Cart } from "../cart/cart.store";
 
 export interface Item {
-    preview: string;
-    name: string;
-    price: number;
+    preview?: string;
+    name?: string;
+    price?: number;
 }
 
-const items: Array<Item> = [
-    {
-        preview: demo,
-        name: "asdasd",
-        price: 2312
-    },
-    {
-        preview: demo,
-        name: "asdasd",
-        price: 2312
-    },
-    {
-        preview: demo,
-        name: "asdasd",
-        price: 2312
-    },
-    {
-        preview: demo,
-        name: "asdasd",
-        price: 2312
-    }
-]
-
-export function CartPage() {
+function CartPage(props: {
+    cartStore?: Cart
+}) {
+    const items = cartStore.itemsArray;
     return <div>
         <SectionTitle>Оформление заказа</SectionTitle>
-
-
         <Container>
             <PartsContainer>
                 <CartItemsContainer>
@@ -54,13 +34,11 @@ export function CartPage() {
                     </h2>
                     <CartItemsWrapper>
                         {items.length > 0 ?
-                            items.map(item => <CartItem item={item} onDelete={() => console.log("lol")} />)
+                            items.map((item, index) => <CartItem item={item} onDelete={() => cartStore.removeItem(index)} />)
                             :
                             <div>Нет товаров в корзине</div>
                         }
                     </CartItemsWrapper>
-                    
-
                 </CartItemsContainer>
                 <CartFormContainer>
                     <h2>
@@ -143,3 +121,4 @@ const CartFormContainer = styled.div`
     }
 `
 
+export default inject('cartStore')((observer(CartPage)))

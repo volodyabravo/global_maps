@@ -1,48 +1,50 @@
-import { action, observable, computed, autorun, toJS, getDependencyTree, trace } from 'mobx';
+import { action, observable, computed, autorun, toJS, getDependencyTree, trace, runInAction } from 'mobx';
 import { values, forEach } from 'lodash/fp';
 import productsStore, { Product } from './products.store';
+import { IObservableArray, ObservableValue } from 'mobx/dist/internal';
 
 export class CartItem {
     @observable productId?: number;
     @observable quantity?: number;
+    @observable preview?: string;
+    @observable name?: string;
+    @observable data?: object;
+    @observable properties?: Array<{
+        name: string;
+        value: string;
+    }>;
+    // Link to the map editor
+    @observable link?: string;
+    @observable price?: number;
 
-    constructor(data: any) {
+    constructor(data: Partial<CartItem>) {
         Object.assign(this, data);
     }
 
     @action updateQuantity(quantity: number) {
         this.quantity = Math.max(1, quantity);
-    }
 
-    @computed get product(): Product | null {
-        if (this.productId) {
-            return productsStore.getProductById(this.productId);
-        } else {
-            return null
-        }
     }
 
     @computed get totalPrice() {
-        if (this.quantity && this.product) {
-            return this.product.price * this.quantity;
+        if (this.quantity && this.price) {
+            return this.price * this.quantity;
         } else {
             return 0;
         }
     }
-
-    
 }
 
 export class Cart {
-    @observable items = new Map<number, any>();
+    @observable items: IObservableArray<CartItem> = observable.array([]);
 
     constructor() {
         if (localStorage.cart) {
             const savedItems = JSON.parse(localStorage.cart);
 
-            forEach((item) => {
-                this.items.set(item.productId, new CartItem(item))
-            }, savedItems);
+            savedItems.forEach((item: any) => {
+                this.items.push(new CartItem(item))
+            });
         }
 
         // Persist cart to local storage
@@ -54,24 +56,24 @@ export class Cart {
         // }, { delay: 2000, name: 'Persist' });
     }
 
-    @action addItem(productId: number, quantity: number) {
-        if (this.items.get(productId)) {
-            this.items.get(productId).updateQuantity(this.items.get(productId).quantity + 1);
-        } else {
-            this.items.set(productId, new CartItem({ productId, quantity }));
-        }
+    @action addItem(data: Partial<CartItem>) {
+        runInAction(() => {
+            this.items.push(new CartItem(data))
+        })
+
     }
 
-    @action updateItem(productId: number, quantity: number) {
-        this.items.get(productId).updateQuantity(quantity);
+    @action updateItem(id: number, quantity: number) {
+        this.items[id].updateQuantity(quantity);
     }
 
-    @action removeItem(productId: number) {
-        this.items.delete(productId);
+    @action removeItem(id: number) {
+        console.log("remove", id)
+        this.items.remove(this.items[id])
     }
 
     @computed get itemsArray() {
-        return values(Object.fromEntries(this.items));
+        return this.items;
     }
 
     @computed get totalPrice() {
@@ -82,7 +84,7 @@ export class Cart {
     }
 
     @computed get count() {
-        return this.itemsArray.length;
+        return this.items.length;
     }
 }
 
