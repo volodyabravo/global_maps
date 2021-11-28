@@ -40,7 +40,7 @@ class MapVersionsSerializer(serializers.HyperlinkedModelSerializer):
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Order
-        fields = ['card_data', 'name', 'surname', 'phone', 'email', 'country', 'city', 'address', 'delivery_type']
+        fields = ['card_data', 'name', 'surname', 'phone', 'email', 'country', 'city', 'address', 'delivery']
 
 
 class VectorImagesSerializer(serializers.HyperlinkedModelSerializer):
