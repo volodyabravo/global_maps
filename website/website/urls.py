@@ -22,6 +22,7 @@ from rest_framework import routers
 from catalog.views import MapThemeView, MapSizeView, MapPricesView, MapVersionsView, MapOrderView,\
     VectorImagesView, VectorColorsView
 from catalog.delivery import get_cities, get_delivery_methods_by_city
+from catalog.mail import send_mail_view
 
 router = routers.DefaultRouter()
 router.register(r'themes', MapThemeView)
@@ -38,7 +39,9 @@ urlpatterns = [
     path(r'api/', include(router.urls)),
     path(r'api-auth/', include('rest_framework.urls')),
     path(r'api/delivery/get_cities/', get_cities, name="get_cities"),
-    path(r'api/delivery/get_delivery_methods_by_city/', get_delivery_methods_by_city, name="get_delivery_methods_by_city")
+    path(r'api/delivery/get_delivery_methods_by_city/', get_delivery_methods_by_city,
+         name="get_delivery_methods_by_city"),
+    # path(r'mail/', send_mail_view, name="mail")
 ]
 
 if settings.DEBUG:
