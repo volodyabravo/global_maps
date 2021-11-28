@@ -3,6 +3,13 @@ import { CelestialOptions } from "d3-celestial/celestial";
 export type MapLayouts = "CelestialFullBackground" | "СelestialCircle" | "CelestialHalf" | "StreetMapDefault" | "SimpleVector";
 export type MapTypes = "celestial" | "streetmap" | "vector";
 
+
+export enum MapType {
+    Star = 1,
+    Street = 2,
+    Vector = 3
+}
+
 export interface FontSettings {
     color?: string;
     fontWeight?: number;

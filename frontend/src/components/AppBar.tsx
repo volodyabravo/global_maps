@@ -19,53 +19,24 @@ import ShoppingBag from '@mui/icons-material/ShoppingBag';
 import { Link } from 'react-router-dom';
 import { Button, Container } from '@mui/material';
 import { BsFillBagCheckFill } from 'react-icons/bs';
-import { Observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
+import { Cart } from '../cart/cart.store';
 
 
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-    },
-}));
+const CartButton = inject("cartStore")(observer(({ cartStore }: {cartStore?: Cart}) => <Link to="/cart/" >
+    <IconButton size="small" aria-label="show 4 new mails" color="inherit">
+        <Badge badgeContent={cartStore?.count} color="error">
+            <BsFillBagCheckFill />
+        </Badge>
+    </IconButton>
+</Link>))
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
-        },
-    },
-}));
-
-export default function AppNavBar() {
+function AppNavBar(props: any) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
+
+    console.log('cart', props)
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -263,11 +234,8 @@ export default function AppNavBar() {
                                     return (<div></div>) as any
                                 }}
                             /> */}
-                            <IconButton size="small" aria-label="show 4 new mails" color="inherit">
-                                <Badge badgeContent={0} color="error">
-                                    <BsFillBagCheckFill />
-                                </Badge>
-                            </IconButton>
+
+                            <CartButton/>
 
                             {/* <IconButton
                             size="large"
@@ -302,3 +270,5 @@ export default function AppNavBar() {
         </Box >
     );
 }
+
+export default AppNavBar

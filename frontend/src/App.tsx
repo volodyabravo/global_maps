@@ -19,12 +19,12 @@ import { UIKitPage } from './pages/UIKit';
 
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { MapClientPage } from './pages/MapClient';
+import MapClientPage from './pages/MapClient';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RenderPage } from './pages/Render';
 import { Demo } from './pages/Demo';
-import { CartPage } from './pages/Cart';
+import CartPage from './pages/Cart';
 
 
 import cartStore from './cart/cart.store';
