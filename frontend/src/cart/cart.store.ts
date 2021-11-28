@@ -41,10 +41,12 @@ export class Cart {
     constructor() {
         if (localStorage.cart) {
             const savedItems = JSON.parse(localStorage.cart);
-
-            savedItems.forEach((item: any) => {
-                this.items.push(new CartItem(item))
-            });
+            if (savedItems && Array.isArray(savedItems)) {
+                savedItems.forEach((item: any) => {
+                    this.items.push(new CartItem(item))
+                });
+            }   
+            
         }
 
         // Persist cart to local storage
