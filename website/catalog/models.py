@@ -135,7 +135,7 @@ class VectorColors(models.Model):
 
 @receiver(pre_save, sender=Order)
 def order_to_ammo(instance, **_):
-    if instance.id is None:
+    if instance.id is None or not instance.ammo_id:
         send_order_to_ammo(instance)
     else:
         previous = Order.objects.get(id=instance.id)
