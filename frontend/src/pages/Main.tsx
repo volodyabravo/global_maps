@@ -20,7 +20,7 @@ export default function MainPage() {
             loop={true}
             onSlideChange={() => console.log('slide change')}
             onSwiper={(swiper) => console.log(swiper)}
-            navigation={true}
+            // navigation={true}
             pagination={true}
         >
             <SwiperSlide>
@@ -31,13 +31,13 @@ export default function MainPage() {
                     <SlideContainer>
                         <div>
                             <Title>Интерьерные <br /> карты и постеры</Title>
-                            <ActionButton size="large" variant="contained" endIcon={<ChevronRight />}> asdsa </ActionButton>
+                            <ActionButton size="large" variant="contained" endIcon={<ChevronRight />}>Создать постер</ActionButton>
                         </div>
                     </SlideContainer>
 
                 </FullscreenSlide>
             </SwiperSlide>
-            <SwiperSlide>
+            {/* <SwiperSlide>
                 <FullscreenSlide>
                     <Background>
                         <img src="https://source.unsplash.com/random/"></img>
@@ -51,7 +51,7 @@ export default function MainPage() {
                     </SlideContainer>
 
                 </FullscreenSlide>
-            </SwiperSlide>
+            </SwiperSlide> */}
 
 
 
