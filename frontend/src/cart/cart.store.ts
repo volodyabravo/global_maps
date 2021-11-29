@@ -2,13 +2,14 @@ import { action, observable, computed, autorun, toJS, getDependencyTree, trace, 
 import { values, forEach } from 'lodash/fp';
 import productsStore, { Product } from './products.store';
 import { IObservableArray, ObservableValue } from 'mobx/dist/internal';
+import { UserCustomizations } from '../api/themes';
 
 export class CartItem {
     @observable productId?: number;
     @observable quantity?: number;
     @observable preview?: string;
     @observable name?: string;
-    @observable data?: object;
+    @observable data?: UserCustomizations;
     @observable properties?: Array<{
         name: string;
         value: string;

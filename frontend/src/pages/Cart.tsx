@@ -18,6 +18,10 @@ export interface Item {
     preview?: string;
     name?: string;
     price?: number;
+    properties?: Array<{
+        name: string;   
+        value: string;
+    }>
 }
 
 function CartPage(props: {

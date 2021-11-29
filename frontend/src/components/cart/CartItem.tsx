@@ -14,24 +14,14 @@ export function CartItem(props: CartItemProps) {
         </CartPicture>
         <ItemName>
             <div>{props.item.name}</div>
-            {/* Map props */}
             <div>
-                <div>
-                    <ItemParameterName>тема: </ItemParameterName>Классическая
-                </div>
-                <div>
-                    <ItemParameterName>материал: </ItemParameterName>холст
-                </div>
-                <div>
-                    <ItemParameterName>размер: </ItemParameterName>50x70
-                </div>
-                <div>
-                    <ItemParameterName>тип: </ItemParameterName>Холст
-                </div>
+                {props.item && props.item.properties && props.item.properties.map((item) => <div>
+                    <ItemParameterName>{item.name}: </ItemParameterName>{item.value}
+                </div>)}
             </div>
 
         </ItemName>
-        <ItemDetails onClick={() => props.onLearnMore &&  props.onLearnMore(props.item)} >
+        <ItemDetails onClick={() => props.onLearnMore && props.onLearnMore(props.item)} >
             Подробнее <FaChevronRight />
         </ItemDetails>
         <ItemPrice>

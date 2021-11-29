@@ -290,13 +290,14 @@ function MapClientPage({cartStore}: {
                         <Box sx={{ padding: "10px", background: "#FFFFFF" }}>
                             <Grid container>
                                 <CheckoutButton onClick={()=> {cartStore?.addItem({
-                                    name:"Map 1",
+                                    name:"Звездная карта",
                                     price: 2000,
                                     productId: 231,
                                     properties: [{
-                                        name: "ass",
-                                        value: "bass"
-                                    }]
+                                        name: "Тема",
+                                        value: theme!.name
+                                    }],
+                                    data: custom
                                 })}} />
                             </Grid>
                         </Box>
