@@ -32,6 +32,7 @@ import cartStore from './cart/cart.store';
 import productsStore from './cart/products.store';
 import MainPage from './pages/Main';
 import AboutPage from './pages/About';
+import DeliveryPage from './pages/Delivery';
 
 function App() {
   return (
@@ -61,6 +62,10 @@ function App() {
               <Route exact path="/about/">
                 <AppNavBar />
                 <AboutPage />
+              </Route>
+              <Route exact path="/delivery/">
+                <AppNavBar />
+                <DeliveryPage />
               </Route>
               <Route exact path="/ui/">
                 <AppNavBar />
