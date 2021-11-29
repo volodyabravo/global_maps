@@ -1,23 +1,23 @@
 import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch, Container, Tabs, Tab } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { CelestialReact } from "../components/CelestialForeign";
+import { CelestialReact } from "../../components/CelestialForeign";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
     CelestialOptions,
 } from "d3-celestial/celestial";
 import { useForm, Controller } from "react-hook-form";
-import { ColorPicker } from "../components/form/ColorPicker";
+import { ColorPicker } from "../../components/form/ColorPicker";
 import styled from "@emotion/styled";
-import { Accordion, AccordionSummary } from "../components/editor/Accordion";
-import { CheckoutButton } from "../components/buttons/CheckOutButton";
+import { Accordion, AccordionSummary } from "../../components/editor/Accordion";
+import { CheckoutButton } from "../../components/buttons/CheckOutButton";
 import { TabContext, TabPanel } from "@mui/lab";
-import { ThemePicker } from "../components/form/ThemePicker";
-import { getSizes, getThemes, MapTheme, Size, UserCustomizations } from "../api/themes";
-import { MapView } from "../components/MapView";
-import { LocationSelector } from "../components/geocoder/LocationSelector";
+import { ThemePicker } from "../../components/form/ThemePicker";
+import { getSizes, getThemes, MapTheme, MapType, Size, UserCustomizations } from "../../api/themes";
+import { MapView } from "../../components/MapView";
+import { LocationSelector } from "../../components/geocoder/LocationSelector";
 import { toast } from "react-toastify";
 import { inject, observer } from 'mobx-react';
-import { Cart } from "../cart/cart.store";
+import { Cart } from "../../cart/cart.store";
 
 const hasGeo = 'geolocation' in navigator;
 
@@ -55,7 +55,7 @@ function MapClientPage({cartStore}: {
 
     useEffect(() => {
         (async () => {
-            let themesData = await getThemes();
+            let themesData = await getThemes({map_type: MapType.Street});
             setThemes(themesData);
             let sizesData = await getSizes();
             setSizes(sizesData)

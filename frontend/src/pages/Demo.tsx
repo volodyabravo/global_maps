@@ -32,7 +32,7 @@ export function Demo() {
 
     useEffect(() => {
         (async () => {
-            let themesData = await getThemes();
+            let themesData = await getThemes({});
             setThemes(themesData);
             setCustom({
                 divider: "Разделитель",

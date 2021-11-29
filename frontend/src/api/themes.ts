@@ -106,8 +106,15 @@ export interface MapTheme {
     id: number;
 }
 
-export async function getThemes(): Promise<Array<MapTheme>> {
-    let request = await fetch("/api/themes");
+
+export async function getThemes({ map_type }: {
+    map_type?: MapType
+}): Promise<Array<MapTheme>> {
+    let params = new URLSearchParams();
+    map_type && params.set("map_type", map_type.toString())
+
+    let request = await fetch("/api/themes?" + params);
+
 
     if (!request.ok) {
         throw Error("Server did not return any themes");

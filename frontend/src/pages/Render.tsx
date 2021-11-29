@@ -22,7 +22,7 @@ export function RenderPage() {
 
     useEffect(() => {
         (async () => {
-            let themesData = await getThemes();
+            let themesData = await getThemes({});
             setThemes(themesData);
             // adds custom to the thing
             // @ts-ignore

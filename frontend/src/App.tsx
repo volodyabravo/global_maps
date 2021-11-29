@@ -9,7 +9,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 import AppNavBar from './components/AppBar';
 import { ThemeProvider } from '@emotion/react';
@@ -19,7 +18,9 @@ import { UIKitPage } from './pages/UIKit';
 
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import MapClientPage from './pages/MapClient';
+import StarClient from './pages/clients/StarClient';
+import StreetClient from './pages/clients/StreetClient';
+import VectorClient from './pages/clients/VectorClient';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RenderPage } from './pages/Render';
@@ -38,9 +39,17 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Router>
             <Switch>
-              <Route exact path="/">
+              <Route exact path="/star/">
                 <AppNavBar />
-                <MapClientPage />
+                <StarClient />
+              </Route>
+              <Route exact path="/street/">
+                <AppNavBar />
+                <StreetClient />
+              </Route>
+              <Route exact path="/vector/">
+                <AppNavBar />
+                <VectorClient />
               </Route>
               <Route exact path="/ui/">
                 <AppNavBar />
