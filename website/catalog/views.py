@@ -15,7 +15,7 @@ class MapThemeView(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = MapTheme.objects.filter(active=True).order_by('order')
-        product = self.kwargs.get('product', None)
+        product = self.request.query_params.get('map_type', None)
         if product:
             queryset = queryset.filter(product=product)
         serializer = MapThemeSerializer(queryset, many=True)
