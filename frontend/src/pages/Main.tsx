@@ -9,6 +9,7 @@ import { ChevronRight } from '@mui/icons-material';
 
 import rostov from "./../assets/main/rostov.png"
 import starry from "./../assets/main/starry.png"
+import { Link } from 'react-router-dom';
 
 export default function MainPage() {
     return <div>
@@ -31,32 +32,17 @@ export default function MainPage() {
                     <SlideContainer>
                         <div>
                             <Title>Интерьерные <br /> карты и постеры</Title>
-                            <ActionButton size="large" variant="contained" endIcon={<ChevronRight />}>Создать постер</ActionButton>
+                            <a href="#pricing">
+                                <ActionButton size="large" variant="contained" endIcon={<ChevronRight />}>Создать постер</ActionButton>
+                            </a>
                         </div>
                     </SlideContainer>
 
                 </FullscreenSlide>
             </SwiperSlide>
-            {/* <SwiperSlide>
-                <FullscreenSlide>
-                    <Background>
-                        <img src="https://source.unsplash.com/random/"></img>
-                    </Background>
-                    <SlideContainer>
-                        <div>
-                            <Title>Интерьерные <br /> карты и постеры</Title>
-                            <ActionButton>  </ActionButton>
-                        </div>
-
-                    </SlideContainer>
-
-                </FullscreenSlide>
-            </SwiperSlide> */}
-
-
 
         </Swiper>
-        <Pricing>
+        <Pricing id="pricing">
             <h2>Типы карт и постеров</h2>
             <p>Создавайте индивидуальные карты путешествий<br /> и постеры лучших моментов вашей жизни</p>
             <div className="goods">
@@ -71,7 +57,9 @@ export default function MainPage() {
                         </div>
                     </div>
                     <div className="bottom-part">
-                        <ActionButton size="large" variant="contained" endIcon={<ChevronRight />}> Создать карту </ActionButton>
+                        <Link to="/street/">
+                            <ActionButton size="large" variant="contained" endIcon={<ChevronRight />}> Создать карту </ActionButton>
+                        </Link>
                     </div>
                 </PricingItem>
                 <PricingItem>
@@ -85,7 +73,9 @@ export default function MainPage() {
                         </div>
                     </div>
                     <div className="bottom-part">
-                        <ActionButton size="large" variant="contained" endIcon={<ChevronRight />}> Создать карту </ActionButton>
+                        <Link to="/star/">
+                            <ActionButton size="large" variant="contained" endIcon={<ChevronRight />}> Создать карту </ActionButton>
+                        </Link>
                     </div>
                 </PricingItem>
 
@@ -126,6 +116,7 @@ const Title = styled("h1")`
     font-weight: 600;
     font-size: 32px;
     line-height: 40px;
+    margin-bottom: 1.5em;
 `
 const ActionButton = styled(Button)`
     background: #202945;
