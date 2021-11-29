@@ -7,6 +7,9 @@ import { Button, Container } from '@mui/material';
 import { FaArrowRight, FaChevronRight } from 'react-icons/fa';
 import { ChevronRight } from '@mui/icons-material';
 
+import rostov from "./../assets/main/rostov.png"
+import starry from "./../assets/main/starry.png"
+
 export default function MainPage() {
     return <div>
 
@@ -14,6 +17,7 @@ export default function MainPage() {
             spaceBetween={0}
             modules={[Navigation, Pagination]}
             slidesPerView={1}
+            loop={true}
             onSlideChange={() => console.log('slide change')}
             onSwiper={(swiper) => console.log(swiper)}
             navigation={true}
@@ -27,7 +31,7 @@ export default function MainPage() {
                     <SlideContainer>
                         <div>
                             <Title>Интерьерные <br /> карты и постеры</Title>
-                            <ActionButton size="medium" variant="contained" endIcon={<ChevronRight />}> asdsa </ActionButton>
+                            <ActionButton size="large" variant="contained" endIcon={<ChevronRight />}> asdsa </ActionButton>
                         </div>
                     </SlideContainer>
 
@@ -52,6 +56,41 @@ export default function MainPage() {
 
 
         </Swiper>
+        <Pricing>
+            <h2>Типы карт и постеров</h2>
+            <p>Создавайте индивидуальные карты путешествий и постеры лучших моментов вашей жизни</p>
+            <div className="goods">
+                <PricingItem>
+                    <div className="top-part">
+                        <div className="image">
+                            <img src={rostov} alt="" />
+                        </div>
+                        <div className="description">
+                            <span>Карта города</span>
+                            <span>от 490 ₽</span>
+                        </div>
+                    </div>
+                    <div className="bottom-part">
+                        <ActionButton size="large" variant="contained" endIcon={<ChevronRight />}> Создать карту </ActionButton>
+                    </div>
+                </PricingItem>
+                <PricingItem>
+                    <div className="top-part">
+                        <div className="image">
+                            <img src={starry} alt="" />
+                        </div>
+                        <div className="description">
+                            <span>Звездное небо</span>
+                            <span>от 490 ₽</span>
+                        </div>
+                    </div>
+                    <div className="bottom-part">
+                        <ActionButton size="large" variant="contained" endIcon={<ChevronRight />}> Создать карту </ActionButton>
+                    </div>
+                </PricingItem>
+
+            </div>
+        </Pricing>
     </div>
 }
 
@@ -73,18 +112,13 @@ const FullscreenSlide = styled("div")`
     position: relative;
     height: 90vh;
     background-size: cover;
-    
 `
-
 const SlideContainer = styled(Container)`
   z-index: 1;
   display:flex;
   align-items:center;
   height: 100%;
-
-    
 `
-
 const Title = styled("h1")`
     margin-top: 0;
     font-family: Montserrat;
@@ -93,7 +127,86 @@ const Title = styled("h1")`
     font-size: 32px;
     line-height: 40px;
 `
-
 const ActionButton = styled(Button)`
+    background: #202945;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 15px;    
+    border-radius: 0;
+    &:hover {
+        background: #202945;
+    }
+`
 
+const ActionGrayButton = styled(Button)`
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 15px;    
+    background: #E6EAEE;
+    border-radius: 0;
+    color: #202945;
+    &:hover {
+        background: #E6EAEE;
+    }
+`
+
+const Pricing = styled(Container)`
+    padding: 4em 0;
+    position: relative;
+    background-size: cover;
+    h2 {
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 25px;
+        
+        /* or 125% */
+        text-align: center;
+    }
+    p {
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 20px;
+
+        /* or 125% */
+        text-align: center;
+    }
+    .goods {
+        display:flex;
+        align-items: space-between;
+    }
+`
+
+const PricingItem = styled("div")`
+    padding: 10px;
+    flex-basis: 25%;
+    .top-part {
+        background: #F8F8F8;
+        display: block;
+        padding: 10px;
+
+        .image {
+            display: flex;
+            justify-content: center;
+        }
+        .description {
+            width: 100%;
+            display: flex;
+            align-content: space-between;
+            justify-content: space-between;
+        }
+    }
+
+    .bottom-part {
+        display: flex;
+        justify-content: center;
+        padding-top: 20px;
+    }
 `

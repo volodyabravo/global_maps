@@ -31,6 +31,7 @@ import CartPage from './pages/Cart';
 import cartStore from './cart/cart.store';
 import productsStore from './cart/products.store';
 import MainPage from './pages/Main';
+import AboutPage from './pages/About';
 
 function App() {
   return (
@@ -55,6 +56,11 @@ function App() {
               <Route exact path="/vector/">
                 <AppNavBar />
                 <VectorClient />
+              </Route>
+              
+              <Route exact path="/about/">
+                <AppNavBar />
+                <AboutPage />
               </Route>
               <Route exact path="/ui/">
                 <AppNavBar />
