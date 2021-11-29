@@ -98,36 +98,29 @@ function AppNavBar(props: any) {
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={4} color="error">
-                        <MailIcon />
-                    </Badge>
-                </IconButton>
-                <p>Messages</p>
+                <Link to="/street/" color="inherit">
+                    <p>Карта города</p>
+                </Link>
             </MenuItem>
             <MenuItem>
-                <IconButton
-                    size="large"
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                >
-                    <Badge badgeContent={17} color="error">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
+                <Link to="/star/" color="inherit">
+                    <p>Звездное небо</p>
+                </Link>
             </MenuItem>
-            <MenuItem onClick={handleProfileMenuOpen}>
-                <IconButton
-                    size="large"
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    <AccountCircle />
-                </IconButton>
-                <p>Profile</p>
+            <MenuItem>
+                <Link to="/vector/" color="inherit">
+                    <p>Создать постер</p>
+                </Link>
+            </MenuItem>
+            <MenuItem>
+                <Link to="/delivery/" color="inherit">
+                    <p>Доставка & оплата</p>
+                </Link>
+            </MenuItem>
+            <MenuItem >
+                <Link to="/about/" color="inherit">
+                    <p>О нас</p>
+                </Link>
             </MenuItem>
         </Menu>
     );
