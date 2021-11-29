@@ -30,6 +30,7 @@ import CartPage from './pages/Cart';
 
 import cartStore from './cart/cart.store';
 import productsStore from './cart/products.store';
+import MainPage from './pages/Main';
 
 function App() {
   return (
@@ -39,6 +40,10 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Router>
             <Switch>
+              <Route exact path="/">
+                <AppNavBar />
+                <MainPage />
+              </Route>
               <Route exact path="/star/">
                 <AppNavBar />
                 <StarClient />

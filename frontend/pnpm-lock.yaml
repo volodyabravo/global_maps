@@ -35,6 +35,7 @@ specifiers:
   react-toastify: ^8.0.3
   react-transition-group: ^4.4.2
   styled-components: ^5.3.1
+  swiper: 6.8.4
   typescript: ^4.4.3
   web-vitals: ^1.0.1
 
@@ -73,6 +74,7 @@ dependencies:
   react-toastify: 8.0.3_react-dom@17.0.2+react@17.0.2
   react-transition-group: 4.4.2_react-dom@17.0.2+react@17.0.2
   styled-components: 5.3.1_react-dom@17.0.2+react@17.0.2
+  swiper: 6.8.4
   typescript: 4.4.3
   web-vitals: 1.1.2
 
@@ -5399,6 +5401,12 @@ packages:
       domelementtype: 2.2.0
       domhandler: 4.2.2
       entities: 2.2.0
+    dev: false
+
+  /dom7/3.0.0:
+    resolution: {integrity: sha512-oNlcUdHsC4zb7Msx7JN3K0Nro1dzJ48knvBOnDPKJ2GV9wl1i5vydJZUSyOfrkKFDZEud/jBsTk92S/VGSAe/g==}
+    dependencies:
+      ssr-window: 3.0.0
     dev: false
 
   /domain-browser/1.2.0:
@@ -11763,6 +11771,10 @@ packages:
     resolution: {integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=}
     dev: false
 
+  /ssr-window/3.0.0:
+    resolution: {integrity: sha512-q+8UfWDg9Itrg0yWK7oe5p/XRCJpJF9OBtXfOPgSJl+u3Xd5KI328RUEvUqSMVM9CiQUEf1QdBzJMkYGErj9QA==}
+    dev: false
+
   /ssri/6.0.2:
     resolution: {integrity: sha512-cepbSq/neFK7xB6A50KHN0xHDotYzq58wWCa5LeWqnPrHG8GzfEjO/4O8kpmcGW+oaxkvhEJCWgbgNk4/ZV93Q==}
     dependencies:
@@ -12086,6 +12098,15 @@ packages:
       stable: 0.1.8
       unquote: 1.1.1
       util.promisify: 1.0.1
+    dev: false
+
+  /swiper/6.8.4:
+    resolution: {integrity: sha512-O+buF9Q+sMA0H7luMS8R59hCaJKlpo8PXhQ6ZYu6Rn2v9OsFd4d1jmrv14QvxtQpKAvL/ZiovEeANI/uDGet7g==}
+    engines: {node: '>= 4.7.0'}
+    requiresBuild: true
+    dependencies:
+      dom7: 3.0.0
+      ssr-window: 3.0.0
     dev: false
 
   /symbol-observable/1.2.0:
