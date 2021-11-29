@@ -58,7 +58,7 @@ export default function MainPage() {
         </Swiper>
         <Pricing>
             <h2>Типы карт и постеров</h2>
-            <p>Создавайте индивидуальные карты путешествий и постеры лучших моментов вашей жизни</p>
+            <p>Создавайте индивидуальные карты путешествий<br /> и постеры лучших моментов вашей жизни</p>
             <div className="goods">
                 <PricingItem>
                     <div className="top-part">
