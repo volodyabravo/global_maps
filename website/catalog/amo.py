@@ -12,31 +12,37 @@ DIR_NAME = os.path.dirname(os.path.abspath(__file__))
 
 def send_order_to_ammo(instance):
     if AMO_CLIENT_ID:
-        t = tokens.default_token_manager(
-            client_id=AMO_CLIENT_ID,
-            client_secret=AMO_CLIENT_SECRET,
-            subdomain=AMO_SUBDOMAIN,
-            redirect_url=AMO_REDIRECT_URL,
-            storage=tokens.FileTokensStorage(DIR_NAME),  # by default FileTokensStorage
-        )
-        tokens.default_token_manager.init(code=AMO_REFRESH_TOKEN, skip_error=True)
+        try:
+            t = tokens.default_token_manager(
+                client_id=AMO_CLIENT_ID,
+                client_secret=AMO_CLIENT_SECRET,
+                subdomain=AMO_SUBDOMAIN,
+                redirect_url=AMO_REDIRECT_URL,
+                storage=tokens.FileTokensStorage(DIR_NAME),  # by default FileTokensStorage
+            )
+            tokens.default_token_manager.init(code=AMO_REFRESH_TOKEN, skip_error=True)
 
-        lead = Lead(name=instance.name, status=instance.status)
-        lead.create()
-        instance.ammo_id = lead.id
+            lead = Lead(name=instance.name, status=instance.status)
+            lead.create()
+            instance.ammo_id = lead.id
+        except Exception:
+            pass
 
 
 def sync_orders(instance):
     if AMO_CLIENT_ID:
-        tokens.default_token_manager(
-            client_id=AMO_CLIENT_ID,
-            client_secret=AMO_CLIENT_SECRET,
-            subdomain=AMO_SUBDOMAIN,
-            redirect_url=AMO_REDIRECT_URL,
-            storage=tokens.FileTokensStorage(DIR_NAME),  # by default FileTokensStorage
-        )
-        tokens.default_token_manager.init(code=AMO_REFRESH_TOKEN, skip_error=True)
+        try:
+            tokens.default_token_manager(
+                client_id=AMO_CLIENT_ID,
+                client_secret=AMO_CLIENT_SECRET,
+                subdomain=AMO_SUBDOMAIN,
+                redirect_url=AMO_REDIRECT_URL,
+                storage=tokens.FileTokensStorage(DIR_NAME),  # by default FileTokensStorage
+            )
+            tokens.default_token_manager.init(code=AMO_REFRESH_TOKEN, skip_error=True)
 
-        lead = Lead.objects.get(instance.ammo_id)
-        lead.status = instance.status
-        lead.save()
+            lead = Lead.objects.get(instance.ammo_id)
+            lead.status = instance.status
+            lead.save()
+        except Exception:
+            pass
