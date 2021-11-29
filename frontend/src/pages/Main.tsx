@@ -1,17 +1,23 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
 import styled from "@emotion/styled";
 import { Button, Container } from '@mui/material';
+import { FaArrowRight, FaChevronRight } from 'react-icons/fa';
+import { ChevronRight } from '@mui/icons-material';
 
 export default function MainPage() {
     return <div>
 
         <Swiper
-            spaceBetween={50}
+            spaceBetween={0}
+            modules={[Navigation, Pagination]}
             slidesPerView={1}
             onSlideChange={() => console.log('slide change')}
             onSwiper={(swiper) => console.log(swiper)}
+            navigation={true}
+            pagination={true}
         >
             <SwiperSlide>
                 <FullscreenSlide>
@@ -21,7 +27,7 @@ export default function MainPage() {
                     <SlideContainer>
                         <div>
                             <Title>Интерьерные <br /> карты и постеры</Title>
-                            <ActionButton> asdsa </ActionButton>
+                            <ActionButton size="medium" variant="contained" endIcon={<ChevronRight />}> asdsa </ActionButton>
                         </div>
                     </SlideContainer>
 
