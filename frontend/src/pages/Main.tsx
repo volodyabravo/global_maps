@@ -9,6 +9,7 @@ import { ChevronRight } from '@mui/icons-material';
 
 import rostov from "./../assets/main/rostov.png"
 import starry from "./../assets/main/starry.png"
+import mapspromo from "./../assets/main/mapspromo.jpg"
 import { Link } from 'react-router-dom';
 
 export default function MainPage() {
@@ -27,7 +28,7 @@ export default function MainPage() {
             <SwiperSlide>
                 <FullscreenSlide>
                     <Background>
-                        <img src="https://source.unsplash.com/random/"></img>
+                        <img src={mapspromo} alt=""></img>
                     </Background>
                     <SlideContainer>
                         <div>
@@ -119,6 +120,7 @@ const Title = styled("h1")`
     margin-bottom: 1.5em;
 `
 const ActionButton = styled(Button)`
+    text-decoration:none;
     background: #202945;
     font-family: Montserrat;
     font-style: normal;
@@ -132,6 +134,7 @@ const ActionButton = styled(Button)`
 `
 
 const ActionGrayButton = styled(Button)`
+text-decoration:none;
     font-family: Montserrat;
     font-style: normal;
     font-weight: normal;
