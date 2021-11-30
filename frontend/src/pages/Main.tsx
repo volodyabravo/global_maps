@@ -175,6 +175,10 @@ const Pricing = styled(Container)`
     .goods {
         display:flex;
         align-items: space-between;
+        ${({theme})=> theme.breakpoints.down("md")} {
+            flex-direction: column;
+            align-items: center;
+        }
     }
 `
 
