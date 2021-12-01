@@ -22,7 +22,7 @@ import { Cart } from "../../cart/cart.store";
 const hasGeo = 'geolocation' in navigator;
 
 
-function MapClientPage({cartStore}: {
+function MapClientPage({ cartStore }: {
     cartStore?: Cart
 }) {
     // Accordion control
@@ -48,20 +48,22 @@ function MapClientPage({cartStore}: {
 
     const [selectedThemeTab, setSelectedThemeTab] = useState(0);
 
-    let size: Size | null = null;
-    if (custom.sizeId != null) {
-        size = sizes[custom.sizeId];
-    }
+    let size: Size | undefined = useMemo(() => { return sizes.find((size) => size.id == custom.sizeId) }, [custom.sizeId]);
 
     useEffect(() => {
         (async () => {
-            let themesData = await getThemes({map_type: MapType.Vector});
+            let themesData = await getThemes({ map_type: MapType.Vector });
             setThemes(themesData);
             let sizesData = await getSizes();
             setSizes(sizesData)
             if (!custom.theme && themesData && themesData.length > 0) {
                 setTimeout(() => {
                     userForm.setValue("theme", themesData[0].id);
+                }, 500)
+            }
+            if (sizes && sizes.length > 0) {
+                setTimeout(() => {
+                    userForm.setValue("sizeId", sizesData[0].id);
                 }, 500)
             }
         })();
@@ -86,7 +88,7 @@ function MapClientPage({cartStore}: {
             }} >
                 <Grid container item xs={12} md={9} direction="column" >
                     {theme &&
-                        <MapView theme={theme} custom={custom} />}
+                        <MapView theme={theme} custom={custom} size={size} />}
                 </Grid>
                 <Grid item xs={12} md={3} style={{
                     padding: "0px 0px",
@@ -123,7 +125,7 @@ function MapClientPage({cartStore}: {
                                                         lat: position.coords.latitude,
                                                         lng: position.coords.longitude
                                                     })
-                                                
+
                                                 }, (ss) => {
                                                     console.log(ss)
                                                     toast("Ошибка получения локации")
@@ -269,7 +271,7 @@ function MapClientPage({cartStore}: {
                                         <Controller control={userForm.control} name="sizeId" render={(form) => {
                                             return (<>{sizes.length > 0 && sizes.map((item, index) => {
                                                 return (
-                                                    <SizeButton className={index === form.field.value ? "active" : ""} key={item.id} onClick={() => { form.field.onChange(index) }}>{item.name}</SizeButton>
+                                                    <SizeButton className={item.id === form.field.value ? "active" : ""} key={item.id} onClick={() => { form.field.onChange(item.id) }}>{item.name}</SizeButton>
                                                 )
                                             })}</>)
                                         }} />
@@ -289,16 +291,22 @@ function MapClientPage({cartStore}: {
                         </Typography>
                         <Box sx={{ padding: "10px", background: "#FFFFFF" }}>
                             <Grid container>
-                                <CheckoutButton onClick={()=> {cartStore?.addItem({
-                                    name:"Векторная карта",
-                                    price: 2000,
-                                    productId: 231,
-                                    properties: [{
-                                        name: "Тема",
-                                        value: theme!.name
-                                    }],
-                                    data: custom
-                                })}} />
+                                <CheckoutButton onClick={() => {
+                                    cartStore?.addItem({
+                                        name: "Векторная карта",
+                                        price: 2000,
+                                        productId: 231,
+                                        properties: [{
+                                            name: "Тема",
+                                            value: theme!.name
+                                        },
+                                        {
+                                            name: "Размер",
+                                            value: size!.name
+                                        }],
+                                        data: custom
+                                    })
+                                }} />
                             </Grid>
                         </Box>
 
@@ -356,4 +364,4 @@ const LocationBlock = styled.div`
     }
 `
 
-export default inject("cartStore")(observer(MapClientPage)) 
+export default inject("cartStore")(observer(MapClientPage))

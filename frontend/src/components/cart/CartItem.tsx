@@ -10,7 +10,7 @@ interface CartItemProps {
 export function CartItem(props: CartItemProps) {
     return <CartItemDiv>
         <CartPicture>
-            <img src={props.item.preview} alt="Превью карты" />
+            {props.item.preview && <img src={props.item.preview} alt="Превью карты" />}
         </CartPicture>
         <ItemName>
             <div>{props.item.name}</div>
@@ -48,7 +48,11 @@ const CartPicture = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    max-width: 120px;
     & img { 
+        width: 100%;
+        height: 100%;
+        
         
     }
 `

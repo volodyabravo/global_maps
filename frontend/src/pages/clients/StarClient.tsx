@@ -44,12 +44,8 @@ function MapClientPage({cartStore}: {
         };
 
     const [selectedThemeTab, setSelectedThemeTab] = useState(0);
-
-    let size: Size | null = null;
-    if (custom.sizeId != null) {
-        size = sizes[custom.sizeId];
-    }
-
+    let size: Size | undefined = useMemo(() => { return sizes.find((size) => size.id == custom.sizeId) }, [custom.sizeId]);
+                        
     useEffect(() => {
         (async () => {
             let themesData = await getThemes({map_type: MapType.Star});
@@ -59,6 +55,11 @@ function MapClientPage({cartStore}: {
             if (!custom.theme && themesData && themesData.length > 0) {
                 setTimeout(() => {
                     userForm.setValue("theme", themesData[0].id);
+                }, 500)
+            }
+            if (sizesData && sizesData.length > 0) {
+                setTimeout(() => {
+                    userForm.setValue("sizeId", sizesData[0].id);
                 }, 500)
             }
         })();
@@ -83,7 +84,7 @@ function MapClientPage({cartStore}: {
             }} >
                 <Grid container item xs={12} md={9} direction="column" >
                     {theme &&
-                        <MapView theme={theme} custom={custom} />}
+                        <MapView theme={theme} custom={custom} size={size} />}
                 </Grid>
                 <Grid item xs={12} md={3} style={{
                     padding: "0px 0px",
@@ -266,7 +267,7 @@ function MapClientPage({cartStore}: {
                                         <Controller control={userForm.control} name="sizeId" render={(form) => {
                                             return (<>{sizes.length > 0 && sizes.map((item, index) => {
                                                 return (
-                                                    <SizeButton className={index === form.field.value ? "active" : ""} key={item.id} onClick={() => { form.field.onChange(index) }}>{item.name}</SizeButton>
+                                                    <SizeButton className={item.id === form.field.value ? "active" : ""} key={item.id} onClick={() => { form.field.onChange(item.id) }}>{item.name}</SizeButton>
                                                 )
                                             })}</>)
                                         }} />
@@ -294,6 +295,7 @@ function MapClientPage({cartStore}: {
                                         name: "Тема",
                                         value: theme!.name
                                     }],
+                                    preview: theme!.preview,
                                     data: custom
                                 })}} />
                             </Grid>

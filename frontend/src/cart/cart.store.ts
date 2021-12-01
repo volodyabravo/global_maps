@@ -4,7 +4,7 @@ import productsStore, { Product } from './products.store';
 import { IObservableArray, ObservableValue } from 'mobx/dist/internal';
 import { UserCustomizations } from '../api/themes';
 
-export class CartItem {
+export class CartItem  {
     @observable productId?: number;
     @observable quantity?: number;
     @observable preview?: string;
@@ -60,9 +60,12 @@ export class Cart {
     }
 
     @action addItem(data: Partial<CartItem>) {
+        
+        
         runInAction(() => {
             this.items.push(new CartItem(data))
         })
+
 
     }
 

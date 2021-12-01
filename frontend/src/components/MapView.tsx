@@ -4,7 +4,7 @@
  */
 
 import styled from "@emotion/styled";
-import { MapLayouts, MapTheme, MapTypes, UserCustomizations } from "../api/themes";
+import { MapLayouts, MapTheme, MapTypes, Size, UserCustomizations } from "../api/themes";
 import { MapFrame } from "./frames/Frame";
 import { CelestialFullBackground } from "./layouts/celestial/CelestialFullBackground";
 import { CelestialCircle } from "./layouts/celestial/CelestialCircle";
@@ -38,6 +38,7 @@ interface MapViewProps {
   print?: boolean;
   layout?: MapLayouts,
   maptype?: MapTypes;
+  size?: Size;
 }
 
 let layouts = {
@@ -55,8 +56,14 @@ let layouts = {
 }
 
 export function MapView(props: MapViewProps) {
+
   let height = props.height || 855;
   let width = props.width || 590;
+  if (props.size) {
+    height = props.size.height;
+    width = props.size.width;
+  }
+  
   let print = props.print;
   let layout = props.layout || "CelestialCircle";
   let maptype = props.maptype || "celestial";
