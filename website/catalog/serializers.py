@@ -28,19 +28,28 @@ class MapPricesSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['price', 'size_id', 'version_id', 'id']
 
 
-class MapVersionsSerializer(serializers.HyperlinkedModelSerializer):
+class MapVersionsSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
-    parent_id = serializers.CharField(source='parent.id', read_only=True)
+    children = serializers.SerializerMethodField(
+        read_only=True, method_name="get_child_categories")
 
     class Meta:
         model = MapVersions
-        fields = ['parent_id', 'name', 'image', 'id']
+        fields = ['name', 'image', 'id', 'children']
+
+    def get_child_categories(self, obj):
+        """ self referral field """
+        serializer = MapVersionsSerializer(
+            instance=obj.mapversions_set.all(),
+            many=True
+        )
+        return serializer.data
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Order
-        fields = ['card_data', 'name', 'surname', 'phone', 'email', 'country', 'city', 'address', 'delivery']
+        fields = ['card_data', 'name', 'surname', 'phone', 'email', 'country', 'city', 'address', 'delivery', 'comment']
 
 
 class VectorImagesSerializer(serializers.HyperlinkedModelSerializer):

@@ -66,17 +66,17 @@ class MapPricesView(viewsets.ModelViewSet):
 
 
 class MapVersionsView(viewsets.ModelViewSet):
-    queryset = MapVersions.objects.filter(active=True).order_by('order')
+    queryset = MapVersions.objects.filter(active=True, parent__isnull=True).order_by('order')
     serializer_class = MapVersionsSerializer
     http_method_names = ['get', ]
 
     def list(self, request, *args, **kwargs):
-        queryset = MapVersions.objects.filter(active=True).order_by('order')
+        queryset = MapVersions.objects.filter(active=True, parent__isnull=True).order_by('order')
         serializer = MapVersionsSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None, *args, **kwargs):
-        queryset = MapVersions.objects.filter(active=True).order_by('order')
+        queryset = MapVersions.objects.filter(active=True, parent__isnull=True).order_by('order')
         _object = get_object_or_404(queryset, pk=pk)
         serializer = MapVersionsSerializer(_object)
         return Response(serializer.data)

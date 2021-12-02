@@ -89,6 +89,9 @@ class Order(models.Model):
     city = models.CharField(_('City'), blank=True, null=True, max_length=500)
     address = models.CharField(_('Address'), blank=True, null=True, max_length=500)
     delivery = models.CharField(_('Delivery'), blank=True, null=True, max_length=500)
+    comment = models.TextField(_('Comments'), blank=True, null=True, max_length=5000)
+    track = models.IntegerField(_('Track number'), blank=True, null=True)
+    exception_text = models.CharField(_('subline'), blank=True, null=True, max_length=5000)
 
     class Meta:
         verbose_name = 'Заказ'
@@ -100,8 +103,17 @@ class MapOrder(models.Model):
     status = models.IntegerField(_('Status'), default=1, blank=False, null=False,
                                  choices=[(key, value) for key, value in MapOrderStatuses.STATUSES.items()])
     date = models.DateTimeField(_('Date and time'), auto_now=True)
-    data = models.JSONField(_('JSON data'), blank=True, null=True)
+    size = models.ForeignKey(MapSize, blank=True, null=True, on_delete=models.RESTRICT)
+    theme = models.ForeignKey(MapTheme, blank=True, null=True, on_delete=models.RESTRICT)
+    headline = models.CharField(_('headline'), blank=True, null=True, max_length=500)
+    divider = models.CharField(_('divider'), blank=True, null=True, max_length=500)
+    tagline = models.CharField(_('tagline'), blank=True, null=True, max_length=500)
+    subline = models.CharField(_('subline'), blank=True, null=True, max_length=500)
     image = models.ImageField(_('Generated image'), upload_to='uploads/images/generated/', blank=True)
+    zoom = models.IntegerField(_('Zoom'), blank=True, null=True)
+    x = models.IntegerField(_('x'), blank=True, null=True)
+    y = models.IntegerField(_('y'), blank=True, null=True)
+    exception_text = models.CharField(_('subline'), blank=True, null=True, max_length=5000)
 
     def __str__(self):
         return '{0} {1}'.format(MapOrderStatuses.STATUSES.get(self.status), self.date)
@@ -141,3 +153,8 @@ def order_to_ammo(instance, **_):
         previous = Order.objects.get(id=instance.id)
         if previous.status != instance.status:
             sync_orders(instance)
+
+
+# @receiver(pre_save, sender=Order)
+# def generate_image(instance, **_) :
+
