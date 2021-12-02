@@ -1,72 +1,48 @@
-import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch, Container, Tabs, Tab } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
-import { CelestialReact } from "../../components/CelestialForeign";
+import { AccordionDetails, Grid, TextField, Typography, Box,  Container, Tabs, Tab } from "@mui/material";
+import { useState } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { useForm, Controller } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import styled from "@emotion/styled";
 import { Accordion, AccordionSummary } from "../../components/editor/Accordion";
 import { CheckoutButton } from "../../components/buttons/CheckOutButton";
 import { TabContext, TabPanel } from "@mui/lab";
 import { ThemePicker } from "../../components/form/ThemePicker";
-import { getSizes, getThemes, MapTheme, MapType, Size, UserCustomizations } from "../../api/themes";
+import { MapType } from "../../api/themes";
 import { MapView } from "../../components/MapView";
 import { LocationSelector } from "../../components/geocoder/LocationSelector";
-import { toast } from "react-toastify";
 import { inject, observer } from 'mobx-react';
 import { Cart } from "../../cart/cart.store";
+import useClient from "../../hooks/useClient";
 
-const hasGeo = 'geolocation' in navigator;
-
-
-function MapClientPage({cartStore}: {
+function MapClientPage({ cartStore }: {
     cartStore?: Cart
 }) {
     // Accordion control
     const [expanded, setExpanded] = useState<string | false>("panel1");
-
-    const [themes, setThemes] = useState<Array<MapTheme>>([]);
-    const [sizes, setSizes] = useState<Array<Size>>([]);
-
-    // Celestial
-    const userForm = useForm<UserCustomizations>({
-        defaultValues: {
-            orientation: "portrait"
-        }
-    });
-
-    let custom = userForm.watch();
-    let theme = useMemo(() => { return themes.find((theme) => theme.id == custom.theme) }, [custom.theme]);
-
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
 
     const [selectedThemeTab, setSelectedThemeTab] = useState(0);
-    let size: Size | undefined = useMemo(() => { return sizes.find((size) => size.id == custom.sizeId) }, [custom.sizeId]);
-                        
-    useEffect(() => {
-        (async () => {
-            let themesData = await getThemes({map_type: MapType.Star});
-            setThemes(themesData);
-            let sizesData = await getSizes();
-            setSizes(sizesData)
-            if (!custom.theme && themesData && themesData.length > 0) {
-                setTimeout(() => {
-                    userForm.setValue("theme", themesData[0].id);
-                }, 500)
-            }
-            if (sizesData && sizesData.length > 0) {
-                setTimeout(() => {
-                    userForm.setValue("sizeId", sizesData[0].id);
-                }, 500)
-            }
-        })();
-        return () => {
-            //cleanup
-        }
-    }, [])
+
+    const {
+        sizes,
+        size,
+        versions,
+        theme,
+        themes,
+        form,
+        addToCart,
+        hasGeo,
+        getGeolocation
+    } = useClient(cartStore, MapType.Star)
+
+
+    let custom = form.watch();
+
+
 
     return <div style={{ "backgroundColor": "#F8F8F8", }}>
         <Container sx={{
@@ -112,21 +88,7 @@ function MapClientPage({cartStore}: {
                                         <LocationSelector />
                                         {hasGeo && <LocationBlock>
                                             <span>or use your current GPS position</span>
-                                            <button onClick={() => {
-                                                navigator.geolocation.getCurrentPosition((position) => {
-                                                    console.log(position);
-                                                    toast("Локация успешно получена")
-
-                                                    userForm.setValue("location", {
-                                                        lat: position.coords.latitude,
-                                                        lng: position.coords.longitude
-                                                    })
-                                                
-                                                }, (ss) => {
-                                                    console.log(ss)
-                                                    toast("Ошибка получения локации")
-                                                })
-                                            }}>Locate Me</button>
+                                            <button onClick={getGeolocation}>Locate Me</button>
                                         </LocationBlock>}
                                         {/* <p>Pro tip! You can also drag/drop and zoom on the map to get the exact position you want on your poster.</p> */}
                                         <p>{JSON.stringify(custom.location)}</p>
@@ -151,7 +113,7 @@ function MapClientPage({cartStore}: {
                                             <TabPanel value="0" sx={{
                                                 padding: "0"
                                             }} >
-                                                <ThemePicker name="theme" control={userForm.control} themes={themes} />
+                                                <ThemePicker name="theme" control={form.control} themes={themes} />
 
                                                 <Typography fontWeight="400" color="#A8A8A8" fontSize="10px">
                                                     We are all for freedom of choice, if you want to try different combinations than our favorites - go ahead and click customize and roll your own!
@@ -185,7 +147,7 @@ function MapClientPage({cartStore}: {
                                                 <Box sx={{ display: "flex", justifyContent: 'end' }}>
                                                     <Controller
                                                         name="headline"
-                                                        control={userForm.control}
+                                                        control={form.control}
                                                         render={({ field }) =>
                                                             <TextField fullWidth size="small" placeholder={theme?.data?.cardSettings?.defaultText?.headline} {...field} />
                                                         }
@@ -203,7 +165,7 @@ function MapClientPage({cartStore}: {
                                                 <Box sx={{ display: "flex", justifyContent: 'end' }}>
                                                     <Controller
                                                         name="divider"
-                                                        control={userForm.control}
+                                                        control={form.control}
                                                         render={({ field }) =>
                                                             <TextField fullWidth size="small" placeholder={theme?.data?.cardSettings?.defaultText?.divider} {...field} />
                                                         }
@@ -221,7 +183,7 @@ function MapClientPage({cartStore}: {
                                                 <Box sx={{ display: "flex", justifyContent: 'end' }}>
                                                     <Controller
                                                         name="tagline"
-                                                        control={userForm.control}
+                                                        control={form.control}
                                                         render={({ field }) =>
                                                             <TextField fullWidth size="small" placeholder={theme?.data?.cardSettings?.defaultText?.tagline}  {...field} />
                                                         }
@@ -239,7 +201,7 @@ function MapClientPage({cartStore}: {
                                                 <Box sx={{ display: "flex", justifyContent: 'end' }}>
                                                     <Controller
                                                         name="subline"
-                                                        control={userForm.control}
+                                                        control={form.control}
                                                         render={({ field }) =>
                                                             <TextField fullWidth size="small" placeholder={theme?.data?.cardSettings?.defaultText?.subline} {...field} />
                                                         }
@@ -264,7 +226,7 @@ function MapClientPage({cartStore}: {
                                 <AccordionDetails>
                                     Select poster size
                                     <SizesContainer>
-                                        <Controller control={userForm.control} name="sizeId" render={(form) => {
+                                        <Controller control={form.control} name="sizeId" render={(form) => {
                                             return (<>{sizes.length > 0 && sizes.map((item, index) => {
                                                 return (
                                                     <SizeButton className={item.id === form.field.value ? "active" : ""} key={item.id} onClick={() => { form.field.onChange(item.id) }}>{item.name}</SizeButton>
@@ -274,7 +236,7 @@ function MapClientPage({cartStore}: {
                                     </SizesContainer>
                                     Select orientation
                                     <SizesContainer>
-                                        <Controller control={userForm.control} name="orientation" render={(form) => {
+                                        <Controller control={form.control} name="orientation" render={(form) => {
                                             return (<>
                                                 <SizeButton className={form.field.value === "landscape" ? "active" : ""} onClick={() => { form.field.onChange("landscape") }}>Landscape</SizeButton>
                                                 <SizeButton className={form.field.value === "portrait" ? "active" : ""} onClick={() => { form.field.onChange("portrait") }}>Portrait</SizeButton>
@@ -287,17 +249,7 @@ function MapClientPage({cartStore}: {
                         </Typography>
                         <Box sx={{ padding: "10px", background: "#FFFFFF" }}>
                             <Grid container>
-                                <CheckoutButton onClick={()=> {cartStore?.addItem({
-                                    name:"Звездная карта",
-                                    price: 2000,
-                                    productId: 231,
-                                    properties: [{
-                                        name: "Тема",
-                                        value: theme!.name
-                                    }],
-                                    preview: theme!.preview,
-                                    data: custom
-                                })}} />
+                                <CheckoutButton onClick={() => { addToCart("Звездная карта") }} />
                             </Grid>
                         </Box>
 
@@ -355,4 +307,4 @@ const LocationBlock = styled.div`
     }
 `
 
-export default inject("cartStore")(observer(MapClientPage)) 
+export default inject("cartStore")(observer(MapClientPage))

@@ -10,7 +10,7 @@ export class CartItem  {
     @observable preview?: string;
     @observable name?: string;
     @observable data?: UserCustomizations;
-    @observable properties?: Array<{
+    @observable properties!: Array<{
         name: string;
         value: string;
     }>;
@@ -24,7 +24,6 @@ export class CartItem  {
 
     @action updateQuantity(quantity: number) {
         this.quantity = Math.max(1, quantity);
-
     }
 
     @computed get totalPrice() {
@@ -60,13 +59,9 @@ export class Cart {
     }
 
     @action addItem(data: Partial<CartItem>) {
-        
-        
         runInAction(() => {
             this.items.push(new CartItem(data))
         })
-
-
     }
 
     @action updateItem(id: number, quantity: number) {

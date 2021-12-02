@@ -142,64 +142,23 @@ export async function getSizes(): Promise<Array<Size>> {
     return json;
 }
 
-interface VersionAPIResponse {
-    parent_id?: string;
+
+
+export interface Version {
     name: string;
     image: string;
     id: number;
+    children: Array<Version>;
 }
 
-interface Version {
-    name: string;
-    image: string;
-    id: number;
-    children?: Array<Version>;
-}
-
-export async function getVersions(): Promise<Array<object>> {
+export async function getVersions(): Promise<Array<Version>> {
     let request = await fetch("/api/versions");
     if (!request.ok) {
         throw Error("Server did not return any versions");
     }
-    let json: Array<VersionAPIResponse> = await request.json();
-
-    const versions = buildTree(json);
-
-    return versions;
+    let json: Array<Version> = await request.json();
+    return json;
 }
-
-function buildTree(array: Array<VersionAPIResponse>, item?: VersionAPIResponse): Array<Version> {
-    let result: Array<Version> = []
-    // Start the tree
-    if (!item) {
-        // Find root nodes and their children
-        array.forEach((item) => {
-            if (item.parent_id === undefined) {
-                let children = buildTree(array, item);
-                result.push({
-                    id: item.id,
-                    image: item.image,
-                    name: item.name,
-                    children: children,
-                })
-            }
-        })
-    } else {
-        array.forEach((arrayItem) => {
-            if (arrayItem.parent_id === item.id.toString()) {
-                let children = buildTree(array, arrayItem);
-                result.push({
-                    id: arrayItem.id,
-                    image: arrayItem.image,
-                    name: arrayItem.name,
-                    children: children,
-                })
-            }
-        })
-    }
-    return result;
-}
-
 
 export interface PricingOption {
     "price": string,
