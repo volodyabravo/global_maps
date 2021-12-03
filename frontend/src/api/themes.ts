@@ -96,6 +96,9 @@ export interface UserCustomizations {
     };
     date?: Date;
     zoom?: number;
+    
+    // Ids of variants
+    version?: Array<number>;
 }
 
 export interface MapTheme {

@@ -1,14 +1,14 @@
-import { AccordionDetails, Grid, TextField, Typography, Box,  Container, Tabs, Tab } from "@mui/material";
+import { AccordionDetails, Grid, TextField, Typography, Box, Container, Tabs, Tab } from "@mui/material";
 import { useState } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { Controller } from "react-hook-form";
+import { Control, Controller, useController } from "react-hook-form";
 import styled from "@emotion/styled";
 import { Accordion, AccordionSummary } from "../../components/editor/Accordion";
 import { CheckoutButton } from "../../components/buttons/CheckOutButton";
 import { TabContext, TabPanel } from "@mui/lab";
 import { ThemePicker } from "../../components/form/ThemePicker";
-import { MapType } from "../../api/themes";
+import { MapType, UserCustomizations, Version } from "../../api/themes";
 import { MapView } from "../../components/MapView";
 import { LocationSelector } from "../../components/geocoder/LocationSelector";
 import { inject, observer } from 'mobx-react';
@@ -40,9 +40,8 @@ function MapClientPage({ cartStore }: {
     } = useClient(cartStore, MapType.Star)
 
 
+
     let custom = form.watch();
-
-
 
     return <div style={{ "backgroundColor": "#F8F8F8", }}>
         <Container sx={{
@@ -243,6 +242,11 @@ function MapClientPage({ cartStore }: {
                                             </>)
                                         }} />
                                     </SizesContainer>
+                                    {versions.length > 0 && <RecursiveVersionPicker control={form.control} versions={versions} />}
+
+
+
+
                                 </AccordionDetails>
                             </Accordion>
 
@@ -259,6 +263,55 @@ function MapClientPage({ cartStore }: {
             </Grid>
         </Container>
     </div >
+}
+
+
+function RecursiveVersionPicker({ control, versions }: { control: Control<UserCustomizations, object>, versions: Array<Version> }) {
+    let { field: {
+        value, onChange
+    } } = useController({
+        control: control,
+        name: "version"
+    })
+
+    // Value is an array of ids [1,2,3,4 ]
+    console.log("Value", value)
+    function recurse(items: Array<Version>, value: number[], onSelect: (arr: number[]) => any) {
+        let elements = [
+            <SizesContainer >
+                {items.map((item) => {
+                    const isSelected = (value && item.id === value[0]);
+                    return (
+                        <SizeButton
+                            className={isSelected ? "active" : ""}
+                            key={item.id}
+                            onClick={() => {
+                                onSelect([item.id])
+                            }}
+                        >
+                            {item.name}
+                        </SizeButton>
+                    )
+                })}
+            </SizesContainer>
+        ]
+
+        if (value && value[0]) {
+            let selectedItem = items.find((x) => x.id === value[0]);
+            if (selectedItem && selectedItem?.children && selectedItem.children.length > 0) {
+                let nofirst = value.filter((x, i) => i !== 0);
+                console.log(nofirst)
+                elements = [
+                    ...elements,
+                    ...recurse(selectedItem.children, nofirst, (arr) => onSelect([selectedItem!.id, ...arr]))
+                ]
+            }
+        }
+        return elements
+    }
+
+    // @ts-ignore
+    return <div>{recurse(versions, value, (arr) => { onChange(arr) })}</div>
 }
 
 const SizesContainer = styled.div`

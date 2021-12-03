@@ -1,13 +1,13 @@
 /**
  * This file contains all of the logic for the client editor
  */
-import { useObserver } from "mobx-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { getSizes, getThemes, getVersions, MapTheme, MapType, Size, UserCustomizations, Version } from "../api/themes";
 import { Cart, CartItem } from "../cart/cart.store";
+import demo from "./../assets/demo-pic.png"
 
 const hasGeo = 'geolocation' in navigator;
 
@@ -18,15 +18,15 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
     const [versions, setVersions] = useState<Array<Version>>([]);
 
 
-
     // Form for storing data
     const form = useForm<UserCustomizations>({
         defaultValues: {
-            orientation: "portrait"
+            orientation: "portrait",
         }
     });
 
     let custom = form.watch();
+
     let theme = useMemo(() => { return themes.find((theme) => theme.id === custom.theme) }, [custom.theme, themes]);
     let size: Size | undefined = useMemo(() => { return sizes.find((size) => size.id === custom.sizeId) }, [custom.sizeId, sizes]);
 
@@ -59,10 +59,10 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
     function addToCart(name: string) {
         let itemData: Partial<CartItem> = {
             name: name,
-            price: 2000,
-            productId: 231,
+            price: 0,
+            // productId: 231,
             properties: [],
-            preview: theme!.preview,
+            preview: theme!.preview || demo,
             data: custom
         }
 

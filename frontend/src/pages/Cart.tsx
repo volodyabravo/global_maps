@@ -9,7 +9,7 @@ import { MapView } from "../components/MapView";
 import styled from "@emotion/styled";
 import { FaCross, FaTimes } from "react-icons/fa";
 
-import demo from "./../assets/demo-pic.png"
+
 import { CartItem } from "../components/cart/CartItem";
 import { inject, observer } from "mobx-react";
 import cartStore, { Cart } from "../cart/cart.store";
@@ -51,8 +51,6 @@ function CartPage(props: {
                 </CartFormContainer>
             </PartsContainer>
         </Container>
-
-        <RecommendedTitle>рекомендуем</RecommendedTitle>
     </div >
 }
 
