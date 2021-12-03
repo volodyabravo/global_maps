@@ -63,7 +63,23 @@ export function MapView(props: MapViewProps) {
     height = props.size.height;
     width = props.size.width;
   }
-  
+
+  {
+    let t: number;
+    if (props.custom?.orientation === "landscape") {
+      t = Math.max(height, width);
+      height = Math.min(height, width)
+      width = t
+    }
+    if (props.custom?.orientation === "portrait") {
+      t = Math.min(height, width);
+      height = Math.max(height, width)
+      width = t
+    }
+  }
+
+
+
   let print = props.print;
   let layout = props.layout || "CelestialCircle";
   let maptype = props.maptype || "celestial";
@@ -89,7 +105,7 @@ export function MapView(props: MapViewProps) {
 
   if (!print) {
     return (
-      <CardArea className="card-area" style={{maxWidth: "100vw"}}>
+      <CardArea className="card-area" style={{ maxWidth: "100vw" }}>
         <style dangerouslySetInnerHTML={{
           __html: props.theme.data?.customCss || ""
         }} />

@@ -22,7 +22,7 @@ export function CartItem(props: CartItemProps) {
 
         </ItemName>
         <ItemDetails onClick={() => props.onLearnMore && props.onLearnMore(props.item)} >
-            Подробнее <FaChevronRight />
+            {/* Подробнее <FaChevronRight /> */}
         </ItemDetails>
         <ItemPrice>
             {props.item.price} ₽
