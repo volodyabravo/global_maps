@@ -39,6 +39,7 @@ def order_create(request):
             order.save()
         except Exception as e:
             order_logger.error('Failed to create order: "%s"' % e)
+            order_logger.error('Probably missed order data: "%s"' % request.body)
         return HttpResponse(status=201)
     return JsonResponse({"error": "Use POST"})
 
