@@ -46,12 +46,6 @@ class MapVersionsSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
-class OrderSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Order
-        fields = ['card_data', 'name', 'surname', 'phone', 'email', 'country', 'city', 'address', 'delivery', 'comment']
-
-
 class VectorImagesSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
 

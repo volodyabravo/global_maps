@@ -173,3 +173,23 @@ EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = os.getenv('EMAIL_PORT', 587)
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'me@gmail.com')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'password')
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '{0}/order.log'.format(BASE_DIR),
+        },
+    },
+    'loggers': {
+        'order': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

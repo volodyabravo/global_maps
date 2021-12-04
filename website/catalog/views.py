@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 
 from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, VectorImages, VectorColors
 from .serializers import MapThemeSerializer, MapSizeSerializer, MapPricesSerializer, MapVersionsSerializer,\
-    OrderSerializer, VectorImagesSerializer, VectorColorsSerializer
+    VectorImagesSerializer, VectorColorsSerializer
 
 
 class MapThemeView(viewsets.ModelViewSet):
@@ -80,12 +80,6 @@ class MapVersionsView(viewsets.ModelViewSet):
         _object = get_object_or_404(queryset, pk=pk)
         serializer = MapVersionsSerializer(_object)
         return Response(serializer.data)
-
-
-class MapOrderView(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-    http_method_names = ['post', ]
 
 
 class VectorImagesView(viewsets.ModelViewSet):

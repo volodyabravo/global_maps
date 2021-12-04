@@ -18,7 +18,7 @@ def get_cities(request):
             return JsonResponse(json_data, safe=False, json_dumps_params={'ensure_ascii': False})
         else:
             return HttpResponse(r.text)
-    return JsonResponse({"error": "Недопустимый http метод, используйте Get"})
+    return JsonResponse({"error": "Use GET"})
 
 
 # http://localhost:8000/api/delivery/get_delivery_methods_by_city/?&city_id=6fdecb78-893a-4e3f-a5ba-aa062459463b&weight=200&x=20&y=10&z=5
@@ -46,7 +46,7 @@ def get_delivery_methods_by_city(request):
             return JsonResponse(json_data, safe=False, json_dumps_params={'ensure_ascii': False})
         else:
             return HttpResponse(r.text)
-    return JsonResponse({"error": "Недопустимый http метод, используйте Get"})
+    return JsonResponse({"error": "Use GET"})
 
 
 # http://localhost:8000/api/delivery/get_city_pvz/?&city_id=6fdecb78-893a-4e3f-a5ba-aa062459463b&weight=200&x=20&y=10&z=5
@@ -74,4 +74,24 @@ def get_city_pvz(request):
             return JsonResponse(json_data, safe=False, json_dumps_params={'ensure_ascii': False})
         else:
             return HttpResponse(r.text)
-    return JsonResponse({"error": "Недопустимый http метод, используйте Get"})
+    return JsonResponse({"error": "Use GET"})
+
+
+def count_product_delivery_price(city_id, delivery_method_id, pvz_id, weight, x, y, z, price):
+    price_to_pay = price
+    price_insurance = price
+    params = {"token": os.getenv('salesbeat_api_token', 0),
+              "city_id": city_id,
+              "delivery_method_id": delivery_method_id,
+              "pvz_id": pvz_id,
+              "weight": int(weight),
+              "x": int(x),
+              "y": int(y),
+              "z": int(z),
+              "price_to_pay": int(price_to_pay),
+              "price_insurance": int(price_insurance),
+              }
+    r = requests.get('{0}{1}'.format(os.getenv('salesbeat_api_route', '/'), 'get_city_pvz'), params=params)
+    json_data = json.loads(r.text)
+    price = json_data.get("delivery_price")
+    return price

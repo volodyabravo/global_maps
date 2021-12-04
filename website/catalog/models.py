@@ -76,7 +76,7 @@ class MapPrices(models.Model):
 
 
 class Order(models.Model):
-    status = models.IntegerField(_('Status'), default=1, blank=False, null=False,
+    status = models.IntegerField(_('Status'), default=OrderStatuses.STATUS_ORDER, blank=False, null=False,
                                  choices=[(key, value) for key, value in OrderStatuses.STATUSES.items()])
     date = models.DateTimeField(_('Date and time'), auto_now=True)
     card_data = models.JSONField(_('JSON data'), blank=True, null=True)
@@ -85,13 +85,16 @@ class Order(models.Model):
     surname = models.CharField(_('Surname'), blank=True, null=True, max_length=500)
     phone = models.CharField(_('Phone'), blank=True, null=True, max_length=20)
     email = models.EmailField(_('Email'), blank=True, null=True, max_length=500)
-    country = models.CharField(_('Country'), blank=True, null=True, max_length=500)
-    city = models.CharField(_('City'), blank=True, null=True, max_length=500)
-    address = models.CharField(_('Address'), blank=True, null=True, max_length=500)
-    delivery = models.CharField(_('Delivery'), blank=True, null=True, max_length=500)
     comment = models.TextField(_('Comments'), blank=True, null=True, max_length=5000)
     track = models.IntegerField(_('Track number'), blank=True, null=True)
-    exception_text = models.CharField(_('subline'), blank=True, null=True, max_length=5000)
+
+    delivery_type_name = models.CharField(_('delivery_type_name'), blank=True, null=True, max_length=500)
+    delivery_type_id = models.CharField(_('delivery_type_id'), blank=True, null=True, max_length=500)
+    delivery_city_name = models.CharField(_('delivery_city_name'), blank=True, null=True, max_length=500)
+    delivery_region = models.CharField(_('delivery_region'), blank=True, null=True, max_length=500)
+    delivery_city_id = models.CharField(_('delivery_city_id'), blank=True, null=True, max_length=500)
+    delivery_address = models.CharField(_('delivery_address'), blank=True, null=True, max_length=500)
+    pvz_id = models.CharField(_('pvz_id'), blank=True, null=True, max_length=500)
 
     class Meta:
         verbose_name = 'Заказ'
@@ -99,7 +102,7 @@ class Order(models.Model):
 
 
 class MapOrder(models.Model):
-    order = models.ForeignKey(Order, blank=True, null=True, on_delete=models.RESTRICT)
+    order = models.ForeignKey(Order, related_name="products", blank=True, null=True, on_delete=models.RESTRICT)
     status = models.IntegerField(_('Status'), default=1, blank=False, null=False,
                                  choices=[(key, value) for key, value in MapOrderStatuses.STATUSES.items()])
     date = models.DateTimeField(_('Date and time'), auto_now=True)
