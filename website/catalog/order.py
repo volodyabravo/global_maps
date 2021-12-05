@@ -1,7 +1,7 @@
 import json
 import logging
 from .models import Order, MapOrder
-from .delivery import count_product_delivery_price
+from .delivery import get_delivery_methods_by_city
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from constants import OrderStatuses
@@ -26,6 +26,8 @@ def order_create(request):
                 email=personal.get('email'),
                 phone=personal.get('phone'),
                 comment=personal.get('comment'),
+                call_back=personal.get('call_back'),
+                emails_agree=personal.get('emails_agree'),
                 delivery_type_name=delivery.get('delivery_type_name'),
                 delivery_type_id=delivery.get('delivery_type_id'),
                 delivery_city_name=delivery.get('delivery_city_name'),

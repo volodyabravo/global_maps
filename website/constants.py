@@ -24,15 +24,6 @@ class MapOrderStatuses:
     }
 
 
-class MapSizeUnits:
-    UNIT_PIXELS = 1
-    UNIT_CENTIMETERS = 2
-    UNITS = {
-        UNIT_PIXELS: _('px'),
-        UNIT_CENTIMETERS: _('cm'),
-    }
-
-
 class OrderStatuses:
     # Amo pipelines id`s
     STATUS_ORDER = 43263424
@@ -57,3 +48,8 @@ class OrderStatuses:
         STATUS_FINISHED: 'Успешно реализовано',
         STATUS_CLOSED: 'Закрыто и не реализовано',
     }
+
+
+class Delivery:
+    PACKAGE_ADD_SPACE = 5
+    PACKAGE_ADD_WEIGHT = 200

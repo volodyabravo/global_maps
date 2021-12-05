@@ -2,6 +2,9 @@ import requests
 import os
 import json
 from django.http import JsonResponse, HttpResponse
+from .models import MapSize, MapVersions, MapPrices
+from django.views.decorators.csrf import csrf_exempt
+from constants import Delivery
 
 
 # http://localhost:8000/api/delivery/get_cities/?city=Севаст
@@ -21,77 +24,97 @@ def get_cities(request):
     return JsonResponse({"error": "Use GET"})
 
 
-# http://localhost:8000/api/delivery/get_delivery_methods_by_city/?&city_id=6fdecb78-893a-4e3f-a5ba-aa062459463b&weight=200&x=20&y=10&z=5
+@csrf_exempt
 def get_delivery_methods_by_city(request):
-    if request.method == 'GET':
-        city_id = request.GET.get('city_id', 0)
-        weight = request.GET.get('weight', 0)
-        x = request.GET.get('x', 0)
-        y = request.GET.get('y', 0)
-        z = request.GET.get('z', 0)
-        price_to_pay = request.GET.get('price', 8000)
-        price_insurance = request.GET.get('price_insurance', 8000)
-        params = {"token": os.getenv('salesbeat_api_token', 0),
-                  "id": city_id,
-                  "weight": int(weight),
-                  "x": int(x),
-                  "y": int(y),
-                  "z": int(z),
-                  "price_to_pay": int(price_to_pay),
-                  "price_insurance": int(price_insurance),
-                  }
-        r = requests.get('{0}{1}'.format(os.getenv('salesbeat_api_route', '/'), 'get_delivery_methods_by_city'), params=params)
-        if r.status_code == 200:
-            json_data = json.loads(r.text)
-            return JsonResponse(json_data, safe=False, json_dumps_params={'ensure_ascii': False})
-        else:
-            return HttpResponse(r.text)
-    return JsonResponse({"error": "Use GET"})
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        products = data.get('products')
+        city_id = data.get('delivery').get('delivery_city_id')
+
+        final_json = {}
+        for product in products:
+            product_customization = product.get('product_customization')
+            size = MapSize.objects.get(id=product_customization.get('sizeId'))
+            version = MapVersions.objects.get(id=product_customization.get('version')[-1])
+            price = MapPrices.objects.get(size=size, version=version)
+
+            if version.needs_delivery:
+
+                params = {"token": os.getenv('salesbeat_api_token', 0),
+                          "id": city_id,
+                          "weight": price.weight + Delivery.PACKAGE_ADD_WEIGHT,
+                          "x": int(size.width + Delivery.PACKAGE_ADD_SPACE),
+                          "y": int(size.height + Delivery.PACKAGE_ADD_SPACE),
+                          "z": int(size.depth + Delivery.PACKAGE_ADD_SPACE),
+                          "price_to_pay": int(price.price),
+                          "price_insurance": int(price.price),
+                          }
+                r = requests.get('{0}{1}'.format(os.getenv('salesbeat_api_route', '/'),
+                                                 'get_delivery_methods_by_city'),
+                                 params=params)
+                if r.status_code == 200:
+                    response_data = json.loads(r.text).get('delivery_methods')
+                    custom_delivery_data = {}
+                    for delivery_type in response_data:
+                        custom_delivery_data[delivery_type.get('name')] = delivery_type
+                    if not final_json:
+                        final_json = custom_delivery_data
+                    else:
+                        for delivery_name in final_json:
+                            if custom_delivery_data.get(delivery_name):
+                                final_json[delivery_name]['delivery_price'] +=\
+                                    custom_delivery_data.get(delivery_name)['delivery_price']
+                            else:
+                                del final_json[delivery_name]
+                else:
+                    return HttpResponse(r.text)
+        return JsonResponse(final_json, safe=False, json_dumps_params={'ensure_ascii': False})
+    return JsonResponse({"error": "Use POST"})
 
 
-# http://localhost:8000/api/delivery/get_city_pvz/?&city_id=6fdecb78-893a-4e3f-a5ba-aa062459463b&weight=200&x=20&y=10&z=5
+@csrf_exempt
 def get_city_pvz(request):
-    if request.method == 'GET':
-        city_id = request.GET.get('city_id', 0)
-        weight = request.GET.get('weight', 0)
-        x = request.GET.get('x', 0)
-        y = request.GET.get('y', 0)
-        z = request.GET.get('z', 0)
-        price_to_pay = request.GET.get('price', 8000)
-        price_insurance = request.GET.get('price_insurance', 8000)
-        params = {"token": os.getenv('salesbeat_api_token', 0),
-                  "id": city_id,
-                  "weight": int(weight),
-                  "x": int(x),
-                  "y": int(y),
-                  "z": int(z),
-                  "price_to_pay": int(price_to_pay),
-                  "price_insurance": int(price_insurance),
-                  }
-        r = requests.get('{0}{1}'.format(os.getenv('salesbeat_api_route', '/'), 'get_city_pvz'), params=params)
-        if r.status_code == 200:
-            json_data = json.loads(r.text)
-            return JsonResponse(json_data, safe=False, json_dumps_params={'ensure_ascii': False})
-        else:
-            return HttpResponse(r.text)
-    return JsonResponse({"error": "Use GET"})
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        products = data.get('products')
+        city_id = data.get('delivery').get('delivery_city_id')
 
+        final_json = {}
+        for product in products:
+            product_customization = product.get('product_customization')
+            size = MapSize.objects.get(id=product_customization.get('sizeId'))
+            version = MapVersions.objects.get(id=product_customization.get('version')[-1])
+            price = MapPrices.objects.get(size=size, version=version)
 
-def count_product_delivery_price(city_id, delivery_method_id, pvz_id, weight, x, y, z, price):
-    price_to_pay = price
-    price_insurance = price
-    params = {"token": os.getenv('salesbeat_api_token', 0),
-              "city_id": city_id,
-              "delivery_method_id": delivery_method_id,
-              "pvz_id": pvz_id,
-              "weight": int(weight),
-              "x": int(x),
-              "y": int(y),
-              "z": int(z),
-              "price_to_pay": int(price_to_pay),
-              "price_insurance": int(price_insurance),
-              }
-    r = requests.get('{0}{1}'.format(os.getenv('salesbeat_api_route', '/'), 'get_city_pvz'), params=params)
-    json_data = json.loads(r.text)
-    price = json_data.get("delivery_price")
-    return price
+            if version.needs_delivery:
+
+                params = {"token": os.getenv('salesbeat_api_token', 0),
+                          "id": city_id,
+                          "weight": price.weight + Delivery.PACKAGE_ADD_WEIGHT,
+                          "x": int(size.width + Delivery.PACKAGE_ADD_SPACE),
+                          "y": int(size.height + Delivery.PACKAGE_ADD_SPACE),
+                          "z": int(size.depth + Delivery.PACKAGE_ADD_SPACE),
+                          "price_to_pay": int(price.price),
+                          "price_insurance": int(price.price),
+                          }
+                r = requests.get('{0}{1}'.format(os.getenv('salesbeat_api_route', '/'),
+                                                 'get_city_pvz'),
+                                 params=params)
+                if r.status_code == 200:
+                    response_data = json.loads(r.text).get('pvz_list')
+                    custom_delivery_data = {}
+                    for delivery_type in response_data:
+                        custom_delivery_data[delivery_type.get('id')] = delivery_type
+                    if not final_json:
+                        final_json = custom_delivery_data
+                    else:
+                        for delivery_name in final_json:
+                            if custom_delivery_data.get(delivery_name):
+                                final_json[delivery_name]['delivery_price'] += \
+                                    custom_delivery_data.get(delivery_name)['delivery_price']
+                            else:
+                                del final_json[delivery_name]
+                else:
+                    return HttpResponse(r.text)
+        return JsonResponse(final_json, safe=False, json_dumps_params={'ensure_ascii': False})
+    return JsonResponse({"error": "Use POST"})

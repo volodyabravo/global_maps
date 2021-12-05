@@ -1,7 +1,7 @@
 from djmoney.models.fields import MoneyField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from constants import MapTypes, MapOrderStatuses, MapSizeUnits, OrderStatuses
+from constants import MapTypes, MapOrderStatuses, OrderStatuses
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from colorfield.fields import ColorField
@@ -31,6 +31,7 @@ class MapVersions(models.Model):
     order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
     parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.RESTRICT)
     name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
+    needs_delivery = models.BooleanField('Needs delivery', blank=False, null=False, default=True)
     image = models.ImageField(_('Image'), upload_to='uploads/images/versions/', blank=True)
 
     def __str__(self):
@@ -62,7 +63,8 @@ class MapSize(models.Model):
 
 
 class MapPrices(models.Model):
-    price = MoneyField(_('Price'), max_digits=10, decimal_places=2, null=True, default_currency='RUB')
+    price = models.IntegerField(_('Price'), default=0, blank=False, null=False)
+    weight = models.PositiveIntegerField(_('Weight in grams'), null=False, blank=False, default=800)
     size = models.ForeignKey(MapSize, blank=True, null=True, on_delete=models.RESTRICT)
     version = models.ForeignKey(MapVersions, blank=True, null=True, on_delete=models.RESTRICT)
 
@@ -86,6 +88,8 @@ class Order(models.Model):
     phone = models.CharField(_('Phone'), blank=True, null=True, max_length=20)
     email = models.EmailField(_('Email'), blank=True, null=True, max_length=500)
     comment = models.TextField(_('Comments'), blank=True, null=True, max_length=5000)
+    call_back = models.BooleanField(_('Call back'), default=False, null=False, blank=False)
+    emails_agree = models.BooleanField(_('emails_agree'), default=False, null=False, blank=False)
     track = models.IntegerField(_('Track number'), blank=True, null=True)
 
     delivery_type_name = models.CharField(_('delivery_type_name'), blank=True, null=True, max_length=500)
@@ -128,6 +132,7 @@ class MapOrder(models.Model):
 
 class VectorImages(models.Model):
     active = models.BooleanField(_('Is this active'), default=True)
+    name = models.CharField(_('Name'), blank=True, null=True, max_length=500)
     order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
     image = models.TextField(_('Image SVG'), blank=True, null=True, max_length=100000)
 
