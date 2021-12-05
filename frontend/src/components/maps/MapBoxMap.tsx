@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
-import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+// Import as es6 module
+// @ts-ignore
+import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import { useEffect, useRef } from 'react';
 import { UserCustomizations } from "../../api/themes";
 mapboxgl.accessToken = 'pk.eyJ1Ijoidm9sb2R5YWJyYXZvIiwiYSI6ImNrbHJ5YzkwZDFyODAybnF5YjMyYXd2dHAifQ.r8osMfsMnoe89b3qJ3g8uA';
@@ -29,14 +31,13 @@ export function MapBoxMap(props: MapBoxMapProps) {
             }
         }
         map.current = new mapboxgl.Map({
-            // @ts-expect-error
             container: mapContainer.current,
             style: props.style,
             center: center,
             zoom: 5,
         });
 
-        map.current.on("load", (e) => {
+        map.current.on("load", (e:any) => {
             console.log()
 
             if (map.current) {
