@@ -52,8 +52,8 @@ export class Cart {
         // Persist cart to local storage
         const reaction = autorun(() => {
             localStorage.cart = JSON.stringify(toJS(this.items));
-            trace();
-            console.log(getDependencyTree(reaction));
+            // trace();
+            // console.log(getDependencyTree(reaction));
         });
         // }, { delay: 2000, name: 'Persist' });
     }
