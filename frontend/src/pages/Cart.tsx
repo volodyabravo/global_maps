@@ -1,25 +1,20 @@
-import { Container, Grid, Typography } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { Container } from "@mui/material";
 
-import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
-
-import { getThemes, MapTheme, UserCustomizations } from "../api/themes";
-import { MapView } from "../components/MapView";
 import styled from "@emotion/styled";
-import { FaCross, FaTimes } from "react-icons/fa";
+
 
 
 import { CartItem } from "../components/cart/CartItem";
 import { inject, observer } from "mobx-react";
 import cartStore, { Cart } from "../cart/cart.store";
+import OrderForm from "../components/form/OrderForm";
 
 export interface Item {
     preview?: string;
     name?: string;
     price?: number;
     properties?: Array<{
-        name: string;   
+        name: string;
         value: string;
     }>
 }
@@ -42,12 +37,19 @@ function CartPage(props: {
                             :
                             <div>Нет товаров в корзине</div>
                         }
+                        {items.length > 0 &&
+                            <TotalCost>
+                                Стоимость заказа {cartStore.totalPrice} ₽
+                            </TotalCost>
+                        }
                     </CartItemsWrapper>
                 </CartItemsContainer>
                 <CartFormContainer>
+
                     <h2>
                         Оформление заказа
                     </h2>
+                    <OrderForm />
                 </CartFormContainer>
             </PartsContainer>
         </Container>
@@ -70,6 +72,16 @@ const RecommendedTitle = styled.h1`
     text-transform: uppercase;
     padding: 1em;
     color: #202945;
+`
+
+const TotalCost = styled.div`
+    font-size: 1em;
+    text-align: right;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 1em;
+    color: #202945;
+    
 `
 
 const PartsContainer = styled.div`
@@ -105,6 +117,7 @@ const CartItemsWrapper = styled.div`
 
 const CartFormContainer = styled.div`
     display: flex;
+    flex-direction: column ;
     margin: 6px;
     padding: 13px;
     flex-basis: 30%;
@@ -113,13 +126,14 @@ const CartFormContainer = styled.div`
         
     }
     & > h2 {
-        font-size: 1.5em;
+        font-size: 1.45em;
         text-align: center;
         font-weight: 600;
         text-transform: uppercase;
         color: #202945;
         margin:0;
         width: 100%;
+        letter-spacing: 1px;
     }
 `
 
