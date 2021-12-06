@@ -96,7 +96,7 @@ export interface UserCustomizations {
     };
     date?: Date;
     zoom?: number;
-    
+
     // Ids of variants
     version?: Array<number>;
 }
@@ -183,3 +183,27 @@ export async function getPrices(): Promise<Array<PricingOption>> {
     return json;
 }
 
+
+interface CitiesResponse {
+    success: boolean,
+    cities: Array<{
+        name: string,
+        id: string,
+        postalcode: string,
+        region_name: string,
+        short_name: string
+    }>;
+}
+
+export async function getCityByName(name: string): Promise<CitiesResponse["cities"]> {
+    let params = new URLSearchParams({ city: name });
+    let request = await fetch("/api/delivery/get_cities/?" + params);
+
+    if (!request.ok) {
+        throw Error("Server did not return any prices");
+    }
+
+    let json: CitiesResponse = await request.json();
+
+    return json.cities;
+}

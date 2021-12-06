@@ -20,16 +20,23 @@ let CustomInput = styled.div(({ theme }) => {
         font-family: Roboto;
         font-style: normal;
         font-weight: 500;
-        margin-left: 10px;
+
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 20px;
     }
     input {
         background: #FFFFFF;
         border: 1px solid #EEEEEE;
         box-sizing: border-box;
         padding: 10px;
-        font-family: Roboto;
+        font-family: Montserrat;
         font-style: normal;
-        font-weight: 500;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 20px;
     }
     &.error {
         input { 

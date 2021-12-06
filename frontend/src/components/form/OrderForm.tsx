@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import classNames from "classnames";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import AutocompleteField from "./AutocompleteField";
 import { TextField } from "./TextField";
 
 const stages = [
@@ -61,13 +62,14 @@ export default function OrderForm() {
                     <TextField rules={{required: true, maxLength: 500}} control={delivery.control} name="city" label="Город" />
                     <TextField rules={{required: true, maxLength: 500}} control={delivery.control} name="type" label="Тип доставки" />
                     <TextField rules={{required: true, maxLength: 500}} control={delivery.control} name="street" label="Улица" />
+                    <AutocompleteField/>
                     <input type="submit" value="Следующий шаг" />
                 </form>
             }
             {stage === 2 &&
                 <form onSubmit={personalInfo.handleSubmit(personalSubmit)}>
                     <TextField rules={{required: true, maxLength: 500}} control={personalInfo.control} name="name" label="*Имя получателя" />
-                    <TextField rules={{required: true, maxLength: 500}} control={personalInfo.control} name="surname" label="*Фамилия получателя" />
+                    <TextField rules={{required: true, maxLength: 500 }} control={personalInfo.control} name="surname" label="*Фамилия получателя" />
                     <TextField rules={{required: true, maxLength: 500}} control={personalInfo.control} name="phone" label="*Телефон получателя" />
                     <TextField rules={{required: true, maxLength: 500}} control={personalInfo.control} name="email" label="*Ваш E-Mail" />
                     <TextField rules={{maxLength: 5000}} control={personalInfo.control} name="comment" label="Комментарии к заказу" />
