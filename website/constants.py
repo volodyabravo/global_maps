@@ -24,6 +24,15 @@ class MapOrderStatuses:
     }
 
 
+class MapOrientationTypes:
+    TYPE_PORTRAIT = 1
+    TYPE_LANDSCAPE = 2
+    TYPES = {
+        TYPE_PORTRAIT: 'portrait',
+        TYPE_LANDSCAPE: 'landscape'
+    }
+
+
 class OrderStatuses:
     # Amo pipelines id`s
     STATUS_ORDER = 43263424

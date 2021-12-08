@@ -1,8 +1,8 @@
 from djmoney.models.fields import MoneyField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from constants import MapTypes, MapOrderStatuses, OrderStatuses
-from django.db.models.signals import pre_save
+from constants import MapTypes, MapOrderStatuses, OrderStatuses, MapOrientationTypes
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from colorfield.fields import ColorField
 from .amo import send_order_to_ammo, sync_orders
@@ -99,35 +99,12 @@ class Order(models.Model):
     delivery_city_id = models.CharField(_('delivery_city_id'), blank=True, null=True, max_length=500)
     delivery_address = models.CharField(_('delivery_address'), blank=True, null=True, max_length=500)
     pvz_id = models.CharField(_('pvz_id'), blank=True, null=True, max_length=500)
+    delivery_price = models.IntegerField(_('Delivery price'), blank=False, null=False, default=0)
+    total_price = models.IntegerField(_('Price'), blank=False, null=False, default=0)
 
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
-
-
-class MapOrder(models.Model):
-    order = models.ForeignKey(Order, related_name="products", blank=True, null=True, on_delete=models.RESTRICT)
-    status = models.IntegerField(_('Status'), default=1, blank=False, null=False,
-                                 choices=[(key, value) for key, value in MapOrderStatuses.STATUSES.items()])
-    date = models.DateTimeField(_('Date and time'), auto_now=True)
-    size = models.ForeignKey(MapSize, blank=True, null=True, on_delete=models.RESTRICT)
-    theme = models.ForeignKey(MapTheme, blank=True, null=True, on_delete=models.RESTRICT)
-    headline = models.CharField(_('headline'), blank=True, null=True, max_length=500)
-    divider = models.CharField(_('divider'), blank=True, null=True, max_length=500)
-    tagline = models.CharField(_('tagline'), blank=True, null=True, max_length=500)
-    subline = models.CharField(_('subline'), blank=True, null=True, max_length=500)
-    image = models.ImageField(_('Generated image'), upload_to='uploads/images/generated/', blank=True)
-    zoom = models.IntegerField(_('Zoom'), blank=True, null=True)
-    x = models.IntegerField(_('x'), blank=True, null=True)
-    y = models.IntegerField(_('y'), blank=True, null=True)
-    exception_text = models.CharField(_('subline'), blank=True, null=True, max_length=5000)
-
-    def __str__(self):
-        return '{0} {1}'.format(MapOrderStatuses.STATUSES.get(self.status), self.date)
-
-    class Meta:
-        verbose_name = 'Генерация карты'
-        verbose_name_plural = 'Генерации карт'
 
 
 class VectorImages(models.Model):
@@ -153,14 +130,57 @@ class VectorColors(models.Model):
         verbose_name_plural = 'Цвета векторных карт'
 
 
+class MapOrder(models.Model):
+    order = models.ForeignKey(Order, related_name="products", blank=True, null=True, on_delete=models.RESTRICT)
+    status = models.IntegerField(_('Status'), default=1, blank=False, null=False,
+                                 choices=[(key, value) for key, value in MapOrderStatuses.STATUSES.items()])
+    product = models.IntegerField(_('Map'), choices=[(key, value) for key, value in MapTypes.TYPES.items()], default=1,
+                                  blank=False, null=False)
+    date_created = models.DateTimeField(_('Date and time'), auto_now=True)
+    image = models.ImageField(_('Generated image'), upload_to='uploads/images/generated/', blank=True)
+    size = models.ForeignKey(MapSize, blank=True, null=True, on_delete=models.RESTRICT)
+    theme = models.ForeignKey(MapTheme, blank=True, null=True, on_delete=models.RESTRICT)
+    version = models.ForeignKey(MapVersions, blank=True, null=True, on_delete=models.RESTRICT)
+    headline = models.CharField(_('headline'), blank=True, null=True, max_length=500)
+    divider = models.CharField(_('divider'), blank=True, null=True, max_length=500)
+    tagline = models.CharField(_('tagline'), blank=True, null=True, max_length=500)
+    subline = models.CharField(_('subline'), blank=True, null=True, max_length=500)
+    orientation = models.CharField(_('orientation'), blank=True, null=True, max_length=500)
+    lng = models.FloatField('lng', blank=True, null=True)
+    lat = models.FloatField('lat', blank=True, null=True)
+    city_name = models.CharField('cityName', max_length=500, blank=True, null=True)
+    date = models.DateTimeField(_('Date and time'))
+    zoom = models.IntegerField(_('Zoom'), blank=True, null=True)
+    exception_text = models.CharField(_('Exception'), blank=True, null=True, max_length=5000)
+    vector_color = models.ForeignKey(VectorColors, blank=True, null=True, on_delete=models.RESTRICT)
+    vector_image = models.ForeignKey(VectorImages, blank=True, null=True, on_delete=models.RESTRICT)
+    price = models.IntegerField(_('Price'), blank=False, null=False, default=0)
+
+    def __str__(self):
+        return '{0} {1}'.format(MapOrderStatuses.STATUSES.get(self.status), self.date)
+
+    class Meta:
+        verbose_name = 'Генерация карты'
+        verbose_name_plural = 'Генерации карт'
+
+
+@receiver(pre_save, sender=Order)
+def count_prices(instance, **_):
+    products = MapOrder.objects.filter(order=instance)
+    total_price = 0
+    for product in products:
+        total_price += product.price
+    instance.total_price = total_price
+
+
 @receiver(pre_save, sender=Order)
 def order_to_ammo(instance, **_):
     if instance.id is None or not instance.ammo_id:
         send_order_to_ammo(instance)
     else:
-        previous = Order.objects.get(id=instance.id)
-        if previous.status != instance.status:
-            sync_orders(instance)
+        # previous = Order.objects.get(id=instance.id)
+        # if previous.status != instance.status:
+        sync_orders(instance)
 
 
 # @receiver(pre_save, sender=Order)

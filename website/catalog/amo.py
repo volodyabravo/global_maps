@@ -1,10 +1,11 @@
 from amocrm.v2 import Contact as _Contact
-from amocrm.v2 import Company as _Company
 from amocrm.v2 import Lead as _Lead
 from amocrm.v2 import custom_field
 from amocrm.v2 import tokens
 import logging
 import os
+from constants import OrderStatuses
+
 
 order_logger = logging.getLogger('order')
 
@@ -17,14 +18,13 @@ DIR_NAME = os.path.dirname(os.path.abspath(__file__))
 
 
 class Lead(_Lead):
-    price = custom_field.ContactPhoneField("Цена", code="PRICE")
     delivery_type = custom_field.TextCustomField("Способ доставки", field_id=813453)
     address = custom_field.TextCustomField("Адрес", field_id=813455)
-    products = custom_field.TextCustomField("Адрес", field_id=813461)
-    images = custom_field.TextAreaCustomField("Изображения", field_id=813463)
+    products = custom_field.TextAreaCustomField("Товары", field_id=816113)
     order_id = custom_field.NumericCustomField("Id заказа", field_id=813465)
     order_link = custom_field.TextCustomField("Ссылка на заказ", field_id=813467)
     comments = custom_field.TextCustomField("Комментарии", field_id=813475)
+    delivery_budget = custom_field.NumericCustomField("Бюджет доставки", field_id=814975)
 
 
 class Contact(_Contact):
@@ -52,6 +52,8 @@ def send_order_to_ammo(instance):
                         address=instance.delivery_address,
                         comments=instance.comment,
                         order_id=instance.id,
+                        delivery_budget=instance.delivery_price,
+                        price=instance.total_price,
                         order_link="https://stylemaps.ru/admin/catalog/order/{0}/change/".format(instance.id),
                         )
             lead.create()
@@ -87,9 +89,19 @@ def sync_orders(instance):
             tokens.default_token_manager.init(code=AMO_REFRESH_TOKEN, skip_error=True)
 
             lead = Lead.objects.get(instance.ammo_id)
-            lead.status = instance.status
+            if lead.status == OrderStatuses.STATUS_ORDER:
+                lead.status = instance.status
             lead.order_id = instance.id
             lead.order_link = "https://stylemaps.ru/admin/catalog/order/{0}/change/".format(instance.id)
+            lead.price = instance.total_price
+
+            products_links = []
+            products = instance.products.all()
+            for product in products:
+                products_links.append("https://stylemaps.ru/admin/catalog/maporder/{0}/change/".format(product.id))
+            products_str = '\n'.join([str(elem) for elem in products_links])
+            lead.products = products_str
+
             lead.save()
     except Exception as e:
         order_logger.error('Failed to update order at amo: "%s"' % e)
