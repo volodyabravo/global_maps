@@ -24,7 +24,9 @@ def order_create(request):
             products = data.get('products')
             delivery_price_response = get_delivery_methods_by_city(request)
             delivery_price_json = json.loads(delivery_price_response.content)
-            delivery_price = delivery_price_json.get(delivery.get('delivery_type_name')).get('delivery_price')
+            delivery_price = 0
+            if delivery_price_json:
+                delivery_price = delivery_price_json.get(delivery.get('delivery_type_name')).get('delivery_price')
             order = Order.objects.create(
                 name=personal.get('name'),
                 surname=personal.get('surname'),
