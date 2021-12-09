@@ -83,8 +83,22 @@ def order_create(request):
             order_logger.error('Failed to create order: "%s"' % e)
             order_logger.error('Probably missed order data: "%s"' % request.body)
             return HttpResponse(status=400)
-        return HttpResponse(status=201)
+        return JsonResponse({"order_id": order.id})
     return JsonResponse({"error": "Use POST"})
+
+
+@csrf_exempt
+def order_get(request):
+    if request.method == 'GET':
+        order = Order.objects.get(id=request.GET.get('order_id'))
+        order_data = {
+            "amount": order.delivery_price + order.total_price,
+            "order": order.id,
+            "name": "{0} {1}".format(order.name, order.surname),
+            "email": order.email,
+            "phone": order.phone
+        }
+        return JsonResponse(order_data)
 
 
 def order_count(request):

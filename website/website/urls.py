@@ -23,7 +23,7 @@ from catalog.views import MapThemeView, MapSizeView, MapPricesView, MapVersionsV
     VectorImagesView, VectorColorsView
 from catalog.delivery import get_cities, get_delivery_methods_by_city, get_city_pvz
 from catalog.mail import send_mail_view
-from catalog.order import order_create, order_count
+from catalog.order import order_create, order_count, order_get
 
 router = routers.DefaultRouter()
 router.register(r'themes', MapThemeView)
@@ -44,6 +44,7 @@ urlpatterns = [
     path(r'api/delivery/get_city_pvz/', get_city_pvz, name="get_city_pvz"),
     path(r'api/order/create/', order_create, name="order_create"),
     path(r'api/order/count/', order_count, name="order_count"),
+    path(r'api/order/order_get/', order_get, name="order_get"),
     # path(r'mail/', send_mail_view, name="mail")
 ]
 
