@@ -12,6 +12,7 @@ specifiers:
   '@testing-library/jest-dom': ^5.11.4
   '@testing-library/react': ^11.1.0
   '@testing-library/user-event': ^12.1.10
+  '@types/geojson': ^7946.0.8
   '@types/lodash': ^4.14.175
   '@types/mapbox-gl': ^2.4.2
   '@types/react': ^17.0.27
@@ -20,6 +21,7 @@ specifiers:
   classnames: ^2.3.1
   d3-celestial: ^0.7.35
   date-fns: ^2.25.0
+  fuse.js: ^6.4.6
   lodash: ^4.17.21
   mapbox-gl: ^2.5.1
   material-ui-color-picker: ^3.5.1
@@ -53,6 +55,7 @@ dependencies:
   '@testing-library/jest-dom': 5.14.1
   '@testing-library/react': 11.2.7_react-dom@17.0.2+react@17.0.2
   '@testing-library/user-event': 12.8.3
+  '@types/geojson': 7946.0.8
   '@types/lodash': 4.14.175
   '@types/mapbox-gl': 2.4.2
   '@types/react': 17.0.27
@@ -61,6 +64,7 @@ dependencies:
   classnames: 2.3.1
   d3-celestial: 0.7.35
   date-fns: 2.25.0
+  fuse.js: 6.4.6
   lodash: 4.17.21
   mapbox-gl: 2.5.1
   material-ui-color-picker: 3.5.1_12a6012245369fd5be825566be975ff0
@@ -6515,6 +6519,11 @@ packages:
 
   /functional-red-black-tree/1.0.1:
     resolution: {integrity: sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=}
+    dev: false
+
+  /fuse.js/6.4.6:
+    resolution: {integrity: sha512-/gYxR/0VpXmWSfZOIPS3rWwU8SHgsRTwWuXhyb2O6s7aRuVtHtxCkR33bNYu3wyLyNx/Wpv0vU7FZy8Vj53VNw==}
+    engines: {node: '>=10'}
     dev: false
 
   /gensync/1.0.0-beta.2:

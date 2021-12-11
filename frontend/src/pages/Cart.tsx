@@ -49,7 +49,7 @@ function CartPage(props: {
                     <h2>
                         Оформление заказа
                     </h2>
-                    <OrderForm />
+                    <OrderForm cartStore={cartStore} />
                 </CartFormContainer>
             </PartsContainer>
         </Container>

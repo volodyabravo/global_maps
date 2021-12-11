@@ -1,10 +1,12 @@
 import styled from "@emotion/styled";
 import classNames from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { getCityPvz, PVZ } from "../../api/themes";
 import AutocompleteField from "./AutocompleteField";
 import { TextField } from "./TextField";
-
+import { Cart } from "../../cart/cart.store";
+import PVZPicker from "./PVZPicker";
 const stages = [
     {
         name: "Выберите способ доставки",
@@ -17,13 +19,31 @@ const stages = [
     }
 ]
 
-export default function OrderForm() {
+export default function OrderForm({cartStore}: {cartStore?: Cart}) {
     let [stage, setStage] = useState(3);
+    let [pvzs, setPvzs] = useState<{
+        [key: string]: PVZ
+    }>({});
 
-    let delivery = useForm({
+
+    let delivery = useForm<{
+        type: string,
+        city?: {
+            name: string,
+            id: string,
+            postalcode: string,
+            region_name: string,
+            short_name: string
+        },
+        street: string,
+        entrance: string,
+        floor: string,
+        house: string,
+        pvz: null
+    }>({
         defaultValues: {
             type: "",
-            city: "",
+            city: undefined,
             street: "",
             entrance: "",
             floor: "",
@@ -53,26 +73,49 @@ export default function OrderForm() {
         setStage(3)
     }
 
+    let city = delivery.watch("city");
+
+    useEffect(() => {
+        (async ()=>{
+            console.log(city)
+            if (city && city.id) {
+                let pvzs = await  getCityPvz({
+                    delivery:{
+                        delivery_city_id: city.id
+                    },
+                    products: cartStore!.itemsForBackend
+                })
+               
+                if (pvzs ) {
+                    console.log(Object.keys(pvzs).length)
+                    setPvzs(pvzs)
+                }
+            }
+        })()
+        return () => {
+            // cleanup
+        }
+    }, [city])
+
     return <div>
         <StageDisplay stage={stage} setStage={setStage}></StageDisplay>
         {/* Stage 1 delivery */}
         <div >
             {stage === 1 &&
                 <form onSubmit={delivery.handleSubmit(deliverySubmit)}>
-                    <TextField rules={{required: true, maxLength: 500}} control={delivery.control} name="city" label="Город" />
-                    <TextField rules={{required: true, maxLength: 500}} control={delivery.control} name="type" label="Тип доставки" />
-                    <TextField rules={{required: true, maxLength: 500}} control={delivery.control} name="street" label="Улица" />
-                    <AutocompleteField/>
+                    <AutocompleteField control={delivery.control} name="city" rules={{ required: true }} />
+                    <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="type" label="Тип доставки" />
+                    <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="street" label="Улица" />
                     <input type="submit" value="Следующий шаг" />
                 </form>
             }
             {stage === 2 &&
                 <form onSubmit={personalInfo.handleSubmit(personalSubmit)}>
-                    <TextField rules={{required: true, maxLength: 500}} control={personalInfo.control} name="name" label="*Имя получателя" />
-                    <TextField rules={{required: true, maxLength: 500 }} control={personalInfo.control} name="surname" label="*Фамилия получателя" />
-                    <TextField rules={{required: true, maxLength: 500}} control={personalInfo.control} name="phone" label="*Телефон получателя" />
-                    <TextField rules={{required: true, maxLength: 500}} control={personalInfo.control} name="email" label="*Ваш E-Mail" />
-                    <TextField rules={{maxLength: 5000}} control={personalInfo.control} name="comment" label="Комментарии к заказу" />
+                    <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="name" label="*Имя получателя" />
+                    <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="surname" label="*Фамилия получателя" />
+                    <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="phone" label="*Телефон получателя" />
+                    <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="email" label="*Ваш E-Mail" />
+                    <TextField rules={{ maxLength: 5000 }} control={personalInfo.control} name="comment" label="Комментарии к заказу" />
                     <button onClick={() => { setStage(1) }} >Prev</button> <input type="submit" value="Следующий шаг" />
                 </form>
             }
@@ -83,6 +126,7 @@ export default function OrderForm() {
                 </form>
             }
         </div>
+        {Object.keys(pvzs).length > 0 && <PVZPicker pvzs={pvzs}/>}
     </div>
 }
 

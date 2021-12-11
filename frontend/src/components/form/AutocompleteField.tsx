@@ -3,13 +3,37 @@ import { useEffect, useState } from 'react';
 
 import { styled } from '@mui/material/styles';
 import { getCityByName } from '../../api/themes';
+import { Control, Path, RegisterOptions, useController } from "react-hook-form";
 
-const Label = styled('label')({
-    display: 'block',
-});
+interface AutocompleteCityProps<FieldValues> {
+    name: Path<FieldValues>;
+    control: Control<FieldValues>;
+    label?: string;
+    rules?: Omit<RegisterOptions<FieldValues, Path<FieldValues>>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>;
+}
+
+const Label = styled('label')(`
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+
+`);
 
 const Input = styled('input')(({ theme }) => ({
-    width: 200,
+    background: "#FFFFFF",
+    border: "1px solid #EEEEEE",
+    boxSizing: "border-box",
+    padding: "10px",
+    fontFamily: "Montserrat",
+    fontStyle: "normal",
+    fontWeight: "normal",
+    fontSize: "13px",
+    lineHeight: "20px",
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.getContrastText(theme.palette.background.paper),
 }));
@@ -25,7 +49,16 @@ const Listbox = styled('ul')(({ theme }) => ({
     overflow: 'auto',
     maxHeight: 200,
     border: '1px solid rgba(0,0,0,.25)',
-    '& li[data-focus="true"]': {
+    "li": {
+        padding: "10px",
+        cursor: "pointer"
+    },
+    '& li[aria-selected="true"]': {
+        backgroundColor: '#4a8df6',
+        color: 'white',
+        cursor: 'pointer',
+    },
+    '& li:hover': {
         backgroundColor: '#4a8df6',
         color: 'white',
         cursor: 'pointer',
@@ -36,16 +69,7 @@ const Listbox = styled('ul')(({ theme }) => ({
     },
 }));
 
-export default function AutocompleteField(props: {
-
-}) {
-    const [value, setValue] = useState<{
-        name: string,
-        id: string,
-        postalcode: string,
-        region_name: string,
-        short_name: string
-    } | null>(null);
+export default function AutocompleteCity<FieldValues>(props: AutocompleteCityProps<FieldValues>) {
     const [inputValue, setInputValue] = useState('');
     let [options, setOptions] = useState<Array<{
         name: string,
@@ -55,20 +79,19 @@ export default function AutocompleteField(props: {
         short_name: string
     }>>([]);
 
+    const {
+        field, fieldState
+    } = useController({
+        name: props.name,
+        control: props.control,
+        rules: props.rules,
+    })
 
     useEffect(() => {
         let active = true;
 
-        // if (!autocompleteService.current && window.google) {
-        //   autocompleteService.current =
-        //     new window.google.maps.places.AutocompleteService();
-        // }
-        // if (!autocompleteService.current) {
-        //   return undefined;
-        // }
-
         if (inputValue === '') {
-            setOptions(value ? [value] : []);
+            setOptions(field.value ? [field.value] : []);
             return undefined;
         }
 
@@ -79,7 +102,7 @@ export default function AutocompleteField(props: {
         return () => {
             active = false;
         };
-    }, [inputValue]);
+    }, [field.value, inputValue]);
 
 
 
@@ -93,14 +116,16 @@ export default function AutocompleteField(props: {
 
     } = useAutocomplete({
         options: options,
+        // id: 'autocomplete',
         autoComplete: true,
-        getOptionLabel: (option) => option.postalcode,
-        value: value,
+        getOptionLabel: (option) => option.name,
+        value: field.value,
+        isOptionEqualToValue: (option, value) => option.id == value.id,
         filterOptions: (x) => x,
         onChange: (event, newValue) => {
-            setOptions(newValue ? [newValue, ...options] : options);
-            setValue(newValue);
+            field.onChange(newValue)
         },
+        inputValue: inputValue,
         onInputChange: (event, newInputValue) => {
             setInputValue(newInputValue);
         },
@@ -110,17 +135,17 @@ export default function AutocompleteField(props: {
     })
 
     return <div>
-        <div {...getRootProps()}>
+        <Autocomplete {...getRootProps()}>
             <Label {...getInputLabelProps()}>Город</Label>
             <Input {...getInputProps()} />
-        </div>
+        </Autocomplete>
         {groupedOptions.length > 0 ? (
             <Listbox {...getListboxProps()}>
                 {groupedOptions.map((option, index) => {
                     // @ts-ignore
                     let key = option.id;
                     return (
-                        
+
                         // @ts-ignore
                         <li {...getOptionProps({ option, key })}>{option.name}</li>
                     )
@@ -129,3 +154,8 @@ export default function AutocompleteField(props: {
         ) : null}
     </div>
 }
+
+const Autocomplete = styled('div')(`
+    display:flex;
+    flex-direction: column;
+`);

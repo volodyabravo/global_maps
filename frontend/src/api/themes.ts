@@ -207,3 +207,133 @@ export async function getCityByName(name: string): Promise<CitiesResponse["citie
 
     return json.cities;
 }
+interface getCityPvzParams {
+    delivery: {
+        delivery_city_id: string
+    },
+    products: Array<APIProduct>;
+    personal?: {
+        name: string,
+        surname: string,
+        email: string,
+        phone: string,
+        comment: string,
+        promocode: string,
+        emails_agree: boolean,
+        call_back: boolean
+    }
+}
+
+export interface APIProduct {
+    product_customization: {
+        theme?: number,
+        headline?: string,
+        divider?: string,
+        tagline?: string,
+        subline?: string,
+        sizeId?: number,
+        orientation?: "portrait" | "landscape",
+        location?: {
+            lng?: number,
+            lat?: number,
+            cityName?: string
+        },
+        date?: Date,
+        zoom?: number,
+        version?: Array<number>,
+        vector?: {
+            color_id?: number,
+            image_id?: number
+        }
+    }
+}
+
+export interface PVZ {
+    /**
+     * ул. Международная, 15
+     */
+    address: string
+    /**
+     * "Выход из метро к БЦ Голден Гейт , 300 м прямо по ул. Международная"
+     */
+    address_description: string
+    city: string
+    /**
+     * delivery days
+     */
+    delivery_days: number
+    /**
+     * method id
+     */
+    delivery_method_id: string
+    /**
+     * method name
+     */
+    delivery_method_name: string
+    /**
+     * price in rub
+     */
+    delivery_price: number
+    /**
+     * id
+     */
+    id: string
+    latitude: number
+    longitude: number
+    metro_id: number | null
+    /**
+     * ул. Международная, 15
+     */
+    payments: { online: boolean, cash: boolean, card: boolean }
+    /**
+     * +79104875057, +79258590365
+     */
+    phone: string
+    /**
+     * ул. Международная, 15
+     */
+    postalcode: number | null
+    /**
+     * Пн-Пт 10:00-20:00, Сб-Вс 10:00-18:00
+     */
+    schedule: string
+    /**
+     * ул. Международная, 15
+     */
+    type: "postamat" | "pvz"
+}
+
+export async function getCityPvz(data: getCityPvzParams): Promise<{
+    [key: string]: PVZ
+}> {
+    let request = await fetch("/api/delivery/get_city_pvz/",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        });
+
+    if (!request.ok) {
+        throw Error("Server did not return any prices");
+    }
+
+    let json = await request.json();
+
+    return json;
+}
+
+
+export async function getCityDeliveryMethods(data: getCityPvzParams): Promise<any> {
+    let request = await fetch("/api/delivery/get_city_pvz/",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        });
+
+    if (!request.ok) {
+        throw Error("Server did not return any prices");
+    }
+
+    let json = await request.json();
+
+    return json;
+}

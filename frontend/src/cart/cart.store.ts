@@ -2,9 +2,9 @@ import { action, observable, computed, autorun, toJS, getDependencyTree, trace, 
 import { values, forEach } from 'lodash/fp';
 import productsStore, { Product } from './products.store';
 import { IObservableArray, ObservableValue } from 'mobx/dist/internal';
-import { UserCustomizations } from '../api/themes';
+import { APIProduct, UserCustomizations } from '../api/themes';
 
-export class CartItem  {
+export class CartItem {
     @observable productId?: number;
     @observable quantity?: number;
     @observable preview?: string;
@@ -45,8 +45,8 @@ export class Cart {
                 savedItems.forEach((item: any) => {
                     this.items.push(new CartItem(item))
                 });
-            }   
-            
+            }
+
         }
 
         // Persist cart to local storage
@@ -87,6 +87,28 @@ export class Cart {
     @computed get count() {
         return this.items.length;
     }
+
+    // Convert items for backend
+    @computed get itemsForBackend(): Array<APIProduct> {
+        return this.items.map((item) => {
+            return ({
+                product_customization: {
+                    date: item.data?.date,
+                    divider: item.data?.divider,
+                    headline: item.data?.headline,
+                    location: item.data?.location,
+                    orientation: item.data?.orientation,
+                    sizeId: item.data?.sizeId,
+                    subline: item.data?.subline,
+                    tagline: item.data?.tagline,
+                    theme: item.data?.theme,
+                    version: item.data?.version,
+                    zoom: item.data?.zoom
+                }
+            })
+        });
+    }
 }
 
 export default new Cart();
+

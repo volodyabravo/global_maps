@@ -38,8 +38,6 @@ export function MapBoxMap(props: MapBoxMapProps) {
         });
 
         map.current.on("load", (e:any) => {
-            console.log()
-
             if (map.current) {
                 map.current.resize();
                 if (props.custom?.location) {
