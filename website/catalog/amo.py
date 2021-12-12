@@ -60,7 +60,6 @@ def send_order_to_ammo(instance):
             instance.ammo_id = lead.id
 
             contact = Contact(first_name=instance.name,
-                              last_name=instance.surname,
                               phone=instance.phone,
                               email=instance.email,
                               country=instance.delivery_region,

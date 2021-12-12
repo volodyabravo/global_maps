@@ -27,9 +27,15 @@ def order_create(request):
             delivery_price = 0
             if delivery_price_json:
                 delivery_price = delivery_price_json.get(delivery.get('delivery_type_name')).get('delivery_price')
+            delivery_address = delivery.get('delivery_street')
+            if delivery.get('delivery_entrance'):
+                delivery_address += ', подтезд {0}'.format(delivery.get('delivery_entrance'))
+            if delivery.get('delivery_floor'):
+                delivery_address += ', этаж {0}'.format(delivery.get('delivery_floor'))
+            if delivery.get('delivery_apartments'):
+                delivery_address += ', квартира {0}'.format(delivery.get('delivery_apartments'))
             order = Order.objects.create(
                 name=personal.get('name'),
-                surname=personal.get('surname'),
                 email=personal.get('email'),
                 phone=personal.get('phone'),
                 comment=personal.get('comment'),
@@ -40,7 +46,7 @@ def order_create(request):
                 delivery_city_name=delivery.get('delivery_city_name'),
                 delivery_region=delivery.get('delivery_region'),
                 delivery_city_id=delivery.get('delivery_city_id'),
-                delivery_address=delivery.get('delivery_address'),
+                delivery_address=delivery_address,
                 pvz_id=delivery.get('pvz_id'),
                 card_data=data,
                 delivery_price=delivery_price
@@ -94,7 +100,7 @@ def order_get(request):
         order_data = {
             "amount": order.delivery_price + order.total_price,
             "order": order.id,
-            "name": "{0} {1}".format(order.name, order.surname),
+            "name": order.name,
             "email": order.email,
             "phone": order.phone
         }

@@ -84,7 +84,6 @@ class Order(models.Model):
     card_data = models.JSONField(_('JSON data'), blank=True, null=True)
     ammo_id = models.IntegerField(_('ammo lead id'), blank=True, null=True)
     name = models.CharField(_('Name'), blank=True, null=True, max_length=500)
-    surname = models.CharField(_('Surname'), blank=True, null=True, max_length=500)
     phone = models.CharField(_('Phone'), blank=True, null=True, max_length=20)
     email = models.EmailField(_('Email'), blank=True, null=True, max_length=500)
     comment = models.TextField(_('Comments'), blank=True, null=True, max_length=5000)
