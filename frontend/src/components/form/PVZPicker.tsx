@@ -18,33 +18,28 @@ mapboxgl.accessToken = 'pk.eyJ1Ijoidm9sb2R5YWJyYXZvIiwiYSI6ImNrbHJ5YzkwZDFyODAyb
 
 
 export default function PVZPicker(props: {
-  pvzs: {
-    [key: string]: PVZ
-  }
+  pvzs: PVZ[],
+  onSelect?: (id: string) => void,
+  isOpen: boolean,
+  setOpen?: (state: boolean) => void
 }) {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
 
   const [pvz, setPvz] = useState<string | null>(null)
   // const [open, setOpen] = useState(true);
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
+  const handleOpen = () => props.setOpen && props.setOpen(true);
+  const handleClose = () => props.setOpen && props.setOpen(false);
 
-  let pvzarray = pvztoarray(props.pvzs);
-  let features = pvzstofeatures(pvzarray);
+  let features = pvzstofeatures(props.pvzs);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
     if (mapContainer.current == null) return;
 
-
-
-
-
-
     let center = {
-      lat: pvzarray[0].latitude,
-      lon: pvzarray[0].longitude
+      lat: props.pvzs[0].latitude,
+      lon: props.pvzs[0].longitude
     };
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -203,9 +198,9 @@ export default function PVZPicker(props: {
 
   return (<div>
     <StyledModal
-      open
+      open={props.isOpen}
       // open={open}
-      // onClose={handleClose}
+      onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -214,17 +209,17 @@ export default function PVZPicker(props: {
         <div className="leftSide">
           <h2>Выбор пункта выдачи</h2>
           <PvzList>
-            {pvzarray.map((item) => {
+            {props.pvzs.map((item) => {
               let selected = item.id === pvz
               return (<div className={classNames("item", {
                 active: selected
-              })} onClick={() => { setPvz(item.id) }}>
+              })} onClick={() => { setPvz(item.id); }}>
                 <div className="title">{item.id}</div>
                 <div className="address">{item.address}</div>
                 <div className="deliveryandprice"><div>Срок доставки: {item.delivery_days}</div> <div>Цена: {item.delivery_price} ₽</div></div>
                 {selected && <>
                   {item.address_description !== "" && <div className="addressdescription">{item.address_description}</div>}
-                  <button className="actionbutton">выбрать пункт доставки</button>
+                  <button className="actionbutton" onClick={() => {handleClose(); pvz && props.onSelect && props.onSelect(pvz)}}>выбрать пункт доставки</button>
                 </>}
               </div>)
             })}
@@ -337,7 +332,7 @@ const ModalBox = styled("div")`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  min-width: calc(100vw - 100px);
+  min-width: calc(100vw - 200px);
   height: calc(100vh - 50px);
   background-color: white;
   font-family: Montserrat;

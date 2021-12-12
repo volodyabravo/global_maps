@@ -1,12 +1,14 @@
 import styled from "@emotion/styled";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { getCityPvz, PVZ } from "../../api/themes";
+import { useEffect, useMemo, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { DeliveryMethodInfo, getCityDeliveryMethods, getCityPvz, PVZ } from "../../api/themes";
 import AutocompleteField from "./AutocompleteField";
 import { TextField } from "./TextField";
 import { Cart } from "../../cart/cart.store";
 import PVZPicker from "./PVZPicker";
+import { MenuItem, Select } from "@mui/material";
+import { display } from ".pnpm/@mui+system@5.0.3_7b0c288ee1a1e07f392d7acfbf356824/node_modules/@mui/system";
 const stages = [
     {
         name: "Выберите способ доставки",
@@ -19,11 +21,15 @@ const stages = [
     }
 ]
 
-export default function OrderForm({cartStore}: {cartStore?: Cart}) {
-    let [stage, setStage] = useState(3);
-    let [pvzs, setPvzs] = useState<{
-        [key: string]: PVZ
-    }>({});
+export default function OrderForm({ cartStore }: {
+    cartStore?: Cart,
+
+}) {
+    let [stage, setStage] = useState(1);
+    let [pvzs, setPvzs] = useState<PVZ[]>([]);
+    let [methods, setMethods] = useState<DeliveryMethodInfo[]>([]);
+
+    const [pvzPickerOpen, setPvzPickerOpen] = useState(false)
 
 
     let delivery = useForm<{
@@ -39,7 +45,7 @@ export default function OrderForm({cartStore}: {cartStore?: Cart}) {
         entrance: string,
         floor: string,
         house: string,
-        pvz: null
+        pvz?: string
     }>({
         defaultValues: {
             type: "",
@@ -48,7 +54,7 @@ export default function OrderForm({cartStore}: {cartStore?: Cart}) {
             entrance: "",
             floor: "",
             house: "",
-            pvz: null
+            pvz: ""
         }
     })
 
@@ -73,29 +79,44 @@ export default function OrderForm({cartStore}: {cartStore?: Cart}) {
         setStage(3)
     }
 
-    let city = delivery.watch("city");
+    let deliveryValues = delivery.watch();
 
     useEffect(() => {
-        (async ()=>{
-            console.log(city)
-            if (city && city.id) {
-                let pvzs = await  getCityPvz({
-                    delivery:{
-                        delivery_city_id: city.id
+        (async () => {
+
+            if (deliveryValues.city && deliveryValues.city.id) {
+                let pvzs = await getCityPvz({
+                    delivery: {
+                        delivery_city_id: deliveryValues.city.id
                     },
                     products: cartStore!.itemsForBackend
                 })
-               
-                if (pvzs ) {
-                    console.log(Object.keys(pvzs).length)
+
+                let deliveryMethods = await getCityDeliveryMethods({
+                    delivery: {
+                        delivery_city_id: deliveryValues.city.id
+                    },
+                    products: cartStore!.itemsForBackend
+                })
+
+                if (pvzs) {
                     setPvzs(pvzs)
+                }
+                if (deliveryMethods) {
+                    setMethods(deliveryMethods)
                 }
             }
         })()
         return () => {
             // cleanup
         }
-    }, [city])
+    }, [deliveryValues.city])
+
+    let currentDeliveryMethod = useMemo(() => { return methods.find((item) => item.id === deliveryValues.type) }, [deliveryValues.type, methods])
+
+    let currentPVZ = useMemo(() => { return pvzs.find((item) => item.id === deliveryValues.pvz) }, [deliveryValues.pvz, pvzs])
+
+    console.log(currentDeliveryMethod, currentPVZ)
 
     return <div>
         <StageDisplay stage={stage} setStage={setStage}></StageDisplay>
@@ -104,9 +125,74 @@ export default function OrderForm({cartStore}: {cartStore?: Cart}) {
             {stage === 1 &&
                 <form onSubmit={delivery.handleSubmit(deliverySubmit)}>
                     <AutocompleteField control={delivery.control} name="city" rules={{ required: true }} />
-                    <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="type" label="Тип доставки" />
-                    <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="street" label="Улица" />
+                    {methods.length > 0 && <>
+                        <label>
+                            Тип доставки
+                        </label>
+                        <Controller
+                            name="type"
+                            rules={{ required: true }}
+                            control={delivery.control}
+                            render={({ field }) => <Select
+                                {...field}
+                            >
+                                {methods.map((method) => <MenuItem
+                                    key={method.id}
+                                    value={method.id}
+
+                                >
+                                    {method.name}
+                                </MenuItem>)}
+
+
+                            </Select>}
+                        /></>}
+                    {currentDeliveryMethod && currentDeliveryMethod.type === "courier" && <>
+                        <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="street" label="Улица" />
+                        <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="entrance" label="Подъезд" />
+                        <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="floor" label="Этаж" />
+                        <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="house" label="Кв/Офис" />
+                    </>}
+                    {currentDeliveryMethod && currentDeliveryMethod.type === "pvz" && <>
+                        <label>
+                            Пункт самовывоза
+                        </label>
+                        <Controller
+                            name="pvz"
+                            rules={{ required: true }}
+                            control={delivery.control}
+                            render={({ field }) => <Select
+                                {...field}
+                            >
+                                {pvzs.map((pvz) => <MenuItem
+                                    key={pvz.id}
+                                    value={pvz.id}
+                                >
+                                    {pvz.address}
+                                </MenuItem>)}
+
+
+                            </Select>}
+                        />
+                        <span onClick={()=> {setPvzPickerOpen(true)}}>Выбрать на карте</span>
+                        </>}
+                        <div  style={
+                        {display: "flex", flexDirection: "row"}
+                    }>
+                        {currentDeliveryMethod && currentDeliveryMethod.delivery_price && <div style={
+                        {display: "flex", flexDirection: "column"}
+                    }>
+                        <span>Доставка:</span>
+                        <span>{currentDeliveryMethod.delivery_price} ₽</span>
+                        <span>{currentDeliveryMethod.delivery_days} день</span>
+                        
+
+                    </div>}
+
                     <input type="submit" value="Следующий шаг" />
+                        </div>
+                    
+
                 </form>
             }
             {stage === 2 &&
@@ -126,7 +212,7 @@ export default function OrderForm({cartStore}: {cartStore?: Cart}) {
                 </form>
             }
         </div>
-        {Object.keys(pvzs).length > 0 && <PVZPicker pvzs={pvzs}/>}
+        {pvzs.length > 0 && <PVZPicker pvzs={pvzs} isOpen={pvzPickerOpen} setOpen={setPvzPickerOpen} onSelect={(val) => delivery.setValue("pvz", val || "")} />}
     </div>
 }
 

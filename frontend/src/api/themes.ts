@@ -303,9 +303,7 @@ export interface PVZ {
     type: "postamat" | "pvz"
 }
 
-export async function getCityPvz(data: getCityPvzParams): Promise<{
-    [key: string]: PVZ
-}> {
+export async function getCityPvz(data: getCityPvzParams): Promise<PVZ[]> {
     let request = await fetch("/api/delivery/get_city_pvz/",
         {
             method: "POST",
@@ -318,12 +316,49 @@ export async function getCityPvz(data: getCityPvzParams): Promise<{
 
     let json = await request.json();
 
-    return json;
+    // Convert to an array
+    let props = Object.entries(json)
+    let array = props.map((prop) => prop[1]) as PVZ[]
+
+    return array;
+}
+
+export interface DeliveryMethodInfo {
+
+    delivery_days: number
+    delivery_price: number
+    id: string,
+    name: string
+    payments: {
+        card: boolean | null
+        cash: boolean | null
+        online: boolean | null
+    }
+    type: "courier" | "pvz"
+}
+
+export async function getCityDeliveryMethods(data: getCityPvzParams): Promise<Array<DeliveryMethodInfo>> {
+    let request = await fetch("/api/delivery/get_delivery_methods_by_city/",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        });
+
+    if (!request.ok) {
+        throw Error("Server did not return any prices");
+    }
+
+    let json = await request.json();
+
+    // Convert to an array
+    let props = Object.entries(json)
+    let array = props.map((prop) => prop[1]) as Array<DeliveryMethodInfo>
+    return array;
 }
 
 
-export async function getCityDeliveryMethods(data: getCityPvzParams): Promise<any> {
-    let request = await fetch("/api/delivery/get_city_pvz/",
+export async function createOrder(data: getCityPvzParams): Promise<Array<DeliveryMethodInfo>> {
+    let request = await fetch("/api/delivery/get_delivery_methods_by_city/",
         {
             method: "POST",
             body: JSON.stringify(data)
@@ -335,5 +370,8 @@ export async function getCityDeliveryMethods(data: getCityPvzParams): Promise<an
 
     let json = await request.json();
 
-    return json;
+    // Convert to an array
+    let props = Object.entries(json)
+    let array = props.map((prop) => prop[1]) as Array<DeliveryMethodInfo>
+    return array;
 }
