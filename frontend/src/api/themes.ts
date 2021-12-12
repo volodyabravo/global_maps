@@ -207,20 +207,29 @@ export async function getCityByName(name: string): Promise<CitiesResponse["citie
 
     return json.cities;
 }
-interface getCityPvzParams {
+export interface getCityPvzParams {
     delivery: {
         delivery_city_id: string
+        delivery_type_name?: string,
+        delivery_type_id?: string,
+        delivery_city_name?: string,
+        delivery_region?: string,
+        delivery_address?: string,
+        delivery_street ?: string,
+        delivery_entrance?: string,
+        delivery_floor?: string,
+        delivery_apartments?: string,
     },
     products: Array<APIProduct>;
     personal?: {
-        name: string,
-        surname: string,
-        email: string,
-        phone: string,
-        comment: string,
-        promocode: string,
-        emails_agree: boolean,
-        call_back: boolean
+        name?: string,
+        surname?: string,
+        email?: string,
+        phone?: string,
+        comment?: string,
+        promocode?: string,
+        emails_agree?: boolean,
+        call_back?: boolean
     }
 }
 
@@ -357,8 +366,8 @@ export async function getCityDeliveryMethods(data: getCityPvzParams): Promise<Ar
 }
 
 
-export async function createOrder(data: getCityPvzParams): Promise<Array<DeliveryMethodInfo>> {
-    let request = await fetch("/api/delivery/get_delivery_methods_by_city/",
+export async function createOrder(data: getCityPvzParams): Promise<any> {
+    let request = await fetch("/api/order/create/",
         {
             method: "POST",
             body: JSON.stringify(data)
@@ -369,9 +378,5 @@ export async function createOrder(data: getCityPvzParams): Promise<Array<Deliver
     }
 
     let json = await request.json();
-
-    // Convert to an array
-    let props = Object.entries(json)
-    let array = props.map((prop) => prop[1]) as Array<DeliveryMethodInfo>
-    return array;
+    return json;
 }

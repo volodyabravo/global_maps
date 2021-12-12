@@ -2,13 +2,14 @@ import styled from "@emotion/styled";
 import classNames from "classnames";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { DeliveryMethodInfo, getCityDeliveryMethods, getCityPvz, PVZ } from "../../api/themes";
+import { createOrder, DeliveryMethodInfo, getCityDeliveryMethods, getCityPvz, getCityPvzParams, PVZ } from "../../api/themes";
 import AutocompleteField from "./AutocompleteField";
 import { TextField } from "./TextField";
 import { Cart } from "../../cart/cart.store";
 import PVZPicker from "./PVZPicker";
 import { MenuItem, Select } from "@mui/material";
 import { display } from ".pnpm/@mui+system@5.0.3_7b0c288ee1a1e07f392d7acfbf356824/node_modules/@mui/system";
+import { toast } from "react-toastify";
 const stages = [
     {
         name: "Выберите способ доставки",
@@ -75,9 +76,7 @@ export default function OrderForm({ cartStore }: {
 
     }
 
-    const personalSubmit = (data: any) => {
-        setStage(3)
-    }
+
 
     let deliveryValues = delivery.watch();
 
@@ -117,6 +116,56 @@ export default function OrderForm({ cartStore }: {
     let currentPVZ = useMemo(() => { return pvzs.find((item) => item.id === deliveryValues.pvz) }, [deliveryValues.pvz, pvzs])
 
     console.log(currentDeliveryMethod, currentPVZ)
+
+    const personalSubmit = async (dsdata: any) => {
+        if (!deliveryValues.city) return;
+        let personalVal = personalInfo.watch();
+        let deliveryVal = delivery.watch();
+        let data: getCityPvzParams = {
+            delivery: {
+                delivery_city_id: deliveryValues.city.id,
+                delivery_city_name: deliveryValues.city.name,
+                delivery_region: deliveryValues.city.region_name
+            },
+            products: cartStore!.itemsForBackend
+        }
+
+        if (currentDeliveryMethod) {
+            data.delivery.delivery_type_id = currentDeliveryMethod.id;
+            data.delivery.delivery_type_name = currentDeliveryMethod.name;
+            if (currentDeliveryMethod.type === "pvz" && currentPVZ) {
+                data.delivery.delivery_address = currentPVZ.address;
+            } else if (currentDeliveryMethod.type === "courier") {
+                data.delivery.delivery_street = deliveryVal.street;
+                data.delivery.delivery_entrance =  deliveryVal.entrance;
+                data.delivery.delivery_floor =  deliveryVal.floor;
+                data.delivery.delivery_apartments=   deliveryVal.house;
+            }
+        }
+
+        if (personalVal) {
+            data.personal = {
+                call_back: personalVal.callme,
+                comment: personalVal.comment,
+                email: personalVal.email,
+                emails_agree: personalVal.emailme,
+                phone: personalVal.phone,
+                name: personalVal.name,
+            }
+        }
+
+        // Process order creation
+        try {
+            let response = await createOrder(data);
+            console.log(data, response)
+            setStage(3)
+        } catch (e) {
+
+            toast.error("Ошибка создания заказа")
+        }
+
+
+    }
 
     return <div>
         <StageDisplay stage={stage} setStage={setStage}></StageDisplay>
@@ -174,24 +223,24 @@ export default function OrderForm({ cartStore }: {
 
                             </Select>}
                         />
-                        <span onClick={()=> {setPvzPickerOpen(true)}}>Выбрать на карте</span>
-                        </>}
-                        <div  style={
-                        {display: "flex", flexDirection: "row"}
+                        <span onClick={() => { setPvzPickerOpen(true) }}>Выбрать на карте</span>
+                    </>}
+                    <div style={
+                        { display: "flex", flexDirection: "row" }
                     }>
                         {currentDeliveryMethod && currentDeliveryMethod.delivery_price && <div style={
-                        {display: "flex", flexDirection: "column"}
-                    }>
-                        <span>Доставка:</span>
-                        <span>{currentDeliveryMethod.delivery_price} ₽</span>
-                        <span>{currentDeliveryMethod.delivery_days} день</span>
-                        
+                            { display: "flex", flexDirection: "column" }
+                        }>
+                            <span>Доставка:</span>
+                            <span>{currentDeliveryMethod.delivery_price} ₽</span>
+                            <span>{currentDeliveryMethod.delivery_days} день</span>
 
-                    </div>}
 
-                    <input type="submit" value="Следующий шаг" />
-                        </div>
-                    
+                        </div>}
+
+                        <input type="submit" value="Следующий шаг" />
+                    </div>
+
 
                 </form>
             }
