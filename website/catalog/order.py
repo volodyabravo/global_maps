@@ -61,7 +61,7 @@ def order_create(request):
                 try:
                     vector_image = VectorImages.objects.get(id=product_data.get('vector').get('image_id'))
                     vector_color = VectorColors.objects.get(id=product_data.get('vector').get('color_id'))
-                except (VectorImages.DoesNotExist, VectorColors.DoesNotExist):
+                except (VectorImages.DoesNotExist, VectorColors.DoesNotExist, AttributeError):
                     vector_color = None
                     vector_image = None
                 MapOrder.objects.create(
@@ -75,9 +75,9 @@ def order_create(request):
                     tagline=product_data.get('tagline'),
                     subline=product_data.get('subline'),
                     orientation=product_data.get('orientation'),
-                    lng=product_data.get('location').get('lng'),
-                    lat=product_data.get('location').get('lat'),
-                    city_name=product_data.get('location').get('cityName'),
+                    lng=product_data.get('location', {}).get('lng', None),
+                    lat=product_data.get('location', {}).get('lat', None),
+                    city_name=product_data.get('location', {}).get('cityName', None),
                     date=product_data.get('date'),
                     zoom=product_data.get('zoom'),
                     vector_color=vector_color,
@@ -86,6 +86,7 @@ def order_create(request):
                 )
             order.save()
         except Exception as e:
+            print(e)
             order_logger.error('Failed to create order: "%s"' % e)
             order_logger.error('Probably missed order data: "%s"' % request.body)
             return HttpResponse(status=400)

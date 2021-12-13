@@ -148,7 +148,7 @@ class MapOrder(models.Model):
     lng = models.FloatField('lng', blank=True, null=True)
     lat = models.FloatField('lat', blank=True, null=True)
     city_name = models.CharField('cityName', max_length=500, blank=True, null=True)
-    date = models.DateTimeField(_('Date and time'))
+    date = models.DateTimeField(_('Date and time'), blank=True, null=True)
     zoom = models.IntegerField(_('Zoom'), blank=True, null=True)
     exception_text = models.CharField(_('Exception'), blank=True, null=True, max_length=5000)
     vector_color = models.ForeignKey(VectorColors, blank=True, null=True, on_delete=models.RESTRICT)

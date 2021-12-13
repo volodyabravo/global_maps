@@ -70,6 +70,7 @@ def send_order_to_ammo(instance):
             lead.contacts.append(contact)
             lead.save()
     except Exception as e:
+        print(e)
         order_logger.error('Failed to send order to amo: "%s"' % e)
 
 
@@ -100,7 +101,8 @@ def sync_orders(instance):
                 products_links.append("https://stylemaps.ru/admin/catalog/maporder/{0}/change/".format(product.id))
             products_str = '\n'.join([str(elem) for elem in products_links])
             lead.products = products_str
-
+    
             lead.save()
     except Exception as e:
+        print(e)
         order_logger.error('Failed to update order at amo: "%s"' % e)
