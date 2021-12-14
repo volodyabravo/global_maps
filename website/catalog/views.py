@@ -55,6 +55,12 @@ class MapPricesView(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = MapPrices.objects.all()
+        version = self.request.query_params.get('version', None)
+        if version:
+            queryset = queryset.filter(version=version)
+        size = self.request.query_params.get('size', None)
+        if size:
+            queryset = queryset.filter(size=size)
         serializer = MapPricesSerializer(queryset, many=True)
         return Response(serializer.data)
 
