@@ -171,10 +171,16 @@ export interface PricingOption {
     "version_id": string,
     "id": 1
 }
+interface PriceParams {
 
-export async function getPrices(): Promise<Array<PricingOption>> {
+}
+export async function getPrices(version?:string,size?: string ): Promise<Array<PricingOption>> {
     let params = new URLSearchParams();
-    let request = await fetch("/api/prices/");
+
+    version && params.set("version",version )
+    size && params.set("size",size )
+
+    let request = await fetch("/api/prices/?"+params);
 
     if (!request.ok) {
         throw Error("Server did not return any prices");

@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import { inject, observer } from 'mobx-react';
 import { Cart } from "../../cart/cart.store";
 import useClient from "../../hooks/useClient";
+import { LoadingOverlay } from "../../components/LoadingOverlay";
 
 
 function MapClientPage({ cartStore }: {
@@ -53,6 +54,7 @@ function MapClientPage({ cartStore }: {
             "paddingRight": "0!important",
             "maxWidth": "100%!important"
         }}>
+            {loading && <LoadingOverlay />}
             <Grid container spacing={1} sx={{
                 "minHeight": "calc(100vh - 64px)",
                 "backgroundColor": "#F8F8F8",
@@ -250,7 +252,7 @@ function MapClientPage({ cartStore }: {
                         </Typography>
                         <Box sx={{ padding: "10px", background: "#FFFFFF" }}>
                             <Grid container>
-                                <CheckoutButton onClick={() => { addToCart("Уличная карта") }} />
+                                <CheckoutButton price={price?.toString()} onClick={() => { addToCart("Уличная карта") }} />
                             </Grid>
                         </Box>
 

@@ -78,7 +78,7 @@ export function CheckoutButton(props: CheckoutButtonProps) {
       >
         <div>
           <FaCartPlus />
-          <span>{props.price || "1000$"}</span>
+          <span>{props.price || "0"}</span>
         </div>
         <div>
           <span>Add to cart</span>

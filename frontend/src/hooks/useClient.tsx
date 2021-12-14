@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { getSizes, getThemes, getVersions, MapTheme, MapType, Size, UserCustomizations, Version } from "../api/themes";
+import { getPrices, getSizes, getThemes, getVersions, MapTheme, MapType, Size, UserCustomizations, Version } from "../api/themes";
 import { Cart, CartItem } from "../cart/cart.store";
 import demo from "./../assets/demo-pic.png"
 
@@ -15,7 +15,7 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
 
     const [themes, setThemes] = useState<Array<MapTheme>>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [price, setPrice] = useState<boolean>(false);
+    const [price, setPrice] = useState<number | null>(null);
     const [sizes, setSizes] = useState<Array<Size>>([]);
     const [versions, setVersions] = useState<Array<Version>>([]);
 
@@ -59,32 +59,8 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
         }
     }, [])
 
+
     
-    function addToCart(name: string) {
-        let itemData: Partial<CartItem> = {
-            name: name,
-            price: 0,
-            properties: [],
-            preview: theme!.preview || demo,
-            data: custom
-        }
-
-        if (theme && theme.name && itemData.properties) {
-            itemData.properties.push({
-                name: "Тема", 
-                value:theme.name,
-            })
-        }
-        if (size && size.name && itemData.properties) {
-            itemData.properties.push({
-                name: "Размер", 
-                value:size.name,
-            })
-        }
-
-        cart?.addItem(itemData);
-        toast("Товар добавлен в корзину")
-    }
 
     function getGeolocation() {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -100,6 +76,55 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
             console.log(ss)
             toast("Ошибка получения локации")
         })
+    }
+
+
+    async function getPrice() {
+        if (custom.version && custom.version.length > 0 && custom.sizeId) {
+            setLoading(true)
+            let prices = await getPrices(
+                custom.version[custom.version.length - 1].toString(),
+                custom.sizeId.toString()
+            )
+            if (prices.length > 0) {
+                setPrice(parseFloat(prices[0].price))
+            }
+            setLoading(false)
+            console.log(prices)
+        }
+
+    }
+
+    useEffect(()=>{
+        getPrice();
+    }, [custom.sizeId, custom.version])
+
+    function addToCart(name: string) {
+        if (price == null || loading) return;
+        let itemData: Partial<CartItem> = {
+            name: name,
+            price: price,
+            properties: [],
+            preview: theme!.preview || demo,
+            data: custom,
+            quantity: 1
+        }
+
+        if (theme && theme.name && itemData.properties) {
+            itemData.properties.push({
+                name: "Тема",
+                value: theme.name,
+            })
+        }
+        if (size && size.name && itemData.properties) {
+            itemData.properties.push({
+                name: "Размер",
+                value: size.name,
+            })
+        }
+
+        cart?.addItem(itemData);
+        toast("Товар добавлен в корзину")
     }
 
     return {
