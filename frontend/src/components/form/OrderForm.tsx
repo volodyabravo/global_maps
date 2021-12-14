@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import classNames from "classnames";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { createOrder, DeliveryMethodInfo, getCityDeliveryMethods, getCityPvz, getCityPvzParams, PVZ } from "../../api/themes";
+import { createOrder, DeliveryMethodInfo, getCityDeliveryMethods, getCityPvz, getCityPvzParams, getOrder, PVZ } from "../../api/themes";
 import AutocompleteField from "./AutocompleteField";
 import { TextField } from "./TextField";
 import { Cart } from "../../cart/cart.store";
@@ -29,6 +29,7 @@ export default function OrderForm({ cartStore }: {
     let [stage, setStage] = useState(1);
     let [pvzs, setPvzs] = useState<PVZ[]>([]);
     let [methods, setMethods] = useState<DeliveryMethodInfo[]>([]);
+    let [order, setOrder] = useState<any | null>(null);
 
     const [pvzPickerOpen, setPvzPickerOpen] = useState(false)
 
@@ -157,7 +158,11 @@ export default function OrderForm({ cartStore }: {
         // Process order creation
         try {
             let response = await createOrder(data);
-            console.log(data, response)
+            console.log(data, response);
+            let order = await getOrder(response.order_id.toString());
+            setOrder(order)
+            console.log(order);
+            toast.info("Заказ создан")
             setStage(3)
         } catch (e) {
 
@@ -170,6 +175,7 @@ export default function OrderForm({ cartStore }: {
     return <div>
         <StageDisplay stage={stage} setStage={setStage}></StageDisplay>
         {/* Stage 1 delivery */}
+        
         <div >
             {stage === 1 &&
                 <form onSubmit={delivery.handleSubmit(deliverySubmit)}>
@@ -237,7 +243,6 @@ export default function OrderForm({ cartStore }: {
 
 
                         </div>}
-
                         <input type="submit" value="Следующий шаг" />
                     </div>
 

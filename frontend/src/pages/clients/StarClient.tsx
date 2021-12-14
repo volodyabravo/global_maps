@@ -36,7 +36,9 @@ function MapClientPage({ cartStore }: {
         form,
         addToCart,
         hasGeo,
-        getGeolocation
+        getGeolocation,
+        loading,
+        price
     } = useClient(cartStore, MapType.Star)
 
 
@@ -50,6 +52,9 @@ function MapClientPage({ cartStore }: {
             "paddingRight": "0!important",
             "maxWidth": "100%!important"
         }}>
+            {loading && <div style={{ position: "absolute", top: "0", bottom: 0, zIndex: 11, background: "#FFF", left: 0, right: 0, display: "flex", justifyContent: "center", alignItems: "center", fontSize: "2em" }}>
+                <div>Загрузка</div>
+            </div>}
             <Grid container spacing={1} sx={{
                 "minHeight": "calc(100vh - 64px)",
                 "backgroundColor": "#F8F8F8",

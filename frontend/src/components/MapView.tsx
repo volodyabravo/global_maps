@@ -60,8 +60,8 @@ export function MapView(props: MapViewProps) {
   let height = props.height || 855;
   let width = props.width || 590;
   if (props.size) {
-    height = props.size.height;
-    width = props.size.width;
+    height = props.size.height_px;
+    width = props.size.width_px;
   }
 
   {

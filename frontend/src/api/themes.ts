@@ -128,11 +128,13 @@ export async function getThemes({ map_type }: {
 }
 
 export interface Size {
-    "version": number,
-    "name": string,
-    "height": number,
-    "width": number,
-    "id": number
+    version: number,
+    name: string,
+    height: number,
+    width: number,
+    height_px: number,
+    width_px: number,
+    id: number
 }
 
 export async function getSizes(): Promise<Array<Size>> {
@@ -215,7 +217,7 @@ export interface getCityPvzParams {
         delivery_city_name?: string,
         delivery_region?: string,
         delivery_address?: string,
-        delivery_street ?: string,
+        delivery_street?: string,
         delivery_entrance?: string,
         delivery_floor?: string,
         delivery_apartments?: string,
@@ -366,12 +368,27 @@ export async function getCityDeliveryMethods(data: getCityPvzParams): Promise<Ar
 }
 
 
-export async function createOrder(data: getCityPvzParams): Promise<any> {
+export async function createOrder(data: getCityPvzParams): Promise<{
+    order_id: number
+}> {
     let request = await fetch("/api/order/create/",
         {
             method: "POST",
             body: JSON.stringify(data)
         });
+
+    if (!request.ok) {
+        throw Error("Server did not return any prices");
+    }
+
+    let json = await request.json();
+    return json;
+}
+
+export async function getOrder(orderId: string): Promise<{
+    order_id: number
+}> {
+    let request = await fetch("/api/order/order_get/?order_id=" + orderId);
 
     if (!request.ok) {
         throw Error("Server did not return any prices");

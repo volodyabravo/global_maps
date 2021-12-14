@@ -45,7 +45,9 @@ function MapClientPage({ cartStore }: {
         form,
         addToCart,
         hasGeo,
-        getGeolocation
+        getGeolocation,
+        loading,
+        price
     } = useClient(cartStore, MapType.Star)
 
 

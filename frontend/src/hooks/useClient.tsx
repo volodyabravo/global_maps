@@ -14,6 +14,8 @@ const hasGeo = 'geolocation' in navigator;
 const useClient = (cart?: Cart, mapType?: MapType) => {
 
     const [themes, setThemes] = useState<Array<MapTheme>>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [price, setPrice] = useState<boolean>(false);
     const [sizes, setSizes] = useState<Array<Size>>([]);
     const [versions, setVersions] = useState<Array<Version>>([]);
 
@@ -33,6 +35,7 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
 
     useEffect(() => {
         (async () => {
+            setLoading(true);
             let themesData = await getThemes({ map_type: mapType });
             setThemes(themesData);
             let sizesData = await getSizes();
@@ -49,6 +52,7 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
                     form.setValue("sizeId", sizesData[0].id);
                 }, 500)
             }
+            setLoading(false);
         })();
         return () => {
             //cleanup
@@ -60,7 +64,6 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
         let itemData: Partial<CartItem> = {
             name: name,
             price: 0,
-            // productId: 231,
             properties: [],
             preview: theme!.preview || demo,
             data: custom
@@ -108,7 +111,9 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
         form,
         addToCart,
         getGeolocation,
-        hasGeo
+        hasGeo,
+        price,
+        loading
     }
 }
 
