@@ -11,7 +11,7 @@ export function MapFrame({ children, color, type, padding }: MapFrameProps) {
             backgroundColor: color,
             padding: padding,
             boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
-            transform: "scale(0.6)",
+            // transform: "scale(0.6)",
             display: "flex"
         }
     }>

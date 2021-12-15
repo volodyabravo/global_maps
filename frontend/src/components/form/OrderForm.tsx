@@ -8,7 +8,6 @@ import { TextField } from "./TextField";
 import { Cart } from "../../cart/cart.store";
 import PVZPicker from "./PVZPicker";
 import { MenuItem, Select } from "@mui/material";
-import { display } from ".pnpm/@mui+system@5.0.3_7b0c288ee1a1e07f392d7acfbf356824/node_modules/@mui/system";
 import { toast } from "react-toastify";
 const stages = [
     {
@@ -138,9 +137,9 @@ export default function OrderForm({ cartStore }: {
                 data.delivery.delivery_address = currentPVZ.address;
             } else if (currentDeliveryMethod.type === "courier") {
                 data.delivery.delivery_street = deliveryVal.street;
-                data.delivery.delivery_entrance =  deliveryVal.entrance;
-                data.delivery.delivery_floor =  deliveryVal.floor;
-                data.delivery.delivery_apartments=   deliveryVal.house;
+                data.delivery.delivery_entrance = deliveryVal.entrance;
+                data.delivery.delivery_floor = deliveryVal.floor;
+                data.delivery.delivery_apartments = deliveryVal.house;
             }
         }
 
@@ -175,7 +174,7 @@ export default function OrderForm({ cartStore }: {
     return <div>
         <StageDisplay stage={stage} setStage={setStage}></StageDisplay>
         {/* Stage 1 delivery */}
-        
+
         <div >
             {stage === 1 &&
                 <form onSubmit={delivery.handleSubmit(deliverySubmit)}>

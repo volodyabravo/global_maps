@@ -76,62 +76,49 @@ function MapClientPage({ cartStore }: {
                         height: "40px"
                     }}>
 
-                        <Typography fontSize="12px" fontWeight="700" align="left" color="#C5C5C5">Customize your star map</Typography>
-                        <Typography fontSize="12px" fontWeight="700" align="left" color="#C5C5C5">Change zodiac, labels and appearance</Typography>
+                        <Typography fontSize="12px" fontWeight="700" align="left" color="#C5C5C5">Измените вашу уличную карту</Typography>
+                        {/* <Typography fontSize="12px" fontWeight="700" align="left" color="#C5C5C5">Change zodiac, labels and appearance</Typography> */}
                     </Box>
                     <Box sx={{ boxShadow: "-5px -5px 10px rgba(0, 0, 0, 0.05)", height: "calc(100% - 75px)", "background": "#FFFFFF", "display": "flex", "flexDirection": "column", "justifyContent": "space-between" }}>
                         <Typography align="left" fontSize="12px" fontWeight="400">
                             <Box sx={{ borderBottom: "1px solid #E5E5E5" }}>
-                                <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                                <Accordion TransitionProps={{ unmountOnExit: true }}  expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                     >
-                                        Choose the location
+                                        Выберите локацию
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <LocationSelector />
                                         {hasGeo && <LocationBlock>
-                                            <span>or use your current GPS position</span>
-                                            <button onClick={getGeolocation}>Locate Me</button>
+                                            <span>или используйте ваше местоположение</span>
+                                            <button onClick={getGeolocation}>Найти меня</button>
                                         </LocationBlock>}
                                         {/* <p>Pro tip! You can also drag/drop and zoom on the map to get the exact position you want on your poster.</p> */}
                                     </AccordionDetails>
                                 </Accordion>
                             </Box>
                             <Box sx={{ borderBottom: "1px solid #E5E5E5" }}>
-                                <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                                <Accordion TransitionProps={{ unmountOnExit: true }}  expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                     >
-                                        Customize the theme
+                                        Выберите тему
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <TabContext value={selectedThemeTab.toString()}>
-                                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                                <Tabs value={selectedThemeTab} onChange={(e, value) => setSelectedThemeTab(value)} aria-label="basic tabs example" centered>
-                                                    <Tab label="Popular styles" />
-                                                    <Tab label="Customize" />
-                                                </Tabs>
-                                            </Box>
-                                            <TabPanel value="0" sx={{
-                                                padding: "0"
-                                            }} >
-                                                <ThemePicker name="theme" control={form.control} themes={themes} />
+                                       
+                                            <ThemePicker name="theme" control={form.control} themes={themes} />
 
-                                                <Typography fontWeight="400" color="#A8A8A8" fontSize="10px">
-                                                    We are all for freedom of choice, if you want to try different combinations than our favorites - go ahead and click customize and roll your own!
-                                                </Typography>
-                                            </TabPanel>
-                                            <TabPanel value="1">
-                                                Item Two
-                                            </TabPanel>
-                                        </TabContext>
+                                            <Typography fontWeight="400" color="#A8A8A8" fontSize="10px">
+                                                We are all for freedom of choice, if you want to try different combinations than our favorites - go ahead and click customize and roll your own!
+                                            </Typography>
+                                     
 
                                     </AccordionDetails>
                                 </Accordion>
                             </Box>
                             <Box sx={{ borderBottom: "1px solid #E5E5E5" }}>
-                                <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+                                <Accordion TransitionProps={{ unmountOnExit: true }}  expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                     >
@@ -142,7 +129,7 @@ function MapClientPage({ cartStore }: {
                                             <Grid item xs={5}>
                                                 <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: "flex-start", width: "100%", height: "100%" }}>
                                                     <Typography marginLeft="10px" fontWeight="700" color="#A8A8A8" fontSize="14px" lineHeight="12px">
-                                                        Headline
+                                                        Заголовок
                                                     </Typography>
                                                 </Box>
                                             </Grid>
@@ -160,7 +147,7 @@ function MapClientPage({ cartStore }: {
                                             <Grid item xs={5}>
                                                 <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: "flex-start", width: "100%", height: "100%" }}>
                                                     <Typography marginLeft="10px" fontWeight="700" color="#A8A8A8" fontSize="14px" lineHeight="12px">
-                                                        Divider
+                                                        Разделитель
                                                     </Typography>
                                                 </Box>
                                             </Grid>
@@ -178,7 +165,7 @@ function MapClientPage({ cartStore }: {
                                             <Grid item xs={5}>
                                                 <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: "flex-start", width: "100%", height: "100%" }}>
                                                     <Typography marginLeft="10px" fontWeight="700" color="#A8A8A8" fontSize="14px" lineHeight="12px">
-                                                        Tagline
+                                                        Тэглайн
                                                     </Typography>
                                                 </Box>
                                             </Grid>
@@ -196,7 +183,7 @@ function MapClientPage({ cartStore }: {
                                             <Grid item xs={5}>
                                                 <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: "flex-start", width: "100%", height: "100%" }}>
                                                     <Typography marginLeft="10px" fontWeight="700" color="#A8A8A8" fontSize="14px" lineHeight="12px">
-                                                        Subline
+                                                        Саблайн
                                                     </Typography>
                                                 </Box>
                                             </Grid>

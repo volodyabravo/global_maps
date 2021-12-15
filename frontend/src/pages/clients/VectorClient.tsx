@@ -93,13 +93,13 @@ function MapClientPage({ cartStore }: {
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                     >
-                                        Choose the location
+                                        Выберите локацию
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <LocationSelector />
                                         {hasGeo && <LocationBlock>
-                                            <span>or use your current GPS position</span>
-                                            <button onClick={getGeolocation}>Locate Me</button>
+                                            <span>или используйте ваше местоположение</span>
+                                            <button onClick={getGeolocation}>Найти меня</button>
                                         </LocationBlock>}
                                         {/* <p>Pro tip! You can also drag/drop and zoom on the map to get the exact position you want on your poster.</p> */}
                                         <p>{JSON.stringify(custom.location)}</p>
@@ -111,7 +111,7 @@ function MapClientPage({ cartStore }: {
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                     >
-                                        Customize the theme
+                                        Выберите тему
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <TabContext value={selectedThemeTab.toString()}>
@@ -150,7 +150,7 @@ function MapClientPage({ cartStore }: {
                                             <Grid item xs={5}>
                                                 <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: "flex-start", width: "100%", height: "100%" }}>
                                                     <Typography marginLeft="10px" fontWeight="700" color="#A8A8A8" fontSize="14px" lineHeight="12px">
-                                                        Headline
+                                                        Заголовок
                                                     </Typography>
                                                 </Box>
                                             </Grid>
@@ -168,7 +168,7 @@ function MapClientPage({ cartStore }: {
                                             <Grid item xs={5}>
                                                 <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: "flex-start", width: "100%", height: "100%" }}>
                                                     <Typography marginLeft="10px" fontWeight="700" color="#A8A8A8" fontSize="14px" lineHeight="12px">
-                                                        Divider
+                                                        Разделитель
                                                     </Typography>
                                                 </Box>
                                             </Grid>
@@ -186,7 +186,7 @@ function MapClientPage({ cartStore }: {
                                             <Grid item xs={5}>
                                                 <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: "flex-start", width: "100%", height: "100%" }}>
                                                     <Typography marginLeft="10px" fontWeight="700" color="#A8A8A8" fontSize="14px" lineHeight="12px">
-                                                        Tagline
+                                                        Тэглайн
                                                     </Typography>
                                                 </Box>
                                             </Grid>
@@ -204,7 +204,7 @@ function MapClientPage({ cartStore }: {
                                             <Grid item xs={5}>
                                                 <Box sx={{ display: "flex", flexDirection: "column", justifyContent: 'center', alignItems: "flex-start", width: "100%", height: "100%" }}>
                                                     <Typography marginLeft="10px" fontWeight="700" color="#A8A8A8" fontSize="14px" lineHeight="12px">
-                                                        Subline
+                                                        Саблайн
                                                     </Typography>
                                                 </Box>
                                             </Grid>

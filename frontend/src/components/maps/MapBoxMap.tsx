@@ -61,31 +61,39 @@ export function MapBoxMap(props: MapBoxMapProps) {
         }
 
 
-    }, [props.style, props.custom]);
+    }, [props.style]);
 
+
+    useEffect(()=> {
+        if (map.current) {
+            map.current.resize();
+        }
+
+    }, [props.custom?.sizeId, props.custom?.orientation])
     // let location = 
 
-    return <div style={{ width: "100%", height: "100%" }}>
+    return <div style={{ width: "100%", height: "100%", position: "relative" }}>
         <MapContainer ref={mapContainer} />
     </div>
 }
 
 
 const MapContainer = styled.div`
+    /* width: 100%;
+    height:100%; */
+    position: absolute;
+    top: 0;
+    bottom: 0;
     width: 100%;
-    height:100%;
 
-    & .mapboxgl-canvas-container {
-        width: 100%;
-    height:100%;
-    }
+
 
     & .mapboxgl-control-container {
         display: none;
     } 
 
-    & .mapboxgl-canvas {
+    /* & .mapboxgl-canvas {
         width:  100% !important;
         height: 100% !important;
-    }
+    } */
 `;
