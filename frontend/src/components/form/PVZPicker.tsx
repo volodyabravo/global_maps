@@ -33,7 +33,6 @@ export default function PVZPicker(props: {
   let features = pvzstofeatures(props.pvzs);
 
   useEffect(() => {
-    console.log("starrrrrrrrrrrrrrrrrrts",map.current, mapContainer)
     if (map.current) return; // initialize map only once
     if (mapContainer.current == null) return;
 
