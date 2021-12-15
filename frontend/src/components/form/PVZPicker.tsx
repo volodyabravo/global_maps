@@ -1,16 +1,15 @@
 import { PVZ } from "../../api/themes";
 import Modal from '@mui/material/Modal';
-import { createRef, useEffect, useRef, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import {  useEffect, useRef, useState } from "react";
 import Fuse from 'fuse.js'
 import { styled } from "@material-ui/system";
 
 
 
 
-
-import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
-import { PVZGeoJSON, pvzs, pvzstofeatures, pvztoarray } from "../../pages/UIVars";
+// @ts-expect-error
+import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import { PVZGeoJSON,  pvzstofeatures } from "../../pages/UIVars";
 import classNames from "classnames";
 mapboxgl.accessToken = 'pk.eyJ1Ijoidm9sb2R5YWJyYXZvIiwiYSI6ImNrbHJ5YzkwZDFyODAybnF5YjMyYXd2dHAifQ.r8osMfsMnoe89b3qJ3g8uA';
 
@@ -34,6 +33,7 @@ export default function PVZPicker(props: {
   let features = pvzstofeatures(props.pvzs);
 
   useEffect(() => {
+    console.log("starrrrrrrrrrrrrrrrrrts",map.current, mapContainer)
     if (map.current) return; // initialize map only once
     if (mapContainer.current == null) return;
 
@@ -118,7 +118,7 @@ export default function PVZPicker(props: {
         });
 
         // inspect a cluster on click
-        map.current.on('click', 'clusters', (e) => {
+        map.current.on('click', 'clusters', (e: any) => {
           if (map.current) {
             // @ts-ignore
             const features: PVZGeoJSON["features"] = map.current.queryRenderedFeatures(e.point, {
@@ -148,7 +148,7 @@ export default function PVZPicker(props: {
         // the unclustered-point layer, open a popup at
         // the location of the feature, with
         // description HTML from its properties.
-        map.current.on('click', 'unclustered-point', (e) => {
+        map.current.on('click', 'unclustered-point', (e: any) => {
           if (!map.current) return;
           // @ts-ignore
           const coordinates = e.features[0].geometry.coordinates.slice();
@@ -194,10 +194,12 @@ export default function PVZPicker(props: {
       map.current?.remove();
       map.current = null
     }
-  }, [mapContainer.current]);
+  }, [props.pvzs, props.isOpen]);
 
   return (<div>
-    <StyledModal
+    <StyledModal  
+      // Disable portal to have ref
+      disablePortal
       open={props.isOpen}
       // open={open}
       onClose={handleClose}
