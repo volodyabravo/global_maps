@@ -76,7 +76,7 @@ function MapClientPage({ cartStore }: {
                         height: "40px"
                     }}>
 
-                        <Typography fontSize="12px" fontWeight="700" align="left" color="#C5C5C5">Измените вашу уличную карту</Typography>
+                        <Typography fontSize="12px" fontWeight="700" align="left" color="#C5C5C5">Измените вашу карту города</Typography>
                         {/* <Typography fontSize="12px" fontWeight="700" align="left" color="#C5C5C5">Change zodiac, labels and appearance</Typography> */}
                     </Box>
                     <Box sx={{ boxShadow: "-5px -5px 10px rgba(0, 0, 0, 0.05)", height: "calc(100% - 75px)", "background": "#FFFFFF", "display": "flex", "flexDirection": "column", "justifyContent": "space-between" }}>
@@ -110,7 +110,7 @@ function MapClientPage({ cartStore }: {
                                             <ThemePicker name="theme" control={form.control} themes={themes} />
 
                                             <Typography fontWeight="400" color="#A8A8A8" fontSize="10px">
-                                                We are all for freedom of choice, if you want to try different combinations than our favorites - go ahead and click customize and roll your own!
+                                                Мы все за свободу выбора. Если вы хотите попробовать комбинации, отличные от наших любимых, нажмите кнопку «Настроить» и выберите свою!
                                             </Typography>
                                      
 
@@ -122,7 +122,7 @@ function MapClientPage({ cartStore }: {
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                     >
-                                        Customize the text
+                                        Введите текст
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Grid container spacing={1} columnSpacing={1} rowSpacing={3}>
@@ -200,7 +200,7 @@ function MapClientPage({ cartStore }: {
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <Typography marginLeft="20px" fontWeight="500" color="#A8A8A8" fontSize="12px" lineHeight="14px" height="100%">
-                                                    Updating coordinates when map position changes. You can set your own text as tagline if you disable this.
+                                                    Вы можете установить свой собственный текст в качестве слогана.
                                                 </Typography>
                                             </Grid>
                                         </Grid>
@@ -211,10 +211,10 @@ function MapClientPage({ cartStore }: {
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                 >
-                                    Customize the poster size
+                                    Выберите размер постера
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    Select poster size
+                                    Размер постера
                                     <SizesContainer>
                                         <Controller control={form.control} name="sizeId" render={(form) => {
                                             return (<>{sizes.length > 0 && sizes.map((item, index) => {

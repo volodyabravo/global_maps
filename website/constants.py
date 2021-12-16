@@ -6,9 +6,9 @@ class MapTypes:
     TYPE_STREET_MAP = 2
     TYPE_VECTOR = 3
     TYPES = {
-        TYPE_SKY_MAP: _('Sky map'),
-        TYPE_STREET_MAP: _('Street map'),
-        TYPE_VECTOR: _('Vector image')
+        TYPE_SKY_MAP: _('Интерьерная звездная карта'),
+        TYPE_STREET_MAP: _('Интерьерная городская карта'),
+        TYPE_VECTOR: _('Интерьерная векторная карта')
 
     }
 

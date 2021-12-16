@@ -101,6 +101,10 @@ class Order(models.Model):
     delivery_price = models.IntegerField(_('Delivery price'), blank=False, null=False, default=0)
     total_price = models.IntegerField(_('Price'), blank=False, null=False, default=0)
 
+    payment_url = models.CharField(_('Payment url'), blank=True, null=True, max_length=500)
+    payment_id = models.IntegerField(_('Payment id'), blank=True, null=True)
+    payment_status = models.CharField(_('Payment status'), blank=True, null=True, max_length=500)
+
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
@@ -161,27 +165,3 @@ class MapOrder(models.Model):
     class Meta:
         verbose_name = 'Генерация карты'
         verbose_name_plural = 'Генерации карт'
-
-
-@receiver(pre_save, sender=Order)
-def count_prices(instance, **_):
-    products = MapOrder.objects.filter(order=instance)
-    total_price = 0
-    for product in products:
-        total_price += product.price
-    instance.total_price = total_price
-
-
-@receiver(pre_save, sender=Order)
-def order_to_ammo(instance, **_):
-    if instance.id is None or not instance.ammo_id:
-        send_order_to_ammo(instance)
-    else:
-        # previous = Order.objects.get(id=instance.id)
-        # if previous.status != instance.status:
-        sync_orders(instance)
-
-
-# @receiver(pre_save, sender=Order)
-# def generate_image(instance, **_) :
-

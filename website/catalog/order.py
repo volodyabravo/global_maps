@@ -7,6 +7,8 @@ from constants import MapOrientationTypes
 from django.views.decorators.csrf import csrf_exempt
 from constants import OrderStatuses
 from django.shortcuts import get_object_or_404
+from .tinkoff import create_payment
+from .amo import send_order_to_ammo, sync_orders
 
 
 # Get an instance of a logger
@@ -85,8 +87,29 @@ def order_create(request):
                 vector_image=vector_image,
                 price=price.price
             )
+
+        total_price = 0
+        for product in order.products.all():
+            total_price += product.price
+        order.total_price = total_price
+
         order.save()
-        return JsonResponse({"order_id": order.id})
+
+        create_payment(order)
+
+        order_data = {
+            "amount": order.delivery_price + order.total_price,
+            "order": order.id,
+            "name": order.name,
+            "email": order.email,
+            "phone": order.phone,
+        }
+        if order.payment_url:
+            order_data['url'] = order.payment_url
+        send_order_to_ammo(order)
+        order.save()
+
+        return JsonResponse(order_data)
     return JsonResponse({"error": "Use POST"})
 
 
@@ -104,6 +127,6 @@ def order_get(request):
         return JsonResponse(order_data)
 
 
-def order_count(request):
+def update_payment(request):
     data = json.loads(request.body)
     logger.info('Count order: "%s"' % data)
