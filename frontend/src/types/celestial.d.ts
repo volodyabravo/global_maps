@@ -71,29 +71,29 @@ declare module "d3-celestial/celestial" {
      *  null = default center [0,0,0]
      */
     center?: Array<number>;
-    orientationfixed?: true; // Keep orientation angle the same as center[2]
+    orientationfixed?: boolean; // Keep orientation angle the same as center[2]
     geopos?: null; // optional initial geographic position [lat,lon] in degrees,
     // overrides center
     follow?: "zenith" | "center"; // on which coordinates to center the map, default: zenith, if location enabled,
     // otherwise center
     zoomlevel?: number; // initial zoom level 0...zoomextend; 0|null = default, 1 = 100%, 0 < x <= zoomextend
     zoomextend?: 10; // maximum zoom level
-    adaptable?: true; // Sizes are increased with higher zoom-levels
-    interactive?: true; // Enable zooming and rotation with mousewheel and dragging
-    form?: true; // Display form for interactive settings. Needs a div with
+    adaptable?: boolean; // Sizes are increased with higher zoom-levels
+    interactive?: boolean; // Enable zooming and rotation with mousewheel and dragging
+    form?: boolean; // Display form for interactive settings. Needs a div with
     // id="celestial-form", created automatically if not present
-    location?: false; // Display location settings. Deprecated, use formFields below
+    location?: boolean; // Display location settings. Deprecated, use formFields below
     formFields?: {
-      location: true; // Set visiblity for each group of fields with the respective id
-      general: true;
-      stars: true;
-      dsos: true;
-      constellations: true;
-      lines: true;
-      other: true;
-      download: false;
+      location: boolean; // Set visiblity for each group of fields with the respective id
+      general: boolean;
+      stars: boolean;
+      dsos: boolean;
+      constellations: boolean;
+      lines: boolean;
+      other: boolean;
+      download: boolean;
     };
-    advanced?: true; // Display fewer form fields if false
+    advanced?: boolean; // Display fewer form fields if false
     daterange?: []; // Calender date range; null: displaydate-+10; [n<100]: displaydate-+n; [yr]: yr-+10;
     // [yr, n<100]: [yr-n, yr+n]; [yr0, yr1]
     controls?: boolean; // Display zoom controls
@@ -107,7 +107,7 @@ declare module "d3-celestial/celestial" {
       limit?: 6; // Show only stars brighter than limit magnitude
       colors?: boolean; // Show stars in spectral colors, if not use default color: ;
       style?: { fill: string; opacity: number }; // Default style for stars
-      designation?: true; // Show star names (Bayer, Flamsteed, Variable star, Gliese or designation,
+      designation?: boolean; // Show star names (Bayer, Flamsteed, Variable star, Gliese or designation,
       opacity: number;
       // i.e. whichever of the previous applies first); may vary with culture setting
       designationType?: "desig"; // Which kind of name is displayed as designation (fieldname in starnames.json)
@@ -136,9 +136,9 @@ declare module "d3-celestial/celestial" {
     dsos?: {
       show?: boolean; // Show Deep Space Objects
       limit?: 6; // Show only DSOs brighter than limit magnitude
-      colors?: true; // // Show DSOs in symbol colors if true, use style setting below if false
+      colors?: boolean; // // Show DSOs in symbol colors if boolean, use style setting below if false
       style?: { fill: "#cccccc"; stroke: "#cccccc"; width: 2; opacity: 1 }; // Default style for dsos
-      names?: true; // Show DSO names
+      names?: boolean; // Show DSO names
       namesType?: "name"; // Type of DSO ('desig' or language) name shown
       // (see list below for languages codes available for dsos)
       nameStyle?: {
