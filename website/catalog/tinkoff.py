@@ -31,6 +31,8 @@ def create_payment(request):
             if r_data.get('PaymentURL', None):
                 final_response = {'url': r_data.get('PaymentURL')}
                 return JsonResponse(final_response)
+            else:
+                return JsonResponse(r_data)
         return HttpResponse(status=400)
     return JsonResponse({"error": "Use GET"})
 
