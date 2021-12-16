@@ -16,14 +16,14 @@ def create_payment(request):
         if product_price and delivery_price:
             total_price = (product_price + delivery_price) * 100
         if total_price:
-            host = "http://localhost:8000/"
+            host = os.getenv('HOST', 'https://stylemaps.ru/')
             payment_data = {
                 'TerminalKey': os.getenv('TERMINALKEY', '0'),
                 'Amount': total_price,
                 'OrderId': order_id,
                 'SuccessURL': '{0}api/submit_payment/'.format(host),
                 'FailURL': '{0}'.format(host),
-                'NotificationURL': 'http://localhost:8000/api/order/notification_url/'
+                'NotificationURL': '{0}api/order/update_payment/'.format(host)
             }
             headers = {'Content-Type': 'application/json'}
             r = requests.post('https://securepay.tinkoff.ru/v2/Init', json=payment_data, headers=headers)
@@ -35,5 +35,5 @@ def create_payment(request):
     return JsonResponse({"error": "Use GET"})
 
 
-def notification_url(request):
-    a=2
+def update_payment(request):
+    return HttpResponse(status=200)

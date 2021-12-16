@@ -6,6 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from constants import MapOrientationTypes
 from django.views.decorators.csrf import csrf_exempt
 from constants import OrderStatuses
+from django.shortcuts import get_object_or_404
 
 
 # Get an instance of a logger
@@ -16,7 +17,6 @@ order_logger = logging.getLogger('order')
 @csrf_exempt
 def order_create(request):
     if request.method == 'POST':
-        # try:
         data = json.loads(request.body)
         order_logger.info('New order: "%s"' % data)
         delivery = data.get('delivery')
@@ -34,6 +34,7 @@ def order_create(request):
             delivery_address += ', этаж {0}'.format(delivery.get('delivery_floor'))
         if delivery.get('delivery_apartments'):
             delivery_address += ', квартира {0}'.format(delivery.get('delivery_apartments'))
+
         order = Order.objects.create(
             name=personal.get('name'),
             email=personal.get('email'),
@@ -54,10 +55,10 @@ def order_create(request):
 
         for product in products:
             product_data = product.get('product_customization')
-            size = MapSize.objects.get(id=product_data.get('sizeId'))
-            version = MapVersions.objects.get(id=product_data.get('version')[-1])
-            price = MapPrices.objects.get(size=size, version=version)
-            theme = MapTheme.objects.get(id=product_data.get('theme'))
+            size = get_object_or_404(MapSize, pk=product_data.get('sizeId'))
+            version = get_object_or_404(MapVersions.objects, pk=product_data.get('version')[-1])
+            price = get_object_or_404(MapPrices, size=size, version=version)
+            theme = get_object_or_404(MapTheme, pk=product_data.get('theme'))
             try:
                 vector_image = VectorImages.objects.get(id=product_data.get('vector').get('image_id'))
                 vector_color = VectorColors.objects.get(id=product_data.get('vector').get('color_id'))
@@ -85,11 +86,6 @@ def order_create(request):
                 price=price.price
             )
         order.save()
-        # except Exception as e:
-        #     print(e)
-        #     order_logger.error('Failed to create order: "%s"' % e)
-        #     order_logger.error('Probably missed order data: "%s"' % request.body)
-        #     return HttpResponse(status=400)
         return JsonResponse({"order_id": order.id})
     return JsonResponse({"error": "Use POST"})
 

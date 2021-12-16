@@ -71,7 +71,7 @@ def send_order_to_ammo(instance):
             lead.save()
     except Exception as e:
         print(e)
-        order_logger.error('Failed to send order to amo: "%s"' % e)
+        order_logger.error('Failed to send order with id {1} at amo: {0}'.format(e, instance.id))
 
 
 def sync_orders(instance):
@@ -105,4 +105,4 @@ def sync_orders(instance):
             lead.save()
     except Exception as e:
         print(e)
-        order_logger.error('Failed to update order at amo: "%s"' % e)
+        order_logger.error('Failed to update order with id {1} at amo: {0}'.format(e, instance.id))

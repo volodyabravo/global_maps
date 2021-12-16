@@ -24,7 +24,7 @@ from catalog.views import MapThemeView, MapSizeView, MapPricesView, MapVersionsV
 from catalog.delivery import get_cities, get_delivery_methods_by_city, get_city_pvz
 from catalog.mail import send_mail_view
 from catalog.order import order_create, order_count, order_get
-from catalog.tinkoff import create_payment, notification_url
+from catalog.tinkoff import create_payment, update_payment
 
 router = routers.DefaultRouter()
 router.register(r'themes', MapThemeView)
@@ -47,7 +47,7 @@ urlpatterns = [
     path(r'api/order/count/', order_count, name="order_count"),
     path(r'api/order/order_get/', order_get, name="order_get"),
     path(r'api/order/create_payment/', create_payment, name="create_payment"),
-    path(r'api/order/notification_url/', notification_url, name="notification_url"),
+    path(r'api/order/update_payment/', update_payment, name="update_payment"),
     # path(r'mail/', send_mail_view, name="mail")
 ]
 
