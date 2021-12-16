@@ -32,7 +32,7 @@ def create_payment(request):
                 final_response = {'url': r_data.get('PaymentURL')}
                 return JsonResponse(final_response)
             else:
-                return JsonResponse(r_data)
+                return JsonResponse(r_data, safe=False, json_dumps_params={'ensure_ascii': False})
         return HttpResponse(status=400)
     return JsonResponse({"error": "Use GET"})
 
