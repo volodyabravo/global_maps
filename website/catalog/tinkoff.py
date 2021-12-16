@@ -57,7 +57,7 @@ def create_payment(order):
             'OrderId': order.id,
             'SuccessURL': '{0}/1/'.format(host),
             'FailURL': '{0}'.format(host),
-            'NotificationURL': '{0}api/order/update_payment/'.format(host),
+            'NotificationURL': '{0}api/order/update_payment/'.format('https://b89c-91-79-36-150.ngrok.io/'),
             # 'RedirectDueDate': life_date,
             'Description': 'Полиграфическая продукция',
             "DATA": {"Phone": order.phone, "Email": order.email},

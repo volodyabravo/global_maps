@@ -127,6 +127,7 @@ def order_get(request):
         return JsonResponse(order_data)
 
 
+@csrf_exempt
 def update_payment(request):
     data = json.loads(request.body)
-    logger.info('Count order: "%s"' % data)
+    return HttpResponse(status=200)
