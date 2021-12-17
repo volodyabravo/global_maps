@@ -130,4 +130,9 @@ def order_get(request):
 @csrf_exempt
 def update_payment(request):
     data = json.loads(request.body)
+    order_logger.info('New payment: "%s"' % data)
+    if data.get('Success', False):
+        order = Order.objects.get(id=data.get('OrderId'))
+        order.payment_status = data.get('Status')
+        order.save()
     return HttpResponse(status=200)
