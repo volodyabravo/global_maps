@@ -135,4 +135,4 @@ def update_payment(request):
         order = Order.objects.get(id=data.get('OrderId'))
         order.payment_status = data.get('Status')
         order.save()
-    return HttpResponse(status=200)
+    return HttpResponse("OK")
