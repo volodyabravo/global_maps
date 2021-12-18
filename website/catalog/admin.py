@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django import forms
+from django.http import HttpResponseRedirect
 from .models import MapTheme, MapSize, MapPrices, MapVersions, Order, MapOrder, VectorImages, VectorColors
+from .printer import print_map
 
 
 class MapThemeAdmin(admin.ModelAdmin):
@@ -58,8 +60,17 @@ admin.site.register(Order, OrderAdmin)
 
 
 class MapOrderAdmin(admin.ModelAdmin):
+    change_form_template = "admin/map_order.html"
+
     list_display = ('date', 'order', 'status')
     list_filter = ['date']
+
+    def response_change(self, request, obj):
+        if "_generate_image" in request.POST:
+            print_map(obj)
+            self.message_user(request, "Image has been generated")
+            return HttpResponseRedirect(".")
+        return super().response_change(request, obj)
 
 
 admin.site.register(MapOrder, MapOrderAdmin)

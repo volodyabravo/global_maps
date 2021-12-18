@@ -159,6 +159,49 @@ class MapOrder(models.Model):
     vector_image = models.ForeignKey(VectorImages, blank=True, null=True, on_delete=models.RESTRICT)
     price = models.IntegerField(_('Price'), blank=False, null=False, default=0)
 
+    @property
+    def full_json(self):
+        return {
+                "height": self.size.height_px,
+                "width": self.size.width_px,
+                "deviceScaleFactor": self.size.scale,
+                "custom": self.customization
+              }
+
+    @property
+    def customization(self):
+        data = {
+                "theme": self.theme.pk,
+                "headline": self.headline,
+                "divider": self.divider,
+                "tagline": self.tagline,
+                "subline": self.subline,
+                "sizeId": self.size.pk,
+                "orientation": self.orientation,
+                "version": self.version.pk
+            }
+        if self.vector_color and self.vector_image:
+            data['vector'] = {
+                    "color_id": self.vector_color.pk,
+                    "image_id": self.vector_image.pk
+                }
+        if self.date:
+            data['date'] = self.date.isoformat()
+
+        if self.zoom:
+            data['zoom'] = self.zoom
+
+        if self.lng and self.lat or self.city_name:
+            data['location'] = {}
+        if self.lng:
+            data['location']['lng'] = self.lng
+        if self.lat:
+            data['location']['lat'] = self.lat
+        if self.city_name:
+            data['location']['cityName'] = self.city_name
+
+        return data
+
     def __str__(self):
         return '{0} {1}'.format(MapOrderStatuses.STATUSES.get(self.status), self.date)
 
