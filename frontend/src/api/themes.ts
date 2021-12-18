@@ -1,8 +1,14 @@
+import axios from "axios";
 import { CelestialOptions } from "d3-celestial/celestial";
 
 export type MapLayouts = "CelestialFullBackground" | "СelestialCircle" | "CelestialHalf" | "StreetMapDefault" | "SimpleVector";
 export type MapTypes = "celestial" | "streetmap" | "vector";
 
+export const instance = axios.create({
+    baseURL: '/api/',
+    timeout: 8000,
+    headers: { 'X-Custom-Header': 'foobar' }
+});
 
 export enum MapType {
     Star = 1,
@@ -116,13 +122,13 @@ export async function getThemes({ map_type }: {
     let params = new URLSearchParams();
     map_type && params.set("map_type", map_type.toString())
 
-    let request = await fetch("/api/themes?" + params);
+    let request = await instance.get("themes?" + params);
 
 
-    if (!request.ok) {
+    if (request.status !== 200) {
         throw Error("Server did not return any themes");
     }
-    let json = await request.json();
+    let json = await request.data;
     return json;
 
 }
@@ -138,11 +144,11 @@ export interface Size {
 }
 
 export async function getSizes(): Promise<Array<Size>> {
-    let request = await fetch("/api/sizes/");
-    if (!request.ok) {
+    let request = await instance.get("sizes/");
+    if (request.status !== 200) {
         throw Error("Server did not return any sizes");
     }
-    let json = await request.json();
+    let json = await request.data;
 
     return json;
 }
@@ -157,11 +163,11 @@ export interface Version {
 }
 
 export async function getVersions(): Promise<Array<Version>> {
-    let request = await fetch("/api/versions");
-    if (!request.ok) {
+    let request = await instance.get("versions/");
+    if (request.status !== 200) {
         throw Error("Server did not return any versions");
     }
-    let json: Array<Version> = await request.json();
+    let json: Array<Version> = await request.data;
     return json;
 }
 
@@ -174,19 +180,19 @@ export interface PricingOption {
 interface PriceParams {
 
 }
-export async function getPrices(version?:string,size?: string ): Promise<Array<PricingOption>> {
+export async function getPrices(version?: string, size?: string): Promise<Array<PricingOption>> {
     let params = new URLSearchParams();
 
-    version && params.set("version",version )
-    size && params.set("size",size )
+    version && params.set("version", version)
+    size && params.set("size", size)
 
-    let request = await fetch("/api/prices/?"+params);
+    let request = await instance.get("prices/?" + params);
 
-    if (!request.ok) {
+    if (request.status !== 200) {
         throw Error("Server did not return any prices");
     }
 
-    let json = await request.json();
+    let json = await request.data;
 
     return json;
 }
@@ -205,13 +211,13 @@ interface CitiesResponse {
 
 export async function getCityByName(name: string): Promise<CitiesResponse["cities"]> {
     let params = new URLSearchParams({ city: name });
-    let request = await fetch("/api/delivery/get_cities/?" + params);
+    let request = await instance.get("delivery/get_cities/?" + params);
 
-    if (!request.ok) {
+    if (request.status !== 200) {
         throw Error("Server did not return any prices");
     }
 
-    let json: CitiesResponse = await request.json();
+    let json: CitiesResponse = await request.data;
 
     return json.cities;
 }
@@ -321,17 +327,13 @@ export interface PVZ {
 }
 
 export async function getCityPvz(data: getCityPvzParams): Promise<PVZ[]> {
-    let request = await fetch("/api/delivery/get_city_pvz/",
-        {
-            method: "POST",
-            body: JSON.stringify(data)
-        });
+    let request = await instance.post("delivery/get_city_pvz/", data);
 
-    if (!request.ok) {
+    if (request.status !== 200) {
         throw Error("Server did not return any prices");
     }
 
-    let json = await request.json();
+    let json = await request.data;
 
     // Convert to an array
     let props = Object.entries(json)
@@ -355,17 +357,13 @@ export interface DeliveryMethodInfo {
 }
 
 export async function getCityDeliveryMethods(data: getCityPvzParams): Promise<Array<DeliveryMethodInfo>> {
-    let request = await fetch("/api/delivery/get_delivery_methods_by_city/",
-        {
-            method: "POST",
-            body: JSON.stringify(data)
-        });
+    let request = await instance.post("delivery/get_delivery_methods_by_city/", data);
 
-    if (!request.ok) {
+    if (request.status !== 200) {
         throw Error("Server did not return any prices");
     }
 
-    let json = await request.json();
+    let json = await request.data;
 
     // Convert to an array
     let props = Object.entries(json)
@@ -382,17 +380,13 @@ export async function createOrder(data: getCityPvzParams): Promise<{
     phone: string
     url?: string
 }> {
-    let request = await fetch("/api/order/create/",
-        {
-            method: "POST",
-            body: JSON.stringify(data)
-        });
+    let request = await instance.post("order/create/", data)
 
-    if (!request.ok) {
+    if (request.status !== 200) {
         throw Error("Server did not return any prices");
     }
 
-    let json = await request.json();
+    let json = await request.data;
     return json;
 }
 
@@ -404,12 +398,12 @@ export async function getOrder(orderId: string): Promise<{
     phone: string
     url?: string
 }> {
-    let request = await fetch("/api/order/order_get/?order_id=" + orderId);
+    let request = await instance.get("/api/order/order_get/?order_id=" + orderId);
 
-    if (!request.ok) {
+    if (request.status !== 200) {
         throw Error("Server did not return any prices");
     }
 
-    let json = await request.json();
+    let json = await request.data;
     return json;
 }
