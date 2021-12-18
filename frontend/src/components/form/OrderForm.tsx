@@ -157,12 +157,13 @@ export default function OrderForm({ cartStore }: {
         // Process order creation
         try {
             let response = await createOrder(data);
-            console.log(data, response);
-            let order = await getOrder(response.order.toString());
-            setOrder(order)
-            console.log(order);
-            toast.info("Заказ создан")
-            setStage(3)
+            if (response.url) {
+                // Got url
+                console.log(response.url);
+                toast.info("Заказ создан")
+            } else {
+                toast.info("Заказ создан но создание оплаты не получилось")
+            }
         } catch (e) {
 
             toast.error("Ошибка создания заказа")
@@ -183,6 +184,7 @@ export default function OrderForm({ cartStore }: {
                         <label>
                             Тип доставки
                         </label>
+                        <br></br>
                         <Controller
                             name="type"
                             rules={{ required: true }}
@@ -208,9 +210,10 @@ export default function OrderForm({ cartStore }: {
                         <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="house" label="Кв/Офис" />
                     </>}
                     {currentDeliveryMethod && currentDeliveryMethod.type === "pvz" && <>
-                        <label>
+                        <br></br><label>
                             Пункт самовывоза
                         </label>
+                        <br></br>
                         <Controller
                             name="pvz"
                             rules={{ required: true }}
@@ -228,22 +231,19 @@ export default function OrderForm({ cartStore }: {
 
                             </Select>}
                         />
+                        <br></br>
                         <span onClick={() => { setPvzPickerOpen(true) }}>Выбрать на карте</span>
                     </>}
-                    <div style={
-                        { display: "flex", flexDirection: "row" }
-                    }>
-                        {currentDeliveryMethod && currentDeliveryMethod.delivery_price && <div style={
-                            { display: "flex", flexDirection: "column" }
-                        }>
+                    <DeliveryAndNext>
+                        {currentDeliveryMethod && currentDeliveryMethod.delivery_price && <div>
                             <span>Доставка:</span>
                             <span>{currentDeliveryMethod.delivery_price} ₽</span>
                             <span>{currentDeliveryMethod.delivery_days} день</span>
-
-
                         </div>}
                         <input type="submit" value="Следующий шаг" />
-                    </div>
+                    </DeliveryAndNext>
+
+
 
 
                 </form>
@@ -269,7 +269,46 @@ export default function OrderForm({ cartStore }: {
     </div>
 }
 
+const DeliveryAndNext = styled.div`
+    display: flex;
+    width: 100%;
+    padding: 5px;
+    align-items: end;
+    & > div {
+        display: flex;
+        flex-direction: column;
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 20px;
+        /* identical to box height, or 125% */
+    }
+    & > input {
+        margin-left: 2em;
+        cursor: pointer;
+        flex-grow: 1;
+        padding: 10px;
+        background: #3F557F;
+        border: 1px solid #3F557F;
+        box-sizing: border-box;
+        border-radius: 5px;
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 9px;
+        line-height: 15px;
+        /* identical to box height, or 167% */
 
+        text-align: center;
+        text-transform: uppercase;
+
+        color: #FFFFFF;
+        &:hover {
+            background: #4a6392;
+        }
+    }
+`
 
 function StageDisplay(props: { stage: number, setStage: (stage: number) => void }) {
     let numbers = [];

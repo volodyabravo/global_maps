@@ -90,6 +90,7 @@ const PartsContainer = styled.div`
         flex-direction: column;
     }
     justify-items: center;
+    align-items: baseline;
 `
 
 const CartItemsContainer = styled.div`

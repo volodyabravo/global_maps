@@ -380,6 +380,7 @@ export async function createOrder(data: getCityPvzParams): Promise<{
     name: string
     order: number
     phone: string
+    url?: string
 }> {
     let request = await fetch("/api/order/create/",
         {
@@ -396,7 +397,12 @@ export async function createOrder(data: getCityPvzParams): Promise<{
 }
 
 export async function getOrder(orderId: string): Promise<{
-    order_id: number
+    amount: number
+    email: string
+    name: string
+    order: number
+    phone: string
+    url?: string
 }> {
     let request = await fetch("/api/order/order_get/?order_id=" + orderId);
 
