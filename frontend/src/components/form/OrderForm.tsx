@@ -234,6 +234,7 @@ export default function OrderForm({ cartStore }: {
                         <br></br>
                         <span onClick={() => { setPvzPickerOpen(true) }}>Выбрать на карте</span>
                     </>}
+                    
                     <DeliveryAndNext>
                         {currentDeliveryMethod && currentDeliveryMethod.delivery_price && <div>
                             <span>Доставка:</span>
@@ -255,7 +256,12 @@ export default function OrderForm({ cartStore }: {
                     <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="phone" label="*Телефон получателя" />
                     <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="email" label="*Ваш E-Mail" />
                     <TextField rules={{ maxLength: 5000 }} control={personalInfo.control} name="comment" label="Комментарии к заказу" />
-                    <button onClick={() => { setStage(1) }} >Prev</button> <input type="submit" value="Следующий шаг" />
+                    Итого сумма заказа с учетом доставки
+                    <PrevNextButtons>
+                        <button onClick={() => { setStage(1) }} >Назад</button>
+                        <input type="submit" value="Оформить заказ" />
+                    </PrevNextButtons>
+
                 </form>
             }
             {stage === 3 &&
@@ -268,6 +274,50 @@ export default function OrderForm({ cartStore }: {
         {pvzs.length > 0 && <PVZPicker pvzs={pvzs} isOpen={pvzPickerOpen} setOpen={setPvzPickerOpen} onSelect={(val) => delivery.setValue("pvz", val || "")} />}
     </div>
 }
+
+const PrevNextButtons = styled.div`
+    margin-top: 2em;
+    display: flex;
+
+    button, input {
+        flex-basis: 49%;
+            cursor: pointer;
+            flex-grow: 1;
+            padding: 10px;
+            background: #3F557F;
+            border: 1px solid #3F557F;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-family: Montserrat;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 9px;
+            line-height: 15px;
+            /* identical to box height, or 167% */
+
+            text-align: center;
+            text-transform: uppercase;
+
+            color: #FFFFFF;
+            &:hover {
+                background: #4a6392;
+            }
+            
+    }
+    button {
+        background: #FFFFFF;
+        color: black;
+        border: 1px solid #202945;
+        border-radius: 5px;
+        &:hover {
+            background: #e9e9e9;
+        }
+    }
+
+    input {
+        font-weight: bold;
+    }
+`
 
 const DeliveryAndNext = styled.div`
     display: flex;
