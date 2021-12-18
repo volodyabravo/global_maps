@@ -81,7 +81,7 @@ export function CheckoutButton(props: CheckoutButtonProps) {
           <span>{props.price || "0"}</span>
         </div>
         <div>
-          <span>Add to cart</span>
+          <span>Добавить в корзину</span>
           <BsChevronRight style={{ height: "0.75em" }} />
         </div>
       </div>

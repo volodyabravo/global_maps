@@ -224,12 +224,12 @@ function MapClientPage({ cartStore }: {
                                             })}</>)
                                         }} />
                                     </SizesContainer>
-                                    Select orientation
+                                    Выберите ориентацию
                                     <SizesContainer>
                                         <Controller control={form.control} name="orientation" render={(form) => {
                                             return (<>
-                                                <SizeButton className={form.field.value === "landscape" ? "active" : ""} onClick={() => { form.field.onChange("landscape") }}>Landscape</SizeButton>
-                                                <SizeButton className={form.field.value === "portrait" ? "active" : ""} onClick={() => { form.field.onChange("portrait") }}>Portrait</SizeButton>
+                                                <SizeButton className={form.field.value === "landscape" ? "active" : ""} onClick={() => { form.field.onChange("landscape") }}>Горизонтальная</SizeButton>
+                                                <SizeButton className={form.field.value === "portrait" ? "active" : ""} onClick={() => { form.field.onChange("portrait") }}>Вертикальная</SizeButton>
                                             </>)
                                         }} />
                                     </SizesContainer>
