@@ -375,7 +375,11 @@ export async function getCityDeliveryMethods(data: getCityPvzParams): Promise<Ar
 
 
 export async function createOrder(data: getCityPvzParams): Promise<{
-    order_id: number
+    amount: number
+    email: string
+    name: string
+    order: number
+    phone: string
 }> {
     let request = await fetch("/api/order/create/",
         {

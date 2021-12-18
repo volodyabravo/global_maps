@@ -158,7 +158,7 @@ export default function OrderForm({ cartStore }: {
         try {
             let response = await createOrder(data);
             console.log(data, response);
-            let order = await getOrder(response.order_id.toString());
+            let order = await getOrder(response.order.toString());
             setOrder(order)
             console.log(order);
             toast.info("Заказ создан")
