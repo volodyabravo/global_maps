@@ -116,13 +116,32 @@ def order_create(request):
 @csrf_exempt
 def order_get(request):
     if request.method == 'GET':
-        order = Order.objects.get(id=request.GET.get('order_id'))
+        order = get_object_or_404(Order, id=request.GET.get('order_id'))
         order_data = {
             "amount": order.delivery_price + order.total_price,
             "order": order.id,
             "name": order.name,
             "email": order.email,
-            "phone": order.phone
+            "phone": order.phone,
+            "payment_status": order.payment_status,
+            "url": order.payment_url
+        }
+        return JsonResponse(order_data)
+
+
+@csrf_exempt
+def update_payment_url(request):
+    if request.method == 'GET':
+        order = get_object_or_404(Order, id=request.GET.get('order_id'))
+        create_payment(order)
+        order_data = {
+            "amount": order.delivery_price + order.total_price,
+            "order": order.id,
+            "name": order.name,
+            "email": order.email,
+            "phone": order.phone,
+            "payment_status": order.payment_status,
+            "url": order.payment_url
         }
         return JsonResponse(order_data)
 
