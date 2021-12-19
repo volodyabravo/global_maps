@@ -193,5 +193,10 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'payment': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
     },
 }
