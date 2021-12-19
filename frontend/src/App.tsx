@@ -11,6 +11,7 @@ import {
   Route,
 } from "react-router-dom";
 import AppNavBar from './components/AppBar';
+import AppFooter from './components/AppFooter';
 import { ThemeProvider } from '@emotion/react';
 import theme from './theme/theme';
 import { MapEditorPage } from './pages/MapEditor';
@@ -45,6 +46,7 @@ function App() {
               <Route exact path="/">
                 <AppNavBar />
                 <MainPage />
+                <AppFooter />
               </Route>
               <Route exact path="/star/">
                 <AppNavBar />
@@ -62,10 +64,12 @@ function App() {
               <Route exact path="/about/">
                 <AppNavBar />
                 <AboutPage />
+                <AppFooter />
               </Route>
               <Route exact path="/delivery/">
                 <AppNavBar />
                 <DeliveryPage />
+                <AppFooter />
               </Route>
               <Route exact path="/ui/">
                 <AppNavBar />
