@@ -34,6 +34,7 @@ import productsStore from './cart/products.store';
 import MainPage from './pages/Main';
 import AboutPage from './pages/About';
 import DeliveryPage from './pages/Delivery';
+import { OrderPage } from './pages/OrderPage';
 
 function App() {
   return (
@@ -88,6 +89,10 @@ function App() {
               <Route exact path="/cart/">
                 <AppNavBar />
                 <CartPage />
+              </Route>
+              <Route path="/order/:id/">
+                <AppNavBar />
+                <OrderPage/>
               </Route>
             </Switch>
           </Router>

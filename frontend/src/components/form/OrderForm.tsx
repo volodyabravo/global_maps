@@ -7,8 +7,9 @@ import AutocompleteField from "./AutocompleteField";
 import { TextField } from "./TextField";
 import { Cart } from "../../cart/cart.store";
 import PVZPicker from "./PVZPicker";
-import { MenuItem, Select } from "@mui/material";
+import { Checkbox, FormControlLabel, FormGroup, MenuItem, Select } from "@mui/material";
 import { toast } from "react-toastify";
+
 const stages = [
     {
         name: "Выберите способ доставки",
@@ -28,7 +29,16 @@ export default function OrderForm({ cartStore }: {
     let [stage, setStage] = useState(1);
     let [pvzs, setPvzs] = useState<PVZ[]>([]);
     let [methods, setMethods] = useState<DeliveryMethodInfo[]>([]);
-    let [order, setOrder] = useState<any | null>(null);
+    let [order, setOrder] = useState<{
+        amount: number
+        email: string
+        name: string
+        order: number
+        phone: string
+        url?: string
+    } | null>(null);
+
+
 
     const [pvzPickerOpen, setPvzPickerOpen] = useState(false)
 
@@ -68,11 +78,20 @@ export default function OrderForm({ cartStore }: {
             comment: "",
             callme: false,
             emailme: false,
+            privacy: false
         }
     })
 
     let deliverySubmit = (data: any) => {
-        setStage(2);
+        setStage(2)
+
+
+    }
+    let paySubmit = (data: any) => {
+        if (order?.url) {
+            window.location.href = order.url;
+        }
+
 
     }
 
@@ -135,11 +154,13 @@ export default function OrderForm({ cartStore }: {
             data.delivery.delivery_type_name = currentDeliveryMethod.name;
             if (currentDeliveryMethod.type === "pvz" && currentPVZ) {
                 data.delivery.delivery_address = currentPVZ.address;
+                data.delivery.pvz_id = currentPVZ.id
             } else if (currentDeliveryMethod.type === "courier") {
                 data.delivery.delivery_street = deliveryVal.street;
                 data.delivery.delivery_entrance = deliveryVal.entrance;
                 data.delivery.delivery_floor = deliveryVal.floor;
                 data.delivery.delivery_apartments = deliveryVal.house;
+
             }
         }
 
@@ -161,6 +182,8 @@ export default function OrderForm({ cartStore }: {
                 // Got url
                 console.log(response.url);
                 toast.info("Заказ создан")
+                setOrder(response)
+                setStage(3);
             } else {
                 toast.info("Заказ создан но создание оплаты не получилось")
             }
@@ -234,7 +257,7 @@ export default function OrderForm({ cartStore }: {
                         <br></br>
                         <span onClick={() => { setPvzPickerOpen(true) }}>Выбрать на карте</span>
                     </>}
-                    
+
                     <DeliveryAndNext>
                         {currentDeliveryMethod && currentDeliveryMethod.delivery_price && <div>
                             <span>Доставка:</span>
@@ -243,10 +266,6 @@ export default function OrderForm({ cartStore }: {
                         </div>}
                         <input type="submit" value="Следующий шаг" />
                     </DeliveryAndNext>
-
-
-
-
                 </form>
             }
             {stage === 2 &&
@@ -256,7 +275,39 @@ export default function OrderForm({ cartStore }: {
                     <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="phone" label="*Телефон получателя" />
                     <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="email" label="*Ваш E-Mail" />
                     <TextField rules={{ maxLength: 5000 }} control={personalInfo.control} name="comment" label="Комментарии к заказу" />
-                    Итого сумма заказа с учетом доставки
+
+
+                    {cartStore?.totalPrice && currentDeliveryMethod && <div>
+                        Итого сумма заказа с учетом доставки {cartStore.totalPrice + currentDeliveryMethod.delivery_price}
+                    </div>}
+
+
+
+                    <Controller
+                        name="callme"
+                        rules={{ required: true }}
+                        control={personalInfo.control}
+                        render={({ field }) =>
+                            <FormControlLabel control={<Checkbox {...field} />} label="Хочу, чтобы менеджер мне перезвонил" />}
+                    />
+
+                    <Controller
+                        name="emailme"
+                        rules={{ required: true }}
+                        control={personalInfo.control}
+                        render={({ field }) =>
+                            <FormControlLabel control={<Checkbox {...field} />} label="Хочу получать новости" />}
+                    />
+
+                    <Controller
+                        name="privacy"
+                        rules={{ required: true }}
+                        control={personalInfo.control}
+                        render={({ field }) =>
+                            <FormControlLabel control={<Checkbox {...field} />} label="Соглашаюсь с политикой с конфиденциальности" />}
+                    />
+
+
                     <PrevNextButtons>
                         <button onClick={() => { setStage(1) }} >Назад</button>
                         <input type="submit" value="Оформить заказ" />
@@ -265,9 +316,9 @@ export default function OrderForm({ cartStore }: {
                 </form>
             }
             {stage === 3 &&
-                <form onSubmit={delivery.handleSubmit(deliverySubmit)}>
-                    Стоимость заказа
-                    <button onClick={() => { setStage(2) }}>Prev</button> <input type="submit" value="Следующий шаг" />
+                <form onSubmit={delivery.handleSubmit(paySubmit)}>
+                    Стоимость заказа {order?.amount}Р
+                    <button onClick={() => { setStage(2) }}>Назад</button> <input type="submit" value="Оплатить" />
                 </form>
             }
         </div>
@@ -415,9 +466,3 @@ const StageDisplayDiv = styled.div`
     }
     
 `
-
-function NextStepButton() {
-    return (
-        <div></div>
-    );
-}

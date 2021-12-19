@@ -233,6 +233,7 @@ export interface getCityPvzParams {
         delivery_entrance?: string,
         delivery_floor?: string,
         delivery_apartments?: string,
+        pvz_id?: string;
     },
     products: Array<APIProduct>;
     personal?: {
@@ -398,7 +399,7 @@ export async function getOrder(orderId: string): Promise<{
     phone: string
     url?: string
 }> {
-    let request = await instance.get("/api/order/order_get/?order_id=" + orderId);
+    let request = await instance.get("order/order_get/?order_id=" + orderId);
 
     if (request.status !== 200) {
         throw Error("Server did not return any prices");
