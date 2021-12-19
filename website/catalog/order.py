@@ -95,7 +95,9 @@ def order_create(request):
 
         order.save()
 
-        create_payment(order)
+        payment = create_payment(order)
+        if payment != True:
+            return JsonResponse(payment)
 
         order_data = {
             "amount": order.delivery_price + order.total_price,

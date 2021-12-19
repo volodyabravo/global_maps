@@ -75,5 +75,7 @@ def create_payment(order):
             order.payment_id = r_data.get('PaymentId')
             order.payment_status = r_data.get('Status')
             order.save()
+            return True
         else:
             payment_logger.error('Failed to create payment for order {1} : {0}'.format(r_data, order.id))
+            return r_data

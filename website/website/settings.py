@@ -184,7 +184,7 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': '{0}/order.log'.format(BASE_DIR),
+            'filename': '{0}/full_logs.log'.format(BASE_DIR),
         },
     },
     'loggers': {
