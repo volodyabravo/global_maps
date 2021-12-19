@@ -6,6 +6,10 @@ from .models import MapPrices
 from django.shortcuts import get_object_or_404
 from datetime import timedelta, datetime
 from constants import MapTypes
+import logging
+
+
+payment_logger = logging.getLogger('payment')
 
 
 def create_payment(order):
@@ -72,4 +76,4 @@ def create_payment(order):
             order.payment_status = r_data.get('Status')
             order.save()
         else:
-            return JsonResponse(r_data)
+            payment_logger.error('Failed to create payment for order {1} : {0}'.format(r_data, order.id))
