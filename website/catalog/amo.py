@@ -42,7 +42,7 @@ def send_order_to_ammo(instance):
                 client_secret=AMO_CLIENT_SECRET,
                 subdomain=AMO_SUBDOMAIN,
                 redirect_url=AMO_REDIRECT_URL,
-                storage=tokens.FileTokensStorage(DIR_NAME),  # by default FileTokensStorage
+                storage=tokens.FileTokensStorage('{0}/tokens/'.format(DIR_NAME)),  # by default FileTokensStorage
             )
             tokens.default_token_manager.init(code=AMO_REFRESH_TOKEN, skip_error=True)
 
@@ -82,7 +82,7 @@ def sync_orders(instance):
                 client_secret=AMO_CLIENT_SECRET,
                 subdomain=AMO_SUBDOMAIN,
                 redirect_url=AMO_REDIRECT_URL,
-                storage=tokens.FileTokensStorage(DIR_NAME),
+                storage=tokens.FileTokensStorage('{0}/tokens/'.format(DIR_NAME)),
                 # products=instance.products,
                 # images=instance.images,  # by default FileTokensStorage
             )
