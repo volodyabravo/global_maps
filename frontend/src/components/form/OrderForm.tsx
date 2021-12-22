@@ -317,8 +317,14 @@ export default function OrderForm({ cartStore }: {
             }
             {stage === 3 &&
                 <form onSubmit={delivery.handleSubmit(paySubmit)}>
-                    Стоимость заказа {order?.amount}Р
-                    <button onClick={() => { setStage(2) }}>Назад</button> <input type="submit" value="Оплатить" />
+                    <div>
+                        Стоимость заказа {order?.amount}Р
+                    </div>
+                    
+                    <PrevNextButtons>
+                        <button onClick={() => { setStage(2) }}>Назад</button> <input type="submit" value="Оплатить" />
+                    </PrevNextButtons>
+
                 </form>
             }
         </div>

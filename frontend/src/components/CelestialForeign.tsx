@@ -145,7 +145,7 @@ export class CelestialReact extends React.Component<
 
 
   render = () => (
-    <div id="celestial-map">
+    <div id="celestial-map" style={{pointerEvents: "none"}}>
       {React.Children.map(this.props.children, (c: any) =>
         React.cloneElement(c, {
           addFeaturesCollection: this.addFeaturesCollection,
