@@ -212,7 +212,7 @@ export default function PVZPicker(props: {
           <PvzList>
             {props.pvzs.map((item) => {
               let selected = item.id === pvz
-              return (<div className={classNames("item", {
+              return (<div key={item.id} className={classNames("item", {
                 active: selected
               })} onClick={() => { setPvz(item.id); }}>
                 <div className="title">{item.id}</div>

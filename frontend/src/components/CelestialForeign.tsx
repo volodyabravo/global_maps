@@ -48,9 +48,10 @@ export class CelestialReact extends React.Component<
   containerMounted?: number;
   updateConfigTimer: NodeJS.Timeout | null = null;
   custom?: UserCustomizations;
-
+  containerRef = React.createRef<HTMLDivElement>();
   FeaturesCollection: any = CelestialFeaturesCollection;
   Point: any = CelestialComponentPoint;
+  sizeChanged = false;
 
   constructor(props: CelestialReactProps) {
     super(props);
@@ -59,12 +60,12 @@ export class CelestialReact extends React.Component<
     this.custom = props.custom;
     // Callback to get map position
     if (props.onLocationChange != undefined) {
-      this.celestial.addCallback(()=> {
+      this.celestial.addCallback(() => {
         // @ts-ignore
         props.onLocationChange(this.celestial.rotate());
       })
     }
-   
+
   }
 
   addFeaturesCollection = (fc: any) => this.featuresCollections.push(fc);
@@ -107,14 +108,14 @@ export class CelestialReact extends React.Component<
 
       // Move map if location has changed
       if (get(prevConfig, "center") != get(nextConfig, "center")) {
-        if (nextConfig.center){
-          this.celestial.rotate({center: nextConfig.center})
+        if (nextConfig.center) {
+          this.celestial.rotate({ center: nextConfig.center })
         }
       }
       if (
         get(prevConfig, "stars.data") != get(nextConfig, "stars.data") ||
         get(prevConfig, "dsos.data") != get(nextConfig, "dsos.data") ||
-        get(prevConfig, "width") != get(nextConfig, "width") ||
+        // get(prevConfig, "width") != get(nextConfig, "width") ||
         get(prevConfig, "projection") != get(nextConfig, "projection")
       ) {
         this.celestial.reload(sanitize(basedConfig));
@@ -137,15 +138,54 @@ export class CelestialReact extends React.Component<
       let next = ApplyCustomToConfig(nextProps.config, nextProps.custom);
       this.updateConfig(config, next);
     }
+
+    // Size changed
+    if ((custom?.orientation != nextProps.custom?.orientation) || (custom?.sizeId != nextProps.custom?.sizeId)) {
+     
+      console.log("size changed")
+      this.sizeChanged = true;
+      return true;
+    }
     // False because we don't want it to be recreated all the time
     return false;
   };
 
 
+  componentDidUpdate = () => {
+    // Size change detected = update width
+    if (this.sizeChanged) {
+      if (this.containerRef) {
+        let containerHeight = this.containerRef.current?.parentElement?.clientHeight
+
+        let containerWidth= this.containerRef.current?.parentElement?.clientWidth
+        console.log(this.containerRef.current?.parentElement)
+        console.log(this.containerRef.current?.parentElement?.offsetHeight)
+        console.log(this.containerRef.current?.parentElement?.clientHeight)
+        
+        let basedConfig = {
+          ...baseConfig,
+          ...this.props.config,
+        }
+
+        if (containerHeight && containerWidth) {
+          basedConfig.width = Math.min(containerHeight,containerWidth);
+        }
+
+        // this.celestial.clear();
+        // this.celestial.remove();
+        this.celestial.display(sanitize(basedConfig))
+        // this.celestial.reload(sanitize(basedConfig));
+        // this.celestial.redraw();
+        this.sizeChanged = false;
+      }
+    }
+
+  }
+
 
 
   render = () => (
-    <div id="celestial-map" style={{pointerEvents: "none"}}>
+    <div id="celestial-map" style={{ pointerEvents: "none", maxHeight: "100%", maxWidth: "100%" }} ref={this.containerRef}>
       {React.Children.map(this.props.children, (c: any) =>
         React.cloneElement(c, {
           addFeaturesCollection: this.addFeaturesCollection,
@@ -161,6 +201,7 @@ function ApplyCustomToConfig(config: CelestialOptions, custom?: UserCustomizatio
   if (custom.location) {
     config.center = [custom.location.lng, custom.location.lat, 0]
   }
+
 
   return config;
 }
