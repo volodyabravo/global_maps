@@ -274,8 +274,6 @@ export default function OrderForm({ cartStore }: {
                                 >
                                     {pvz.address}
                                 </MenuItem>)}
-
-
                             </Select>}
                         />
                         <br></br>
@@ -358,11 +356,10 @@ export default function OrderForm({ cartStore }: {
 
 const FakeControl = styled.div`
     background: #F8F8F8;
-border: 1px solid #E8E7E7;
-box-sizing: border-box;
-border-radius: 3px;
-padding: 1em;
-
+    border: 1px solid #E8E7E7;
+    box-sizing: border-box;
+    border-radius: 3px;
+    padding: 1em;
 `
 
 const PrevNextButtons = styled.div`

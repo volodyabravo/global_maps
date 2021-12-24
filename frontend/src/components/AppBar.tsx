@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, NavLink } from 'react-router-dom';
-import { Button, Container, Grid, SvgIcon } from '@mui/material';
+import { Button, Container, Grid, List, ListItem, SvgIcon, SwipeableDrawer } from '@mui/material';
 import { BsFillBagCheckFill } from 'react-icons/bs';
 import { inject, observer } from 'mobx-react';
 import { Cart } from '../cart/cart.store';
@@ -55,14 +55,10 @@ function AppNavBar(props: any) {
         React.useState<null | HTMLElement>(null);
 
     console.log('cart', props)
-
-    // const toggleDrawer = (anchor, open) => (event) => {
-    //     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-    //       return;
-    //     }
-    
-    //     setState({ ...state, [anchor]: open });
-    //   };
+    const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const toggleDrawer = () => {
+        setDrawerOpen(prev => !prev)
+    };
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -81,26 +77,27 @@ function AppNavBar(props: any) {
     };
 
     const menuId = 'primary-search-account-menu';
-    const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
+
+    const list = (
+        <Box
+            sx={{ width: 250 }}
+            role="presentation"
+            onClick={toggleDrawer}
+            onKeyDown={toggleDrawer}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        </Menu>
-    );
+            <List>
+                {links.map(({ name, to }) => (
+                    <ListItem button key={name}>
+                        <NavMobileLink to={to} activeClassName="active" exact>
+                            {name}
+                        </NavMobileLink>
+                    </ListItem>)
+                )}
+            </List>
+        </Box>
+    )
+
+
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
     const renderMobileMenu = (
@@ -138,10 +135,11 @@ function AppNavBar(props: any) {
                 zIndex: 2,
                 position: "relative",
             }}>
+
                 <Container sx={{ marginLeft: "0px", marginRight: "0px", width: "100%", maxWidth: "100%!important" }}>
                     <Toolbar sx={{ display: "flex", alignItems: "center", justifyContent: "space-betwen" }}>
 
-                        <Grid container spacing={3} xs={12} justifyContent="space-between" alignItems="center" mt={0}>
+                        <Grid container spacing={0} xs={12} sx={{ marginLeft: "0px", }} justifyContent="space-between" alignItems="center" mt={0}>
                             <Grid container xs={1}>
                                 <IconButton
                                     size="large"
@@ -156,7 +154,7 @@ function AppNavBar(props: any) {
                                         padding: "2px",
                                         marginLeft: '0px'
                                     }}
-                                    onClick={e => handleMobileMenuOpen(e)}
+                                    onClick={toggleDrawer}
                                 >
                                     <MenuIcon />
                                 </IconButton>
@@ -202,8 +200,14 @@ function AppNavBar(props: any) {
                     </Toolbar>
                 </Container>
             </AppBar>
-            {renderMobileMenu}
-            {renderMenu}
+            <SwipeableDrawer
+                anchor={"left"}
+                open={drawerOpen}
+                onClose={toggleDrawer}
+                onOpen={toggleDrawer}
+            >
+                {list}
+            </SwipeableDrawer>
         </Box >
     );
 }
