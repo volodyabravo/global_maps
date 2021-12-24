@@ -33,18 +33,18 @@ const links = [
         to: "/star/",
         name: "Звездное небо"
     },
-    {
-        to: "/vector/",
-        name: "Создать постер"
-    },
-    {
-        to: "/delivery/",
-        name: "Доставка & оплата"
-    },
-    {
-        to: "/about/",
-        name: "О нас"
-    },
+    // {
+    //     to: "/vector/",
+    //     name: "Создать постер"
+    // },
+    // {
+    //     to: "/delivery/",
+    //     name: "Доставка & оплата"
+    // },
+    // {
+    //     to: "/about/",
+    //     name: "О нас"
+    // },
 
 ]
 
@@ -55,6 +55,14 @@ function AppNavBar(props: any) {
         React.useState<null | HTMLElement>(null);
 
     console.log('cart', props)
+
+    // const toggleDrawer = (anchor, open) => (event) => {
+    //     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+    //       return;
+    //     }
+    
+    //     setState({ ...state, [anchor]: open });
+    //   };
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);

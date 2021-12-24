@@ -91,11 +91,7 @@ export default function OrderForm({ cartStore }: {
         if (order?.url) {
             window.location.href = order.url;
         }
-
-
     }
-
-
 
     let deliveryValues = delivery.watch();
 
@@ -133,6 +129,23 @@ export default function OrderForm({ cartStore }: {
     let currentDeliveryMethod = useMemo(() => { return methods.find((item) => item.id === deliveryValues.type) }, [deliveryValues.type, methods])
 
     let currentPVZ = useMemo(() => { return pvzs.find((item) => item.id === deliveryValues.pvz) }, [deliveryValues.pvz, pvzs])
+
+    let secondStageAvailable = false;
+    if (currentDeliveryMethod) {
+        if (currentDeliveryMethod.id == "manual_2181") {
+            secondStageAvailable = true;
+        }
+
+        if (currentDeliveryMethod.type == "courier") {
+            secondStageAvailable = true;
+        }
+        
+        if (currentDeliveryMethod.type == "pvz") {
+            if (currentPVZ) {
+                secondStageAvailable = true;
+            }
+        }
+    }
 
     console.log(currentDeliveryMethod, currentPVZ)
 
@@ -195,6 +208,8 @@ export default function OrderForm({ cartStore }: {
 
     }
 
+   
+
     return <div>
         <StageDisplay stage={stage} setStage={setStage}></StageDisplay>
         {/* Stage 1 delivery */}
@@ -212,9 +227,12 @@ export default function OrderForm({ cartStore }: {
                             name="type"
                             rules={{ required: true }}
                             control={delivery.control}
-                            render={({ field }) => <Select 
-                                {...field} sx={{width: "100%"}}
+                            render={({ field }) => <Select
+                                {...field} sx={{width: "100%"}}  displayEmpty 
                             >
+                                 <MenuItem disabled value="">
+                                    <em>Выберите тип доставки</em>
+                                </MenuItem>
                                 {methods.map((method) => <MenuItem 
                                     key={method.id}
                                     value={method.id}
@@ -237,7 +255,7 @@ export default function OrderForm({ cartStore }: {
                             Адрес нашего офиса
                         </label>   
                         <FakeControl>
-                        ул. Свободы 61к1, офис 26Д, ПН-ПТН с 10 до 16 
+                            ул. Свободы 61к1, офис 26Д, ПН-ПТН с 10 до 16 
                         </FakeControl>
                     </>}
                     {currentDeliveryMethod && currentDeliveryMethod.id !== "manual_2181" && currentDeliveryMethod.type === "pvz" && <>
@@ -272,7 +290,7 @@ export default function OrderForm({ cartStore }: {
                             <span>{currentDeliveryMethod.delivery_price} ₽</span>
                             <span>{currentDeliveryMethod.delivery_days} день</span>
                         </div>}
-                        <input type="submit" value="Следующий шаг" />
+                        <input type="submit" value="Следующий шаг" disabled={!secondStageAvailable } />
                     </DeliveryAndNext>
                 </form>
             }
@@ -319,7 +337,6 @@ export default function OrderForm({ cartStore }: {
                     <PrevNextButtons>
                         <button onClick={() => { setStage(1) }} >Назад</button>
                         <input type="submit" value="Оформить заказ" />
-                        <pre>{JSON.stringify(personalInfo.formState, null, 4)}</pre>
                     </PrevNextButtons>
 
                 </form>
@@ -431,6 +448,12 @@ const DeliveryAndNext = styled.div`
         color: #FFFFFF;
         &:hover {
             background: #4a6392;
+        }
+
+        &:disabled {
+            color: #4b4b4b;
+            background: #dadada;
+            border: 1px solid #c1c3c7;
         }
     }
 `
