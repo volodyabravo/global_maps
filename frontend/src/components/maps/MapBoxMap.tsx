@@ -31,7 +31,7 @@ export function MapBoxMap(props: MapBoxMapProps) {
             }
         }
         map.current = new mapboxgl.Map({
-            // @ts-expect-error
+            // @ts-ignore
             container: mapContainer.current,
             style: props.style,
             center: center,
