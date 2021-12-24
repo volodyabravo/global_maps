@@ -54,7 +54,6 @@ function AppNavBar(props: any) {
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
 
-    console.log('cart', props)
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const toggleDrawer = () => {
         setDrawerOpen(prev => !prev)
@@ -97,35 +96,6 @@ function AppNavBar(props: any) {
         </Box>
     )
 
-
-
-    const mobileMenuId = 'primary-search-account-menu-mobile';
-    const renderMobileMenu = (
-        <Menu
-            anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            id={mobileMenuId}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={isMobileMenuOpen}
-            onClose={handleMobileMenuClose}
-        >
-            {links.map(({ name, to }) => (
-                <MenuItem>
-                    <NavMobileLink to={to} activeClassName="active" exact>
-                        {name}
-                    </NavMobileLink>
-                </MenuItem>)
-            )}
-        </Menu>
-    );
-
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" sx={{
@@ -139,7 +109,7 @@ function AppNavBar(props: any) {
                 <Container sx={{ marginLeft: "0px", marginRight: "0px", width: "100%", maxWidth: "100%!important" }}>
                     <Toolbar sx={{ display: "flex", alignItems: "center", justifyContent: "space-betwen" }}>
 
-                        <Grid container spacing={0} xs={12} sx={{ marginLeft: "0px", }} justifyContent="space-between" alignItems="center" mt={0}>
+                        <Grid container spacing={0} sx={{ marginLeft: "0px", }} justifyContent="space-between" alignItems="center" mt={0}>
                             <Grid container xs={1}>
                                 <IconButton
                                     size="large"

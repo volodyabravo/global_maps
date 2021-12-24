@@ -94,7 +94,6 @@ function MapClientPage({ cartStore }: {
                                             <button onClick={getGeolocation}>Найти меня</button>
                                         </LocationBlock>}
                                         {/* <p>Pro tip! You can also drag/drop and zoom on the map to get the exact position you want on your poster.</p> */}
-                                        <p>{JSON.stringify(custom.location)}</p>
                                     </AccordionDetails>
                                 </Accordion>
                             </Box>

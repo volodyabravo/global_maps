@@ -25,7 +25,7 @@ export function LocationSelector(props: LocationSelectorProps) {
                 if (AutocompleteService.current) {
                     AutocompleteService.current.getPlacePredictions(request, callback);
                 }
-            }, 200),
+            }, 1000),
         [],
     );
 
@@ -86,7 +86,6 @@ export function LocationSelector(props: LocationSelectorProps) {
         }}
 
         renderInput={(params) => {
-            console.log(params)
             return (
                 <SearchInput ref={params.InputProps.ref}>
                     <input type="text" {...params.inputProps} className="" />

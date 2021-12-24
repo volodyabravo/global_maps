@@ -62,7 +62,6 @@ export function MapBoxMap(props: MapBoxMapProps) {
 
 
         })
-        console.log(map.current)
         return () => {
             map.current?.remove();
             map.current = null
