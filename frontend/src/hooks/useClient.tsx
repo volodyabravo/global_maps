@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { getPrices, getSizes, getThemes, getVersions, MapTheme, MapType, Size, UserCustomizations, Version } from "../api/themes";
 import { Cart, CartItem } from "../cart/cart.store";
+import { GeocoderService, mapsLoaded } from "../components/geocoder/GoogleMaps";
 import demo from "./../assets/demo-pic.png"
 
 const hasGeo = 'geolocation' in navigator;
@@ -60,7 +61,7 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
     }, [])
 
 
-    
+
 
     function getGeolocation() {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -76,6 +77,25 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
             console.log(ss)
             toast("Ошибка получения локации")
         })
+    }
+
+    function setLocationAutocomplete(autoCompleteResult: google.maps.places.AutocompletePrediction | null) {
+        mapsLoaded()
+        if (autoCompleteResult) {
+            GeocoderService.current?.geocode({
+                placeId: autoCompleteResult.place_id
+            }, (res) => {
+                if (res && res[0]) {
+                    let place = res[0];
+                    form.setValue("location", {
+                        lat: place.geometry.location.lat(),
+                        lng: place.geometry.location.lng(),
+                        cityName: place.formatted_address
+                    })
+                }
+            })
+        }
+
     }
 
 
@@ -95,7 +115,7 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
 
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getPrice();
     }, [custom.sizeId, custom.version])
 
@@ -136,6 +156,7 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
         form,
         addToCart,
         getGeolocation,
+        setLocationAutocomplete,
         hasGeo,
         price,
         loading

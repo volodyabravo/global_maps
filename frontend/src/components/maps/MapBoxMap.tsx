@@ -78,10 +78,18 @@ export function MapBoxMap(props: MapBoxMapProps) {
         }
 
     }, [props.custom?.sizeId, props.custom?.orientation])
-    // let location = 
 
+    useEffect(()=> {
+        if (map.current && props.custom?.location) {
+            map.current.panTo({
+                lat: props.custom.location.lat,
+                lon: props.custom?.location.lng
+            })
+        }
+
+    }, [props.custom?.location?.lat, props.custom?.location?.lng])
+    
     return  <MapContainer ref={mapContainer} />
-  
 }
 
 

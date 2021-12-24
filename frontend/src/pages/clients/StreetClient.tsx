@@ -40,6 +40,7 @@ function MapClientPage({ cartStore }: {
         addToCart,
         hasGeo,
         getGeolocation,
+        setLocationAutocomplete,
         loading,
         price
     } = useClient(cartStore, MapType.Street)
@@ -89,7 +90,7 @@ function MapClientPage({ cartStore }: {
                                         Выберите локацию
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <LocationSelector />
+                                        <LocationSelector setLocation={setLocationAutocomplete} />
                                         {hasGeo && <LocationBlock>
                                             <span>или используйте ваше местоположение</span>
                                             <button onClick={getGeolocation}>Найти меня</button>
