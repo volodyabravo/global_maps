@@ -30,7 +30,7 @@ const CardArea = styled.div`
   text-align: center;
   overflow-y :hidden;
   overflow-x :auto;
-
+  transform: scale(0.8);
   ${({ theme }) => theme.breakpoints.down("md")} {
         height:auto;
     }

@@ -43,6 +43,7 @@ export function StreetMapDefault({ orientation, theme, custom, height, print, wi
 const CardContainer = styled.div`
     position: relative;
     overflow: hidden;
+    
 `;
 const CardTextContainer = styled.div`
     position: absolute;
@@ -53,8 +54,9 @@ const MapContainer = styled.div`
     overflow: hidden;
     position: absolute;
     left: 0;
-     top: 0;
-      width: 100%;
-                height:100%;
+    top: 0;
+    width: 100%;
+    height:100%;
+    
 `;
 

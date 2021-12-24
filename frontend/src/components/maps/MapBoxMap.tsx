@@ -31,11 +31,22 @@ export function MapBoxMap(props: MapBoxMapProps) {
             }
         }
         map.current = new mapboxgl.Map({
+            // @ts-expect-error
             container: mapContainer.current,
             style: props.style,
             center: center,
             zoom: 5,
         });
+
+        // Patch dimensions function to return correct dimensions
+        // @ts-ignore
+        map.current._containerDimensions = function() {
+            if (mapContainer.current) {
+                let height = mapContainer.current.clientHeight;
+                let width = mapContainer.current.clientWidth;
+                return  [width,height] 
+            }
+        }
 
         map.current.on("load", (e:any) => {
             if (map.current) {
@@ -54,10 +65,7 @@ export function MapBoxMap(props: MapBoxMapProps) {
         console.log(map.current)
         return () => {
             map.current?.remove();
-
             map.current = null
-
-
         }
 
 
@@ -72,9 +80,8 @@ export function MapBoxMap(props: MapBoxMapProps) {
     }, [props.custom?.sizeId, props.custom?.orientation])
     // let location = 
 
-    return <div style={{ width: "100%", height: "100%", position: "relative" }}>
-        <MapContainer ref={mapContainer} />
-    </div>
+    return  <MapContainer ref={mapContainer} />
+  
 }
 
 
@@ -90,7 +97,11 @@ const MapContainer = styled.div`
 
     & .mapboxgl-control-container {
         display: none;
+
+       
     } 
+
+ 
 
     /* & .mapboxgl-canvas {
         width:  100% !important;

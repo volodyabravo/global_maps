@@ -208,8 +208,6 @@ export default function OrderForm({ cartStore }: {
 
     }
 
-   
-
     return <div>
         <StageDisplay stage={stage} setStage={setStage}></StageDisplay>
         {/* Stage 1 delivery */}
