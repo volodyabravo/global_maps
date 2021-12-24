@@ -212,10 +212,10 @@ export default function OrderForm({ cartStore }: {
                             name="type"
                             rules={{ required: true }}
                             control={delivery.control}
-                            render={({ field }) => <Select
-                                {...field}
+                            render={({ field }) => <Select 
+                                {...field} sx={{width: "100%"}}
                             >
-                                {methods.map((method) => <MenuItem
+                                {methods.map((method) => <MenuItem 
                                     key={method.id}
                                     value={method.id}
 
@@ -232,7 +232,15 @@ export default function OrderForm({ cartStore }: {
                         <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="floor" label="Этаж" />
                         <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="house" label="Кв/Офис" />
                     </>}
-                    {currentDeliveryMethod && currentDeliveryMethod.type === "pvz" && <>
+                    {currentDeliveryMethod && currentDeliveryMethod.id === "manual_2181" && currentDeliveryMethod.type === "pvz" && <>
+                    <br></br><label>
+                            Адрес нашего офиса
+                        </label>   
+                        <FakeControl>
+                        ул. Свободы 61к1, офис 26Д, ПН-ПТН с 10 до 16 
+                        </FakeControl>
+                    </>}
+                    {currentDeliveryMethod && currentDeliveryMethod.id !== "manual_2181" && currentDeliveryMethod.type === "pvz" && <>
                         <br></br><label>
                             Пункт самовывоза
                         </label>
@@ -242,7 +250,7 @@ export default function OrderForm({ cartStore }: {
                             rules={{ required: true }}
                             control={delivery.control}
                             render={({ field }) => <Select
-                                {...field}
+                                {...field}  sx={{width: "100%"}}
                             >
                                 {pvzs.map((pvz) => <MenuItem
                                     key={pvz.id}
@@ -272,7 +280,7 @@ export default function OrderForm({ cartStore }: {
                 <form onSubmit={personalInfo.handleSubmit(personalSubmit)}>
                     <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="name" label="*Имя получателя" />
                     <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="surname" label="*Фамилия получателя" />
-                    <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="phone" label="*Телефон получателя" />
+                    <TextField rules={{ required: true }} control={personalInfo.control} name="phone" label="*Телефон получателя" />
                     <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="email" label="*Ваш E-Mail" />
                     <TextField rules={{ maxLength: 5000 }} control={personalInfo.control} name="comment" label="Комментарии к заказу" />
 
@@ -311,6 +319,7 @@ export default function OrderForm({ cartStore }: {
                     <PrevNextButtons>
                         <button onClick={() => { setStage(1) }} >Назад</button>
                         <input type="submit" value="Оформить заказ" />
+                        <pre>{JSON.stringify(personalInfo.formState, null, 4)}</pre>
                     </PrevNextButtons>
 
                 </form>
@@ -331,6 +340,15 @@ export default function OrderForm({ cartStore }: {
         {pvzs.length > 0 && <PVZPicker pvzs={pvzs} isOpen={pvzPickerOpen} setOpen={setPvzPickerOpen} onSelect={(val) => delivery.setValue("pvz", val || "")} />}
     </div>
 }
+
+const FakeControl = styled.div`
+    background: #F8F8F8;
+border: 1px solid #E8E7E7;
+box-sizing: border-box;
+border-radius: 3px;
+padding: 1em;
+
+`
 
 const PrevNextButtons = styled.div`
     margin-top: 2em;
