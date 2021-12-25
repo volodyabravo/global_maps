@@ -161,12 +161,16 @@ class MapOrder(models.Model):
 
     @property
     def full_json(self):
-        return {
+        data = {
                 "height": self.size.height_px,
                 "width": self.size.width_px,
                 "deviceScaleFactor": self.size.scale,
                 "custom": self.customization
               }
+        if self.orientation == 'landscape':
+            data['height'] = self.size.width_px
+            data['width'] = self.size.height_px
+        return data
 
     @property
     def customization(self):
