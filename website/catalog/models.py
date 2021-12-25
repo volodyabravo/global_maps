@@ -167,9 +167,6 @@ class MapOrder(models.Model):
                 "deviceScaleFactor": self.size.scale,
                 "custom": self.customization
               }
-        if self.orientation == 'landscape':
-            data['height'] = self.size.width_px
-            data['width'] = self.size.height_px
         return data
 
     @property
