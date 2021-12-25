@@ -103,7 +103,7 @@ class Order(models.Model):
 
     payment_url = models.CharField(_('Payment url'), blank=True, null=True, max_length=500)
     payment_id = models.IntegerField(_('Payment id'), blank=True, null=True)
-    payment_status = models.CharField(_('Payment status'), blank=True, null=True, max_length=500)
+    payment_status = models.CharField(_('Payment status'), blank=True, null=True, max_length=500, default='New')
 
     class Meta:
         verbose_name = 'Заказ'

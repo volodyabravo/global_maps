@@ -73,7 +73,7 @@ def create_payment(order):
         if r_data.get('PaymentURL', None):
             order.payment_url = r_data.get('PaymentURL')
             order.payment_id = r_data.get('PaymentId')
-            order.payment_status = r_data.get('Status')
+            # order.payment_status = r_data.get('Status')
             order.save()
             return True
         else:

@@ -52,8 +52,8 @@ admin.site.register(MapVersions, MapVersionsAdmin)
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('date',)
-    list_filter = ['date']
+    list_display = ('name', 'date', 'total_price', 'payment_status')
+    list_filter = ['name', 'date', 'payment_status']
 
 
 admin.site.register(Order, OrderAdmin)
@@ -62,8 +62,8 @@ admin.site.register(Order, OrderAdmin)
 class MapOrderAdmin(admin.ModelAdmin):
     change_form_template = "admin/map_order.html"
 
-    list_display = ('date', 'order', 'status')
-    list_filter = ['date']
+    list_display = ('date_created', 'price', 'status')
+    list_filter = ['date_created']
 
     def response_change(self, request, obj):
         if "_generate_image" in request.POST:

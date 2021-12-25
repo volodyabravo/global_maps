@@ -9,6 +9,7 @@ from constants import OrderStatuses
 from django.shortcuts import get_object_or_404
 from .tinkoff import create_payment
 from .amo import send_order_to_ammo, sync_orders
+from .printer import print_all_order_maps
 
 
 # Get an instance of a logger
@@ -152,8 +153,11 @@ def update_payment_url(request):
 def update_payment(request):
     data = json.loads(request.body)
     order_logger.info('New payment: "%s"' % data)
+    order = Order.objects.get(id=data.get('OrderId'))
+    order.payment_status = data.get('Status')
+    order.save()
     if data.get('Success', False):
-        order = Order.objects.get(id=data.get('OrderId'))
-        order.payment_status = data.get('Status')
-        order.save()
+        print_all_order_maps(order)
+    else:
+        create_payment(order)
     return HttpResponse("OK")
