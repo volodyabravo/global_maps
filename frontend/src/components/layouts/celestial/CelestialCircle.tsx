@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { CelestialReact } from "../../CelestialForeign";
 import styled from "@emotion/styled";
-import { MapTheme, UserCustomizations } from "../../../api/themes";
-import { MapFrame } from "../../frames/Frame";
 import { Typography } from "@mui/material";
 import { CelestialMapView } from "../../MapView";
 
@@ -48,18 +46,16 @@ const CardArea = styled.div`
 `;
 const CardContainer = styled.div`
     position: relative;
+    display:flex;
+    flex-direction:column;
     overflow: hidden;
 `;
 const CardTextContainer = styled.div`
-  position: absolute;
   bottom: 0; right: 0; left: 0;
   padding: 15px;
 `;
 
 const MapContainer = styled.div`
-    width: 500px;
-    height: 500px;
+    flex-grow: 1;
     overflow: hidden;
-    border-radius: 50%;
-    margin: 3em auto;
 `;

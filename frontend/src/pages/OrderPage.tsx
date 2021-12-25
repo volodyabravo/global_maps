@@ -37,8 +37,10 @@ export function OrderPage() {
     }, [])
 
     return <div>
-        {id} {hash}
-        {order && <div>
+        {order && <div style={{
+            textAlign:"center",
+            padding: "3em"
+        }}>
             {hash === "#success" && <div>
                 <h1>Заказ успешно принят, ожидайте звонка менеджера</h1>
             </div>}

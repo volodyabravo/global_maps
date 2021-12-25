@@ -1,9 +1,18 @@
 import useAutocomplete from '@mui/material/useAutocomplete';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { styled } from '@mui/material/styles';
 import { getCityByName } from '../../api/themes';
 import { Control, Path, RegisterOptions, useController } from "react-hook-form";
+import { throttle } from 'lodash';
+
+export interface CityResult {
+    name: string;
+    id: string;
+    postalcode: string;
+    region_name: string;
+    short_name: string;
+}
 
 interface AutocompleteCityProps<FieldValues> {
     name: Path<FieldValues>;
@@ -71,13 +80,10 @@ const Listbox = styled('ul')(({ theme }) => ({
 
 export default function AutocompleteCity<FieldValues>(props: AutocompleteCityProps<FieldValues>) {
     const [inputValue, setInputValue] = useState('');
-    let [options, setOptions] = useState<Array<{
-        name: string,
-        id: string,
-        postalcode: string,
-        region_name: string,
-        short_name: string
-    }>>([]);
+    const [value, setValue] = useState<CityResult | null>(null);
+    const [options, setOptions] = useState<readonly CityResult[]>([]);
+
+  
 
     const {
         field, fieldState
@@ -87,18 +93,38 @@ export default function AutocompleteCity<FieldValues>(props: AutocompleteCityPro
         rules: props.rules,
     })
 
+    const fetch = useMemo(
+        () =>
+            throttle(async (name: string, callback: ((cities:Array<CityResult>) => void) | undefined) => {
+                   let cities = await getCityByName(name);
+                   callback && callback(cities)
+            }, 1000),
+        [],
+    );
+
     useEffect(() => {
         let active = true;
 
         if (inputValue === '') {
-            setOptions(field.value ? [field.value] : []);
+            setOptions(value ? [value] : []);
             return undefined;
         }
 
-        (async () => {
-            let cities = await getCityByName(inputValue);
-            setOptions(cities)
-        })()
+        fetch(inputValue, (results) => {
+            if (active) {
+           
+                let newOptions: CityResult[] = [];
+                if (value) {
+                    newOptions = [value];
+                }
+
+                if (results) {
+                    newOptions = [...newOptions, ...results];
+                }
+                setOptions(newOptions);
+            }
+        });
+
         return () => {
             active = false;
         };
@@ -116,22 +142,22 @@ export default function AutocompleteCity<FieldValues>(props: AutocompleteCityPro
 
     } = useAutocomplete({
         options: options,
-        // id: 'autocomplete',
-        autoComplete: true,
+        id: 'autocomplete',
+        multiple:false,
+        includeInputInList: false,
+        filterSelectedOptions: true,
         getOptionLabel: (option) => option.name,
-        value: field.value,
-        isOptionEqualToValue: (option, value) => option.id == value.id,
+        // @ts-ignore
+        defaultValue: field.value,
         filterOptions: (x) => x,
         onChange: (event, newValue) => {
+            setValue(() => newValue)
             field.onChange(newValue)
         },
         inputValue: inputValue,
         onInputChange: (event, newInputValue) => {
             setInputValue(newInputValue);
         },
-        // filterSelectedOptions:true
-
-
     })
 
     return <div>
@@ -142,12 +168,9 @@ export default function AutocompleteCity<FieldValues>(props: AutocompleteCityPro
         {groupedOptions.length > 0 ? (
             <Listbox {...getListboxProps()}>
                 {groupedOptions.map((option, index) => {
-                    // @ts-ignore
-                    let key = option.id;
+                    let city = option as CityResult;
                     return (
-
-                        // @ts-ignore
-                        <li {...getOptionProps({ option, key })}>{option.name}</li>
+                        <li {...getOptionProps({option: city,  index: index })}>{city.name}</li>
                     )
                 })}
             </Listbox>

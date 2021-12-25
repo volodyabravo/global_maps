@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import classNames from "classnames";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { createOrder, DeliveryMethodInfo, getCityDeliveryMethods, getCityPvz, getCityPvzParams, getOrder, PVZ } from "../../api/themes";
+import { createOrder, DeliveryMethodInfo, getCityDeliveryMethods, getCityPvz, getCityPvzParams, PVZ } from "../../api/themes";
 import AutocompleteField from "./AutocompleteField";
 import { TextField } from "./TextField";
 import { Cart } from "../../cart/cart.store";
@@ -37,6 +37,8 @@ export default function OrderForm({ cartStore }: {
         phone: string
         url?: string
     } | null>(null);
+
+    const [loading, setLoading] = useState(false);
 
 
 
@@ -91,17 +93,13 @@ export default function OrderForm({ cartStore }: {
         if (order?.url) {
             window.location.href = order.url;
         }
-
-
     }
-
-
 
     let deliveryValues = delivery.watch();
 
     useEffect(() => {
         (async () => {
-
+            setLoading(true)
             if (deliveryValues.city && deliveryValues.city.id) {
                 let pvzs = await getCityPvz({
                     delivery: {
@@ -124,6 +122,7 @@ export default function OrderForm({ cartStore }: {
                     setMethods(deliveryMethods)
                 }
             }
+            setLoading(false)
         })()
         return () => {
             // cleanup
@@ -134,7 +133,22 @@ export default function OrderForm({ cartStore }: {
 
     let currentPVZ = useMemo(() => { return pvzs.find((item) => item.id === deliveryValues.pvz) }, [deliveryValues.pvz, pvzs])
 
-    console.log(currentDeliveryMethod, currentPVZ)
+    let secondStageAvailable = false;
+    if (currentDeliveryMethod) {
+        if (currentDeliveryMethod.id == "manual_2181") {
+            secondStageAvailable = true;
+        }
+
+        if (currentDeliveryMethod.type == "courier") {
+            secondStageAvailable = true;
+        }
+
+        if (currentDeliveryMethod.type == "pvz") {
+            if (currentPVZ) {
+                secondStageAvailable = true;
+            }
+        }
+    }
 
     const personalSubmit = async (dsdata: any) => {
         if (!deliveryValues.city) return;
@@ -203,36 +217,50 @@ export default function OrderForm({ cartStore }: {
             {stage === 1 &&
                 <form onSubmit={delivery.handleSubmit(deliverySubmit)}>
                     <AutocompleteField control={delivery.control} name="city" rules={{ required: true }} />
-                    {methods.length > 0 && <>
-                        <label>
-                            Тип доставки
-                        </label>
-                        <br></br>
-                        <Controller
-                            name="type"
-                            rules={{ required: true }}
-                            control={delivery.control}
-                            render={({ field }) => <Select
-                                {...field}
+
+                    <label>
+                        Тип доставки
+                    </label>
+                    <br></br>
+                    <Controller
+                        name="type"
+                        rules={{ required: true }}
+                        control={delivery.control}
+                        render={({ field }) => <Select
+                            {...field} sx={{ width: "100%" }} displayEmpty
+                        >
+                            <MenuItem disabled value="">
+                                {methods.length > 0 && <em>Выберите тип доставки</em>}
+                                {methods.length == 0 && !loading && <em>В этот город не доставляем</em>}
+                                {methods.length == 0 && loading && <em>Загружается</em>}
+                                
+                                
+                            </MenuItem>
+                            {methods.map((method) => <MenuItem
+                                key={method.id}
+                                value={method.id}
+
                             >
-                                {methods.map((method) => <MenuItem
-                                    key={method.id}
-                                    value={method.id}
-
-                                >
-                                    {method.name}
-                                </MenuItem>)}
-
-
-                            </Select>}
-                        /></>}
+                                {method.name}
+                            </MenuItem>)
+                            }
+                        </Select>}
+                    />
                     {currentDeliveryMethod && currentDeliveryMethod.type === "courier" && <>
                         <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="street" label="Улица" />
                         <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="entrance" label="Подъезд" />
                         <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="floor" label="Этаж" />
                         <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="house" label="Кв/Офис" />
                     </>}
-                    {currentDeliveryMethod && currentDeliveryMethod.type === "pvz" && <>
+                    {currentDeliveryMethod && currentDeliveryMethod.id === "manual_2181" && currentDeliveryMethod.type === "pvz" && <>
+                        <br></br><label>
+                            Адрес нашего офиса
+                        </label>
+                        <FakeControl>
+                            ул. Свободы 61к1, офис 26Д, ПН-ПТН с 10 до 16
+                        </FakeControl>
+                    </>}
+                    {currentDeliveryMethod && currentDeliveryMethod.id !== "manual_2181" && currentDeliveryMethod.type === "pvz" && <>
                         <br></br><label>
                             Пункт самовывоза
                         </label>
@@ -242,7 +270,7 @@ export default function OrderForm({ cartStore }: {
                             rules={{ required: true }}
                             control={delivery.control}
                             render={({ field }) => <Select
-                                {...field}
+                                {...field} sx={{ width: "100%" }}
                             >
                                 {pvzs.map((pvz) => <MenuItem
                                     key={pvz.id}
@@ -250,21 +278,19 @@ export default function OrderForm({ cartStore }: {
                                 >
                                     {pvz.address}
                                 </MenuItem>)}
-
-
                             </Select>}
                         />
                         <br></br>
-                        <span onClick={() => { setPvzPickerOpen(true) }}>Выбрать на карте</span>
+                        <MapSelect onClick={() => { setPvzPickerOpen(true) }}>Выбрать на карте</MapSelect>
                     </>}
 
                     <DeliveryAndNext>
                         {currentDeliveryMethod && currentDeliveryMethod.delivery_price && <div>
                             <span>Доставка:</span>
                             <span>{currentDeliveryMethod.delivery_price} ₽</span>
-                            <span>{currentDeliveryMethod.delivery_days} день</span>
+                            <span>{currentDeliveryMethod.delivery_days} дней</span>
                         </div>}
-                        <input type="submit" value="Следующий шаг" />
+                        <input type="submit" value="Следующий шаг" disabled={!secondStageAvailable || loading} />
                     </DeliveryAndNext>
                 </form>
             }
@@ -272,7 +298,7 @@ export default function OrderForm({ cartStore }: {
                 <form onSubmit={personalInfo.handleSubmit(personalSubmit)}>
                     <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="name" label="*Имя получателя" />
                     <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="surname" label="*Фамилия получателя" />
-                    <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="phone" label="*Телефон получателя" />
+                    <TextField rules={{ required: true }} control={personalInfo.control} name="phone" label="*Телефон получателя" />
                     <TextField rules={{ required: true, maxLength: 500 }} control={personalInfo.control} name="email" label="*Ваш E-Mail" />
                     <TextField rules={{ maxLength: 5000 }} control={personalInfo.control} name="comment" label="Комментарии к заказу" />
 
@@ -317,14 +343,33 @@ export default function OrderForm({ cartStore }: {
             }
             {stage === 3 &&
                 <form onSubmit={delivery.handleSubmit(paySubmit)}>
-                    Стоимость заказа {order?.amount}Р
-                    <button onClick={() => { setStage(2) }}>Назад</button> <input type="submit" value="Оплатить" />
+                    <div>
+                        Стоимость заказа {order?.amount}Р
+                    </div>
+
+                    <PrevNextButtons>
+                        <button onClick={() => { setStage(2) }}>Назад</button> <input type="submit" value="Оплатить" />
+                    </PrevNextButtons>
+
                 </form>
             }
         </div>
         {pvzs.length > 0 && <PVZPicker pvzs={pvzs} isOpen={pvzPickerOpen} setOpen={setPvzPickerOpen} onSelect={(val) => delivery.setValue("pvz", val || "")} />}
-    </div>
+    </div >
 }
+
+const MapSelect = styled.span`
+    color: #4981e9;
+    cursor: pointer;
+`
+
+const FakeControl = styled.div`
+    background: #F8F8F8;
+    border: 1px solid #E8E7E7;
+    box-sizing: border-box;
+    border-radius: 3px;
+    padding: 1em;
+`
 
 const PrevNextButtons = styled.div`
     margin-top: 2em;
@@ -407,6 +452,12 @@ const DeliveryAndNext = styled.div`
         color: #FFFFFF;
         &:hover {
             background: #4a6392;
+        }
+
+        &:disabled {
+            color: #4b4b4b;
+            background: #dadada;
+            border: 1px solid #c1c3c7;
         }
     }
 `

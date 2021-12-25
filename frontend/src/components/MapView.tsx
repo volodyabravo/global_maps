@@ -28,6 +28,13 @@ const CardArea = styled.div`
   align-items: center;
   height: calc(100vh - 64px);
   text-align: center;
+  overflow-y :hidden;
+  overflow-x :auto;
+  transform: scale(1);
+  ${({ theme }) => theme.breakpoints.down("md")} {
+    height:auto;
+    transform: scale(0.7);
+  }
 `;
 
 interface MapViewProps {

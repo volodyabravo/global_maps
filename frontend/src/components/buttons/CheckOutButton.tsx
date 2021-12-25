@@ -4,7 +4,6 @@ import { BsChevronRight } from "react-icons/bs";
 import { FaCartPlus } from "react-icons/fa";
 
 const BootstrapButton = styled(Button)(({ theme }) => {
-  console.log(theme.breakpoints.down("sm"))
   return ({
     width: "100%",
     height: "60px",

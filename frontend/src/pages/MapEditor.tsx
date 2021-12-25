@@ -36,7 +36,6 @@ export function MapEditorPage() {
                 projection: "airy",
                 controls: false,
                 zoomlevel: 1,
-                width: 500,
                 constellations: {
                     lines: true,
                     names: false,

@@ -47,6 +47,7 @@ function MapClientPage({ cartStore }: {
         addToCart,
         hasGeo,
         getGeolocation,
+        setLocationAutocomplete,
         loading,
         price
     } = useClient(cartStore, MapType.Star)
@@ -87,24 +88,6 @@ function MapClientPage({ cartStore }: {
                     </Box>
                     <Box sx={{ boxShadow: "-5px -5px 10px rgba(0, 0, 0, 0.05)", height: "calc(100% - 75px)", "background": "#FFFFFF", "display": "flex", "flexDirection": "column", "justifyContent": "space-between" }}>
                         <Typography align="left" fontSize="12px" fontWeight="400">
-                            <Box sx={{ borderBottom: "1px solid #E5E5E5" }}>
-                                <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                    >
-                                        Выберите локацию
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <LocationSelector />
-                                        {hasGeo && <LocationBlock>
-                                            <span>или используйте ваше местоположение</span>
-                                            <button onClick={getGeolocation}>Найти меня</button>
-                                        </LocationBlock>}
-                                        {/* <p>Pro tip! You can also drag/drop and zoom on the map to get the exact position you want on your poster.</p> */}
-                                        <p>{JSON.stringify(custom.location)}</p>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </Box>
                             <Box sx={{ borderBottom: "1px solid #E5E5E5" }}>
                                 <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
                                     <AccordionSummary
