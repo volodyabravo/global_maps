@@ -29,7 +29,26 @@ interface RenderData {
   height: number,
   width: number,
   deviceScaleFactor: number
-  custom: object;
+  custom: {
+    theme?: number,
+    headline?: string,
+    divider?: string,
+    tagline?: string,
+    subline?: string,
+    sizeId?: number,
+    orientation: "portrait" | "landscape";
+    // Map properties
+    location?: {
+      lng: number;
+      lat: number;
+      cityName?: string;
+    };
+    date?: Date;
+    zoom?: number;
+
+    // Ids of variants
+    version?: Array<number>;
+  };
 }
 
 (async () => {
@@ -58,8 +77,19 @@ interface RenderData {
 
     let start = Date.now();
 
+    let height = 0;
+    let width = 0
+    if (data.custom.orientation == "portrait") {
+      height = Math.max(data.height, data.width);
+      width = Math.min(data.height, data.width)
+    } else {
+      height = Math.min(data.height, data.width);
+      width = Math.max(data.height, data.width)
+    }
+
+
     await page.setViewport({
-      width: data.width, height: data.height, deviceScaleFactor: data.deviceScaleFactor
+      width: width, height: height, deviceScaleFactor: data.deviceScaleFactor
     })
 
     // URL
