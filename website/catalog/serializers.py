@@ -10,14 +10,6 @@ class MapThemeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['product', 'name', 'preview', 'data', 'id']
 
 
-class MapSizeSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.ReadOnlyField()
-
-    class Meta:
-        model = MapSize
-        fields = ['name', 'height', 'width', 'depth', 'height_px', 'width_px', 'id']
-
-
 class MapPricesSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
     size_id = serializers.CharField(source='size.id', read_only=True)
@@ -44,6 +36,15 @@ class MapVersionsSerializer(serializers.ModelSerializer):
             many=True
         )
         return serializer.data
+
+
+class MapSizeSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.ReadOnlyField()
+    versions = MapVersionsSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = MapSize
+        fields = ['name', 'height', 'width', 'depth', 'height_px', 'width_px', 'id', 'versions']
 
 
 class VectorImagesSerializer(serializers.HyperlinkedModelSerializer):
