@@ -26,22 +26,6 @@ class MapTheme(models.Model):
         verbose_name_plural = 'Темы'
 
 
-class MapVersions(models.Model):
-    active = models.BooleanField(_('Is this active'), default=True)
-    order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
-    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.RESTRICT)
-    name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
-    needs_delivery = models.BooleanField('Needs delivery', blank=False, null=False, default=True)
-    image = models.ImageField(_('Image'), upload_to='uploads/images/versions/', blank=True)
-
-    def __str__(self):
-        return '{0}'.format(self.name)
-
-    class Meta:
-        verbose_name = 'Версия'
-        verbose_name_plural = 'Версии'
-
-
 class MapSize(models.Model):
     active = models.BooleanField(_('Is this active'), default=True)
     order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
@@ -52,7 +36,6 @@ class MapSize(models.Model):
     height_px = models.PositiveIntegerField(_('Height in px upon render'), blank=False, null=False, default=0)
     width_px = models.PositiveIntegerField(_('Width in px upon render'), blank=False, null=False, default=0)
     scale = models.PositiveIntegerField(_('Scale upon render'), blank=False, null=False, default=1)
-    versions = models.ManyToManyField(MapVersions)
 
     def __str__(self):
         return '{0}'.format(self.name)
@@ -60,6 +43,23 @@ class MapSize(models.Model):
     class Meta:
         verbose_name = 'Размер'
         verbose_name_plural = 'Размеры'
+
+
+class MapVersions(models.Model):
+    active = models.BooleanField(_('Is this active'), default=True)
+    order = models.IntegerField(_('Position in list'), default=1, blank=False, null=False)
+    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.RESTRICT)
+    name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
+    needs_delivery = models.BooleanField('Needs delivery', blank=False, null=False, default=True)
+    image = models.ImageField(_('Image'), upload_to='uploads/images/versions/', blank=True)
+    sizes = models.ManyToManyField(MapSize)
+
+    def __str__(self):
+        return '{0}'.format(self.name)
+
+    class Meta:
+        verbose_name = 'Версия'
+        verbose_name_plural = 'Версии'
 
 
 class MapPrices(models.Model):
