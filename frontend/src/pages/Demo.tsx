@@ -1,7 +1,5 @@
-import { Grid } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
 
-import { useForm } from "react-hook-form";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getThemes, MapTheme, UserCustomizations } from "../api/themes";
@@ -19,16 +17,16 @@ export function Demo() {
 
     let theme = useMemo(() => { return themes.find((theme) => theme.id == custom?.theme) }, [custom?.theme]);
     
-    theme = {
-        data: {
-            layout: "SimpleVector",
-            maptype: "vector"
-        },
-        name: "demo",
-        id:1,
-        product: 2,
-        preview: ""
-    };
+    // theme = {
+    //     data: {
+    //         layout: "SimpleVector",
+    //         maptype: "vector"
+    //     },
+    //     name: "demo",
+    //     id:1,
+    //     product: 2,
+    //     preview: ""
+    // };
 
     useEffect(() => {
         (async () => {
@@ -52,7 +50,7 @@ export function Demo() {
         }
     }, [])
     
-    return <div>
+    return <div style={{border: "2px solid black", width: router.width+"px"}}>
         {custom && theme &&
             <MapView layout="SimpleVector" theme={theme} custom={custom} print width={parseInt(router.width)} height={parseInt(router.height)} />}
     </div >

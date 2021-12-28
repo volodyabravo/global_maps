@@ -59,6 +59,7 @@ export function CelestialFullBackground({ orientation, theme, custom, height, pr
 const CardContainer = styled.div`
     position: relative;
     overflow: hidden;
+    text-align:center;
 `;
 const CardTextContainer = styled.div`
     position: absolute;

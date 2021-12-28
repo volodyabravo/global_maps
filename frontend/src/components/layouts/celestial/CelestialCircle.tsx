@@ -49,6 +49,7 @@ const CardContainer = styled.div`
     display:flex;
     flex-direction:column;
     overflow: hidden;
+    text-align:center;
 `;
 const CardTextContainer = styled.div`
   bottom: 0; right: 0; left: 0;

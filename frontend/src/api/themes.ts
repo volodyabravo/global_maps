@@ -160,6 +160,7 @@ export interface Version {
     image: string;
     id: number;
     children: Array<Version>;
+    sizes: Array<Size>
 }
 
 export async function getVersions(): Promise<Array<Version>> {
