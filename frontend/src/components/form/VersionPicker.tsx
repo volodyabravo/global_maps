@@ -2,11 +2,12 @@ import styled from "@emotion/styled";
 import { TabContext, TabPanel } from "@mui/lab";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
-import { Size, Version } from "../../api/themes";
-
+import { Control, useController, UseFormReturn } from "react-hook-form";
+import { Size, Version, UserCustomizations } from "../../api/themes";
 export interface VersionPickerProps {
   versions: Array<Version>;
   sizes: Array<Size>;
+  form?: UseFormReturn<UserCustomizations, object>;
 }
 
 // export interface Ass{
@@ -106,9 +107,20 @@ function SelectDefaultChildren(version: Version): Array<number> {
   }
 }
 
-export function VersionPicker({ versions, sizes }: VersionPickerProps) {
+export function VersionPicker({ versions, sizes, form }: VersionPickerProps) {
   const [selectedTab, setSelectedTab] = useState("");
   const [selectedVersion, setSelectedVersion] = useState<Array<number>>([]);
+
+    let sizeController = useController({
+        name: "sizeId",
+        control: form?.control
+    })
+
+    let orientationController = useController({
+        name: "orientation",
+        control: form?.control
+    })
+
 
   function handleTabChange(e: any, value: string) {
     console.log(selectedVersion);
@@ -137,6 +149,7 @@ export function VersionPicker({ versions, sizes }: VersionPickerProps) {
         tempSelected = [...tempSelected, ...children];
       }
       setSelectedVersion(tempSelected);
+      form?.setValue("version",tempSelected)
     };
   }
 
@@ -147,6 +160,8 @@ export function VersionPicker({ versions, sizes }: VersionPickerProps) {
 
   let thirdLevel = getVersion(versions, selectedVersion, 3);
   console.log("third", thirdLevel);
+
+  let currentVersion = GetBottomVersion(versions, selectedVersion);
 
   return (
     <div>
@@ -190,32 +205,76 @@ export function VersionPicker({ versions, sizes }: VersionPickerProps) {
                       );
                     })}
                   </ThemesContainer>
-                  
-                  {secondLevel && secondLevel.children.length > 0 &&  <>
-                  Level 2
-                  <SizesContainer>
-                      {secondLevel.children.map((item)=>{
+                  {secondLevel && secondLevel.children.length > 0 && (
+                    <>
+                      Level 2
+                      <SizesContainer>
+                        {secondLevel.children.map((item) => {
                           let isSelected = selectedVersion[2] === item.id;
-                          return <SizeButton className={isSelected ? "active" : ""}
-                          onClick={() => handleChange(2)(item.id.toString())}>
+                          return (
+                            <SizeButton
+                              className={isSelected ? "active" : ""}
+                              onClick={() =>
+                                handleChange(2)(item.id.toString())
+                              }
+                            >
                               {item.name}
-                          </SizeButton>
-                      })}
-                  </SizesContainer>
-                  </>}
-                  
-                  {thirdLevel  && thirdLevel.children.length > 0 && <>
-                    Level 3
-                    <SizesContainer>
-                      {thirdLevel.children.map((item)=>{
+                            </SizeButton>
+                          );
+                        })}
+                      </SizesContainer>
+                    </>
+                  )}
+                  {thirdLevel && thirdLevel.children.length > 0 && (
+                    <>
+                      Level 3
+                      <SizesContainer>
+                        {thirdLevel.children.map((item) => {
                           let isSelected = selectedVersion[3] === item.id;
-                          return <SizeButton className={isSelected ? "active" : ""}
-                          onClick={() => handleChange(3)(item.id.toString())}>
+                          return (
+                            <SizeButton
+                              className={isSelected ? "active" : ""}
+                              onClick={() =>
+                                handleChange(3)(item.id.toString())
+                              }
+                            >
                               {item.name}
-                          </SizeButton>
-                      })}
+                            </SizeButton>
+                          );
+                        })}
+                      </SizesContainer>
+                    </>
+                  )}
+                </>
+              )}
+
+              {currentVersion && currentVersion.sizes.length > 0 && (
+                <>
+                  Выберите размер
+                  <SizesContainer>
+                    {currentVersion.sizes.map((size) => {
+                      let isSelected = sizeController.field.value === size.id;
+                      return (
+                        <SizeButton
+                          className={isSelected ? "active" : ""}
+                          onClick={() => sizeController.field.onChange(size.id)}
+                        >
+                          {size.name}
+                        </SizeButton>
+                      );
+                    })}
                   </SizesContainer>
-                  </>}
+                </>
+              )}
+
+              {currentVersion && currentVersion.sizes.length > 0 && (
+                <>
+                  Выберите ориентацию.
+                  <SizesContainer>
+                    <SizeButton className={orientationController.field.value === "landscape" ? "active" : ""} onClick={() => { orientationController.field.onChange("landscape") }}>Горизонтальная</SizeButton>
+                    <SizeButton className={orientationController.field.value === "portrait" ? "active" : ""} onClick={() => { orientationController.field.onChange("portrait") }}>Вертикальная</SizeButton>
+                    
+                  </SizesContainer>
                 </>
               )}
             </TabPanel>

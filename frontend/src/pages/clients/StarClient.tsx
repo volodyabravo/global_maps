@@ -223,7 +223,7 @@ function MapClientPage({ cartStore }: {
                                     Выберите параметры постера
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <VersionPicker sizes={sizes} versions={versions} />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                    <VersionPicker sizes={sizes} versions={versions} form={form} />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                                 </AccordionDetails>
                             </Accordion>
 
