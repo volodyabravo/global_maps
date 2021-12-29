@@ -118,3 +118,18 @@ def get_city_pvz(request):
                     return HttpResponse(r.text)
         return JsonResponse(final_json, safe=False, json_dumps_params={'ensure_ascii': False})
     return JsonResponse({"error": "Use POST"})
+
+
+@csrf_exempt
+def check_delivery(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        products = data.get('products')
+        for product in products:
+            product_customization = product.get('product_customization')
+            version = MapVersions.objects.get(id=product_customization.get('version')[-1])
+            if version.needs_delivery:
+                return JsonResponse({"deliverable": True})
+        return JsonResponse({"deliverable": False})
+    return JsonResponse({"error": "Use POST"})
+

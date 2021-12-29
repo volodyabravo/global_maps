@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 from rest_framework import routers
 from catalog.views import MapThemeView, MapSizeView, MapPricesView, MapVersionsView,\
     VectorImagesView, VectorColorsView
-from catalog.delivery import get_cities, get_delivery_methods_by_city, get_city_pvz
+from catalog.delivery import get_cities, get_delivery_methods_by_city, get_city_pvz, check_delivery
 from catalog.mail import send_mail_view
 from catalog.order import order_create, order_get, update_payment, update_payment_url
 
@@ -42,6 +42,7 @@ urlpatterns = [
     path(r'api/delivery/get_delivery_methods_by_city/', get_delivery_methods_by_city,
          name="get_delivery_methods_by_city"),
     path(r'api/delivery/get_city_pvz/', get_city_pvz, name="get_city_pvz"),
+    path(r'api/delivery/check_delivery/', check_delivery, name="check_delivery"),
     path(r'api/order/create/', order_create, name="order_create"),
     path(r'api/order/order_get/', order_get, name="order_get"),
     path(r'api/order/update_payment/', update_payment, name="update_payment"),
