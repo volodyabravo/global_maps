@@ -54,6 +54,7 @@ class MapVersions(models.Model):
     image = models.ImageField(_('Image'), upload_to='uploads/images/versions/', blank=True)
     bottompic = models.ImageField(_('Image bottom'), upload_to='uploads/images/versions/bottompic/', blank=True)
     children_description = models.CharField(_('Description'), blank=True, null=True, max_length=500, default='')
+    custom_css = models.CharField(_('Custom css'), blank=True, null=True, max_length=50000, default='')
     sizes = models.ManyToManyField(MapSize)
 
     def __str__(self):

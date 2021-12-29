@@ -36,7 +36,7 @@ class MapVersionsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MapVersions
-        fields = ['name', 'image', 'id', 'children', 'sizes', 'bottompic', 'children_description']
+        fields = ['name', 'image', 'id', 'children', 'sizes', 'bottompic', 'children_description', 'custom_css']
 
     def get_child_categories(self, obj):
         """ self referral field """
