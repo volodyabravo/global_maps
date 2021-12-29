@@ -52,6 +52,7 @@ class MapVersions(models.Model):
     name = models.CharField(_('Name'), blank=False, null=False, max_length=500)
     needs_delivery = models.BooleanField('Needs delivery', blank=False, null=False, default=True)
     image = models.ImageField(_('Image'), upload_to='uploads/images/versions/', blank=True)
+    bottompic = models.ImageField(_('Image bottom'), upload_to='uploads/images/versions/bottompic/', blank=True)
     sizes = models.ManyToManyField(MapSize)
 
     def __str__(self):
