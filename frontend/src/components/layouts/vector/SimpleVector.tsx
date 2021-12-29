@@ -39,6 +39,7 @@ export function SimpleVector({ orientation, theme, custom, height, print, width 
 const CardContainer = styled.div`
     position: relative;
     overflow: hidden;
+    text-align:center;
 `;
 const CardTextContainer = styled.div`
     position: absolute;

@@ -2,7 +2,7 @@ import { AccordionDetails, Grid, TextField, Typography, Box, Container, Tabs, Ta
 import { useState } from "react";
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Controller } from "react-hook-form";
+import { Controller, FormProvider } from "react-hook-form";
 
 import styled from "@emotion/styled";
 import { Accordion, AccordionSummary } from "../../components/editor/Accordion";
@@ -17,6 +17,7 @@ import { inject, observer } from 'mobx-react';
 import { Cart } from "../../cart/cart.store";
 import useClient from "../../hooks/useClient";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
+import { VersionPicker } from "../../components/form/VersionPicker";
 
 
 function MapClientPage({ cartStore }: {
@@ -46,7 +47,6 @@ function MapClientPage({ cartStore }: {
     } = useClient(cartStore, MapType.Street)
 
     let custom = form.watch();
-
 
     return <div style={{ "backgroundColor": "#F8F8F8", }}>
         <Container sx={{
@@ -215,25 +215,7 @@ function MapClientPage({ cartStore }: {
                                     Выберите размер постера
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    Размер постера
-                                    <SizesContainer>
-                                        <Controller control={form.control} name="sizeId" render={(form) => {
-                                            return (<>{sizes.length > 0 && sizes.map((item, index) => {
-                                                return (
-                                                    <SizeButton className={item.id === form.field.value ? "active" : ""} key={item.id} onClick={() => { form.field.onChange(item.id) }}>{item.name}</SizeButton>
-                                                )
-                                            })}</>)
-                                        }} />
-                                    </SizesContainer>
-                                    Выберите ориентацию
-                                    <SizesContainer>
-                                        <Controller control={form.control} name="orientation" render={(form) => {
-                                            return (<>
-                                                <SizeButton className={form.field.value === "landscape" ? "active" : ""} onClick={() => { form.field.onChange("landscape") }}>Горизонтальная</SizeButton>
-                                                <SizeButton className={form.field.value === "portrait" ? "active" : ""} onClick={() => { form.field.onChange("portrait") }}>Вертикальная</SizeButton>
-                                            </>)
-                                        }} />
-                                    </SizesContainer>
+                                    <VersionPicker sizes={sizes} versions={versions} />
                                 </AccordionDetails>
                             </Accordion>
 

@@ -93,7 +93,6 @@ interface RenderData {
     })
 
     // URL
-
     await page.goto(getReactHost() + "render/", {
       waitUntil: "networkidle2"
     });
