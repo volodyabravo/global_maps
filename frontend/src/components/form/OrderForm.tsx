@@ -218,15 +218,15 @@ export default function OrderForm({ cartStore }: {
                 <form onSubmit={delivery.handleSubmit(deliverySubmit)}>
                     <AutocompleteField control={delivery.control} name="city" rules={{ required: true }} />
 
-                    <label>
+                    <Label>
                         Тип доставки
-                    </label>
+                    </Label>
                     <br></br>
                     <Controller
                         name="type"
                         rules={{ required: true }}
                         control={delivery.control}
-                        render={({ field }) => <Select
+                        render={({ field }) => <CustomSelect
                             {...field} sx={{ width: "100%" }} displayEmpty
                         >
                             <MenuItem disabled value="">
@@ -244,7 +244,7 @@ export default function OrderForm({ cartStore }: {
                                 {method.name}
                             </MenuItem>)
                             }
-                        </Select>}
+                        </CustomSelect>}
                     />
                     {currentDeliveryMethod && currentDeliveryMethod.type === "courier" && <>
                         <TextField rules={{ required: true, maxLength: 500 }} control={delivery.control} name="street" label="Улица" />
@@ -261,15 +261,15 @@ export default function OrderForm({ cartStore }: {
                         </FakeControl>
                     </>}
                     {currentDeliveryMethod && currentDeliveryMethod.id !== "manual_2181" && currentDeliveryMethod.type === "pvz" && <>
-                        <br></br><label>
+                        <br></br><Label>
                             Пункт самовывоза
-                        </label>
+                        </Label>
                         <br></br>
                         <Controller
                             name="pvz"
                             rules={{ required: true }}
                             control={delivery.control}
-                            render={({ field }) => <Select
+                            render={({ field }) => <CustomSelect
                                 {...field} sx={{ width: "100%" }}
                             >
                                 {pvzs.map((pvz) => <MenuItem
@@ -278,7 +278,7 @@ export default function OrderForm({ cartStore }: {
                                 >
                                     {pvz.address}
                                 </MenuItem>)}
-                            </Select>}
+                            </CustomSelect>}
                         />
                         <br></br>
                         <MapSelect onClick={() => { setPvzPickerOpen(true) }}>Выбрать на карте</MapSelect>
@@ -415,6 +415,40 @@ const PrevNextButtons = styled.div`
     }
 `
 
+
+
+
+const CustomSelect = styled(Select)(`
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    background: #FFFFFF;
+    border: 1px solid #E8E7E7;
+    box-sizing: border-box;
+    border-radius: 3px;
+    box-shadow: none;
+    padding: 5px;
+    .MuiSelect-select {
+        padding: 6px 6px;
+    }
+`);
+
+const Label = styled('label')(`
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+
+`);
 const DeliveryAndNext = styled.div`
     display: flex;
     width: 100%;
@@ -484,6 +518,7 @@ const StageDisplayDiv = styled.div`
     display: flex;
     align-items: center;
     margin-top: 1.5em;
+    margin-bottom: 25px;
     & .numberContainer {
         height: 2em;
         width: 2em;

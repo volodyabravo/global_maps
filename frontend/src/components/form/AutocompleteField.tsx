@@ -35,7 +35,7 @@ const Label = styled('label')(`
 
 const Input = styled('input')(({ theme }) => ({
     background: "#FFFFFF",
-    border: "1px solid #EEEEEE",
+    border: "1px solid #E8E7E7",
     boxSizing: "border-box",
     padding: "10px",
     fontFamily: "Montserrat",
@@ -43,6 +43,7 @@ const Input = styled('input')(({ theme }) => ({
     fontWeight: "normal",
     fontSize: "13px",
     lineHeight: "20px",
+    borderRadius: "3px",
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.getContrastText(theme.palette.background.paper),
 }));
