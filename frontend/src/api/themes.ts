@@ -161,6 +161,8 @@ export interface Version {
     id: number;
     children: Array<Version>;
     sizes: Array<Size>
+    children_description: string
+    custom_css: string
 }
 
 export async function getVersions(): Promise<Array<Version>> {
