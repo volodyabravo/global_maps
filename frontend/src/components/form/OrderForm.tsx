@@ -314,7 +314,7 @@ export default function OrderForm({ cartStore }: {
                         rules={{ required: true }}
                         control={personalInfo.control}
                         render={({ field }) =>
-                            <FormControlLabel control={<Checkbox {...field} />} label="Хочу, чтобы менеджер мне перезвонил" />}
+                            <FormControlLabel control={<CustomCheckbox {...field} />} label="Хочу, чтобы менеджер мне перезвонил" />}
                     />
 
                     <Controller
@@ -322,7 +322,7 @@ export default function OrderForm({ cartStore }: {
                         rules={{ required: true }}
                         control={personalInfo.control}
                         render={({ field }) =>
-                            <FormControlLabel control={<Checkbox {...field} />} label="Хочу получать новости" />}
+                            <CustomFormControlLabel control={<CustomCheckbox {...field} />} label="Хочу получать новости" />}
                     />
 
                     <Controller
@@ -330,7 +330,7 @@ export default function OrderForm({ cartStore }: {
                         rules={{ required: true }}
                         control={personalInfo.control}
                         render={({ field }) =>
-                            <FormControlLabel control={<Checkbox {...field} />} label="Соглашаюсь с политикой с конфиденциальности" />}
+                            <CustomFormControlLabel control={<CustomCheckbox {...field} />} label="Соглашаюсь с политикой с конфиденциальности" />}
                     />
 
 
@@ -415,8 +415,32 @@ const PrevNextButtons = styled.div`
     }
 `
 
+const  CustomFormControlLabel =  styled(FormControlLabel)(`
+    .MuiFormControlLabel-label{
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 500;
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 20px;
+    }
+`)
 
+const CustomCheckbox  = styled(Checkbox)(`
 
+    .MuiTypography-body1 {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 500;
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 20px;
+    }
+`)
 
 const CustomSelect = styled(Select)(`
     font-family: Roboto;
