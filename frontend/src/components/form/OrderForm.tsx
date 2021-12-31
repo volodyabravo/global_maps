@@ -314,7 +314,7 @@ export default function OrderForm({ cartStore }: {
                         rules={{ required: true }}
                         control={personalInfo.control}
                         render={({ field }) =>
-                            <FormControlLabel control={<CustomCheckbox {...field} />} label="Хочу, чтобы менеджер мне перезвонил" />}
+                            <CustomFormControlLabel control={<CustomCheckbox {...field} />} label="Хочу, чтобы менеджер мне перезвонил" />}
                     />
 
                     <Controller
