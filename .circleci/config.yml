@@ -15,6 +15,10 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker build --pull -t "volodyabravo/globalmaps:frontend" -f ./nginx.Dockerfile .
           docker push "volodyabravo/globalmaps:frontend"
+      - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker build --pull -t "volodyabravo/globalmaps:puppet" -f ./puppet.Dockerfile .
+          docker push "volodyabravo/globalmaps:puppet"
 
 workflows:
   version: 2
