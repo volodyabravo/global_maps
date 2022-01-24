@@ -30,7 +30,7 @@ RUN set -x \
 
 COPY --from=frontend /app/ .
 # Change to non-root privilege
-RUN chown node:node images/
+RUN mkdir images/ && chown node:node images/
 USER node
 
 CMD [ "node", "index.js" ]

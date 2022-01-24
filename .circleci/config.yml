@@ -10,15 +10,15 @@ jobs:
           docker_layer_caching: true
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker build --pull -t "volodyabravo/globalmaps:backend" -f ./django.Dockerfile .
+          docker build -t "volodyabravo/globalmaps:backend" -f ./django.Dockerfile .
           docker push "volodyabravo/globalmaps:backend"
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker build --pull -t "volodyabravo/globalmaps:frontend" -f ./nginx.Dockerfile .
+          docker build -t "volodyabravo/globalmaps:frontend" -f ./nginx.Dockerfile .
           docker push "volodyabravo/globalmaps:frontend"
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker build --pull -t "volodyabravo/globalmaps:puppet" -f ./puppet.Dockerfile .
+          docker build -t "volodyabravo/globalmaps:puppet" -f ./puppet.Dockerfile .
           docker push "volodyabravo/globalmaps:puppet"
 
 workflows:
