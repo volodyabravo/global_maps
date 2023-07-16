@@ -1,5 +1,3 @@
-import { CelestialOptions } from "d3-celestial/celestial";
-
 /**
  * Types of the map
  */

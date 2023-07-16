@@ -27,13 +27,13 @@ export default function PVZPicker(props: {
   const handleOpen = () => props.setOpen && props.setOpen(true);
   const handleClose = () => props.setOpen && props.setOpen(false);
 
-  let features = pvzstofeatures(props.pvzs);
+  const features = pvzstofeatures(props.pvzs);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
     if (mapContainer.current == null) return;
 
-    let center = {
+    const center = {
       lat: props.pvzs[0].latitude,
       lon: props.pvzs[0].longitude
     };
@@ -161,7 +161,7 @@ export default function PVZPicker(props: {
 
           console.log();
           // @ts-ignore
-          let id = e.features[0].properties.id;
+          const id = e.features[0].properties.id;
           if (id) {
             setPvz(id);
           }
@@ -208,7 +208,7 @@ export default function PVZPicker(props: {
           <h2>Выбор пункта выдачи</h2>
           <PvzList>
             {props.pvzs.map((item) => {
-              let selected = item.id === pvz
+              const selected = item.id === pvz
               return (<div key={item.id} className={classNames("item", {
                 active: selected
               })} onClick={() => { setPvz(item.id); }}>

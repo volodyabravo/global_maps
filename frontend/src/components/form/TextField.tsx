@@ -2,6 +2,7 @@ import { Control, Path, RegisterOptions, useController } from "react-hook-form";
 import styled from "@emotion/styled";
 import { useEffect, useRef, useState } from "react"
 
+import { Field } from "react-hook-form";
 
 interface TextFieldProps<FieldValues> {
     name: Path<FieldValues>;
@@ -11,7 +12,7 @@ interface TextFieldProps<FieldValues> {
     rules?: Omit<RegisterOptions<FieldValues, Path<FieldValues>>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>;
 }
 
-let CustomInput = styled.div(({ theme }) => {
+const CustomInput = styled.div(({ theme }) => {
     return `
     display:flex;
     flex-direction: column;    

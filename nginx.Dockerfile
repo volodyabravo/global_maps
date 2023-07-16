@@ -12,5 +12,5 @@ RUN pnpm run build
 
 from nginxinc/nginx-unprivileged
 WORKDIR /app
-COPY --from=frontend /app/build/ .
+COPY --from=frontend /app/dist/ .
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf

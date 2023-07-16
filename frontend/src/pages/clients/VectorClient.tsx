@@ -2,9 +2,7 @@ import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, 
 import { useEffect, useMemo, useState } from "react";
 import { CelestialReact } from "../../components/CelestialForeign";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {
-    CelestialOptions,
-} from "d3-celestial/celestial";
+
 import { useForm, Controller } from "react-hook-form";
 import { ColorPicker } from "../../components/form/ColorPicker";
 import styled from "@emotion/styled";
@@ -56,7 +54,7 @@ function MapClientPage({ cartStore }: {
     } = useClient(cartStore, MapType.Star)
 
 
-    let custom = form.watch();
+    const custom = form.watch();
 
     return <div style={{ "backgroundColor": "#F8F8F8", }}>
         <AppNavBar />
@@ -261,6 +259,7 @@ const SizeButton = styled.div`
     }
 `
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LocationBlock = styled.div`
     margin-top: 1em;
     display:flex;

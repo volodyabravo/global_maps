@@ -1,11 +1,9 @@
 import { Grid } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { useForm } from "react-hook-form";
 import { useLocation, useParams } from "react-router-dom";
 
-import { getOrder, getThemes, MapTheme, UserCustomizations } from "../api/themes";
-import { MapView } from "../components/MapView";
+import { getOrder } from "../api/themes";
 import AppNavBar from "../components/AppBar";
 
 export function OrderPage() {
@@ -17,7 +15,7 @@ export function OrderPage() {
 
     const { hash } = useLocation();
 
-    let [order, setOrder] = useState<{
+    const [order, setOrder] = useState<{
         amount: number
         email: string
         name: string
@@ -29,7 +27,7 @@ export function OrderPage() {
 
     useEffect(() => {
         (async () => {
-            let order = await getOrder(id);
+            const order = await getOrder(id);
             setOrder(order)
         })()
         return () => {

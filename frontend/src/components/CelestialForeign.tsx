@@ -35,7 +35,6 @@ interface CelestialReactProps {
 export class CelestialReact extends React.Component<
   CelestialReactProps
 > {
-  celestial: CelestialObject;
   featuresCollections: Array<any>;
   containerMounted?: number;
   updateConfigTimer: NodeJS.Timeout | null = null;
