@@ -18,6 +18,7 @@ import { Cart } from "../../cart/cart.store";
 import useClient from "../../hooks/useClient";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { VersionPicker } from "../../components/form/VersionPicker";
+import AppNavBar from "../../components/AppBar";
 
 
 function MapClientPage({ cartStore }: {
@@ -46,9 +47,10 @@ function MapClientPage({ cartStore }: {
         price
     } = useClient(cartStore, MapType.Street)
 
-    let custom = form.watch();
+    const custom = form.watch();
 
     return <div style={{ "backgroundColor": "#F8F8F8", }}>
+        <AppNavBar />
         <Container sx={{
             "backgroundColor": "#F8F8F8",
             "paddingLeft": "0!important",

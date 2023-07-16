@@ -1,13 +1,6 @@
 import React, { useEffect, useRef } from "react";
-// import * as d3 from 'd3-celestial/lib/d3';
-import {
-  Celestial,
-  d3,
-  CelestialOptions,
-  CelestialObject,
-} from "d3-celestial/celestial";
+
 import { get } from "lodash";
-import "d3-celestial/lib/d3.geo.projection.js";
 import { UserCustomizations } from "../api/themes";
 
 const hour2CelestialDegree = (ra: number) =>
@@ -37,11 +30,10 @@ interface CelestialReactProps {
   onLocationChange?: (location: Array<number>) => void;
 }
 
-interface CelestialReactState { }
+
 
 export class CelestialReact extends React.Component<
-  CelestialReactProps,
-  CelestialReactState
+  CelestialReactProps
 > {
   celestial: CelestialObject;
   featuresCollections: Array<any>;
@@ -55,14 +47,13 @@ export class CelestialReact extends React.Component<
 
   constructor(props: CelestialReactProps) {
     super(props);
-    this.celestial = Celestial(d3);
     this.featuresCollections = [];
     this.custom = props.custom;
     // Callback to get map position
     if (props.onLocationChange != undefined) {
-      this.celestial.addCallback(() => {
+      Celestial.addCallback(() => {
         // @ts-ignore
-        props.onLocationChange(this.celestial.rotate());
+        props.onLocationChange(Celestial.rotate());
       })
     }
 
@@ -73,21 +64,21 @@ export class CelestialReact extends React.Component<
   componentDidMount = () =>
     setTimeout(() => {
       this.containerMounted = new Date().getTime();
-      this.featuresCollections.forEach((fc) => fc(this.celestial));
+      this.featuresCollections.forEach((fc) => fc(Celestial));
       const { config, zoom, custom } = this.props;
 
-      let mergedConfig = ApplyCustomToConfig({
+      const mergedConfig = ApplyCustomToConfig({
         ...baseConfig,
         ...config,
       }, custom)
 
-      this.celestial.display(mergedConfig);
+      Celestial.display(mergedConfig);
       if (zoom > 0) {
         this.zoom(zoom);
       }
     }, 500);
 
-  zoom = (ratio?: number) => this.celestial.zoomBy(ratio);
+  zoom = (ratio?: number) => Celestial.zoomBy(ratio);
 
   zoomTo = (level: number) => this.zoom(level / this.zoom());
 
@@ -101,7 +92,7 @@ export class CelestialReact extends React.Component<
     this.updateConfigTimer = setTimeout(() => {
       this.updateConfigTimer = null;
 
-      let basedConfig = {
+      const basedConfig = {
         ...baseConfig,
         ...nextConfig
       }
@@ -109,7 +100,7 @@ export class CelestialReact extends React.Component<
       // Move map if location has changed
       if (get(prevConfig, "center") != get(nextConfig, "center")) {
         if (nextConfig.center) {
-          this.celestial.rotate({ center: nextConfig.center })
+          Celestial.rotate({ center: nextConfig.center })
         }
       }
       if (
@@ -118,24 +109,24 @@ export class CelestialReact extends React.Component<
         // get(prevConfig, "width") != get(nextConfig, "width") ||
         get(prevConfig, "projection") != get(nextConfig, "projection")
       ) {
-        this.celestial.reload(sanitize(basedConfig));
+        Celestial.reload(sanitize(basedConfig));
       } else {
-        this.celestial.apply(sanitize(basedConfig));
+        Celestial.apply(sanitize(basedConfig));
       }
       console.log("Update runs")
     }, 1000);
   };
 
   componentWillUnmount = () => {
-    this.celestial.clear();
-    this.celestial.remove();
+    Celestial.clear();
+    Celestial.remove();
     console.log("Map unmounted")
   }
 
   shouldComponentUpdate = (nextProps: CelestialReactProps) => {
     const { config, zoom, custom } = this.props;
     if (nextProps.config != config || custom != this.custom) {
-      let next = ApplyCustomToConfig(nextProps.config, nextProps.custom);
+      const next = ApplyCustomToConfig(nextProps.config, nextProps.custom);
       this.updateConfig(config, next);
     }
 
@@ -155,14 +146,14 @@ export class CelestialReact extends React.Component<
     // Size change detected = update width
     if (this.sizeChanged) {
       if (this.containerRef) {
-        let containerHeight = this.containerRef.current?.parentElement?.clientHeight
+        const containerHeight = this.containerRef.current?.parentElement?.clientHeight
 
-        let containerWidth= this.containerRef.current?.parentElement?.clientWidth
+        const containerWidth= this.containerRef.current?.parentElement?.clientWidth
         console.log(this.containerRef.current?.parentElement)
         console.log(this.containerRef.current?.parentElement?.offsetHeight)
         console.log(this.containerRef.current?.parentElement?.clientHeight)
         
-        let basedConfig = {
+        const basedConfig = {
           ...baseConfig,
           ...this.props.config,
         }
@@ -171,11 +162,11 @@ export class CelestialReact extends React.Component<
           basedConfig.width = Math.min(containerHeight,containerWidth);
         }
 
-        // this.celestial.clear();
-        // this.celestial.remove();
-        this.celestial.display(sanitize(basedConfig))
-        // this.celestial.reload(sanitize(basedConfig));
-        // this.celestial.redraw();
+        // Celestial.clear();
+        // Celestial.remove();
+        Celestial.display(sanitize(basedConfig))
+        // Celestial.reload(sanitize(basedConfig));
+        // Celestial.redraw();
         this.sizeChanged = false;
       }
     }
@@ -261,10 +252,10 @@ class CelestialFeaturesCollection extends React.PureComponent<CelestialFeaturesC
       if (celestial.clip(d.geometry.coordinates)) {
         // get point coordinates
         // @ts-ignore
-        let pt = celestial.mapProjection(d.geometry.coordinates);
+        const pt = celestial.mapProjection(d.geometry.coordinates);
         // object radius in pixel, could be varable depending on e.g. magnitude
         // @ts-ignore
-        let r = this.props.absoluteSize
+        const r = this.props.absoluteSize
           ? d.properties.size
           : Math.pow(parseInt(d.properties.size) * 0.25, 0.5);
         // draw on canvas

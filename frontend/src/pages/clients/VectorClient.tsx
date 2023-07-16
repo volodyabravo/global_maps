@@ -21,6 +21,7 @@ import { Cart } from "../../cart/cart.store";
 import useClient from "../../hooks/useClient";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { VersionPicker } from "../../components/form/VersionPicker";
+import AppNavBar from "../../components/AppBar";
 
 const hasGeo = 'geolocation' in navigator;
 
@@ -28,6 +29,7 @@ const hasGeo = 'geolocation' in navigator;
 function MapClientPage({ cartStore }: {
     cartStore?: Cart
 }) {
+    
     // Accordion control
     const [expanded, setExpanded] = useState<string | false>("panel1");
 
@@ -57,6 +59,7 @@ function MapClientPage({ cartStore }: {
     let custom = form.watch();
 
     return <div style={{ "backgroundColor": "#F8F8F8", }}>
+        <AppNavBar />
         <Container sx={{
             "backgroundColor": "#F8F8F8",
             "paddingLeft": "0!important",

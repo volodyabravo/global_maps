@@ -1,20 +1,22 @@
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import 'swiper/swiper-bundle.min.css'
-import 'swiper/swiper.min.css'
+import { Swiper, SwiperSlide,  } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+// import 'swiper/css/bundle/minimal.css'
+// import 'swiper/swiper.min.css'
+// Import Swiper styles
+import 'swiper/css';
 import styled from "@emotion/styled";
 import { Button, Container } from '@mui/material';
-import { FaArrowRight, FaChevronRight } from 'react-icons/fa';
 import { ChevronRight } from '@mui/icons-material';
 
 import rostov from "./../assets/main/rostov.png"
 import starry from "./../assets/main/starry.png"
 import mapspromo from "./../assets/main/mapspromo.jpg"
 import { Link } from 'react-router-dom';
+import AppNavBar from '../components/AppBar';
 
 export default function MainPage() {
     return <div>
-
+        <AppNavBar />
         <Swiper
             spaceBetween={0}
             modules={[Navigation, Pagination]}

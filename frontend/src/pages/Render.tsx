@@ -21,15 +21,15 @@ export function RenderPage() {
 
     const [data, setData] = useState<RenderData | undefined>(undefined);
 
-    let theme = useMemo(() => { return themes.find((theme) => theme.id == data?.custom?.theme) }, [data?.custom?.theme]);
+    const theme = useMemo(() => { return themes.find((theme) => theme.id == data?.custom?.theme) }, [data?.custom?.theme]);
 
-    let size: Size | undefined = useMemo(() => { return sizes.find((size) => size.id == data?.custom?.sizeId) }, [data?.custom?.sizeId]);
+    const size: Size | undefined = useMemo(() => { return sizes.find((size) => size.id == data?.custom?.sizeId) }, [data?.custom?.sizeId]);
 
     useEffect(() => {
         (async () => {
-            let themesData = await getThemes({});
+            const themesData = await getThemes({});
             setThemes(themesData);
-            let sizesData = await getSizes();
+            const sizesData = await getSizes();
             setSizes(sizesData)
 
             // adds custom to the thing

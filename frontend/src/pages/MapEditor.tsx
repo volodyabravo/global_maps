@@ -1,18 +1,17 @@
-import { AccordionDetails, Grid, TextField, Typography, Box, CardContent, Card, Button, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel, TextareaAutosize, Switch, Container, Slider } from "@mui/material";
+import { AccordionDetails, Grid, TextField, Typography, Button, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Switch, Container, Slider } from "@mui/material";
 
 import { useState } from "react";
-import { CelestialReact } from "../components/CelestialForeign";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { useForm, Controller } from "react-hook-form";
 import { ColorPicker } from "../components/form/ColorPicker";
 import DateTimePicker from '@mui/lab/DateTimePicker';
 
-import styled from "@emotion/styled";
 import { Accordion, AccordionSummary } from "../components/editor/Accordion";
-import { MapTheme, MapThemeData } from "../api/themes";
+import { MapThemeData } from "../api/themes";
 import { MapView } from "../components/MapView";
 import { toast } from "react-toastify";
+import AppNavBar from "../components/AppBar";
 
 
 export function MapEditorPage() {
@@ -162,7 +161,7 @@ export function MapEditorPage() {
 
 
 
-    let mapProps = celestialForm.watch();
+    const mapProps = celestialForm.watch();
 
 
     const handleChange =
@@ -171,6 +170,7 @@ export function MapEditorPage() {
         };
 
     return <div>
+        <AppNavBar />
         <Grid container spacing={1} sx={{
             "minHeight": "100vh"
         }} >
@@ -802,7 +802,7 @@ export function MapEditorPage() {
                             />
 
                             <Button variant="contained" onClick={() => {
-                                let text = JSON.stringify(mapProps, null, 2);
+                                const text = JSON.stringify(mapProps, null, 2);
                                 navigator.clipboard.writeText(text);
                                 toast("Тема скопирована")
                             }}>Копировать</Button>

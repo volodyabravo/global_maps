@@ -5,10 +5,7 @@ import Fuse from 'fuse.js'
 import { styled } from "@material-ui/system";
 
 
-
-
-// @ts-expect-error
-import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import mapboxgl from 'mapbox-gl';
 import { PVZGeoJSON,  pvzstofeatures } from "../../pages/UIVars";
 import classNames from "classnames";
 mapboxgl.accessToken = 'pk.eyJ1Ijoidm9sb2R5YWJyYXZvIiwiYSI6ImNrbHJ5YzkwZDFyODAybnF5YjMyYXd2dHAifQ.r8osMfsMnoe89b3qJ3g8uA';

@@ -6,6 +6,7 @@ import { useLocation, useParams } from "react-router-dom";
 
 import { getOrder, getThemes, MapTheme, UserCustomizations } from "../api/themes";
 import { MapView } from "../components/MapView";
+import AppNavBar from "../components/AppBar";
 
 export function OrderPage() {
 
@@ -37,6 +38,7 @@ export function OrderPage() {
     }, [])
 
     return <div>
+        <AppNavBar />
         {order && <div style={{
             textAlign:"center",
             padding: "3em"

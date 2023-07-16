@@ -11,19 +11,19 @@ import { CelestialMapView } from "../../MapView";
 export function CelestialHalf({ orientation, theme, custom, height, print, width }: CelestialMapView) {
   // Calculate height of the map
 
-  let outerPadding = 300;
+  const outerPadding = 300;
 
-  let maxDimension = Math.max(height, width);
-  let mapWidth = maxDimension + outerPadding;
-  let mapTop = (maxDimension == height) ? -(outerPadding / 2) : (-(mapWidth - height) / 2);
-  let mapLeft = (maxDimension == height) ? (-(mapWidth - width) / 2) : -(outerPadding / 2);
+  const maxDimension = Math.max(height, width);
+  const mapWidth = maxDimension + outerPadding;
+  const mapTop = (maxDimension == height) ? -(outerPadding / 2) : (-(mapWidth - height) / 2);
+  const mapLeft = (maxDimension == height) ? (-(mapWidth - width) / 2) : -(outerPadding / 2);
 
-  let headline = ((typeof custom?.headline) !== "undefined") ? custom?.headline : theme.data?.cardSettings?.defaultText?.headline
-  let divider = ((typeof custom?.divider) !== "undefined") ? custom?.divider : theme.data?.cardSettings?.defaultText?.divider
-  let tagline = ((typeof custom?.tagline) !== "undefined") ? custom?.tagline : theme.data?.cardSettings?.defaultText?.tagline
-  let subline = ((typeof custom?.subline) !== "undefined") ? custom?.subline : theme.data?.cardSettings?.defaultText?.subline
+  const headline = ((typeof custom?.headline) !== "undefined") ? custom?.headline : theme.data?.cardSettings?.defaultText?.headline
+  const divider = ((typeof custom?.divider) !== "undefined") ? custom?.divider : theme.data?.cardSettings?.defaultText?.divider
+  const tagline = ((typeof custom?.tagline) !== "undefined") ? custom?.tagline : theme.data?.cardSettings?.defaultText?.tagline
+  const subline = ((typeof custom?.subline) !== "undefined") ? custom?.subline : theme.data?.cardSettings?.defaultText?.subline
 
-  let Card = <CardContainer className="card-container" style={{
+  const Card = <CardContainer className="card-container" style={{
     width: width + "px",
     height: height + "px",
     backgroundColor: theme.data?.cardSettings?.background?.color,

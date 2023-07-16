@@ -48,7 +48,7 @@ interface MapViewProps {
   size?: Size;
 }
 
-let layouts = {
+const layouts = {
   "celestial": {
     "CelestialFullBackground": CelestialFullBackground,
     "CelestialCircle": CelestialCircle,
@@ -87,7 +87,7 @@ export function MapView(props: MapViewProps) {
 
 
 
-  let print = props.print;
+  const print = props.print;
   let layout = props.layout || "CelestialCircle";
   let maptype = props.maptype || "celestial";
 
@@ -99,16 +99,17 @@ export function MapView(props: MapViewProps) {
     maptype = props.theme.data?.maptype
   }
 
-  let orientation: "portrait" | "landscape" = (height > width) ? "portrait" : "landscape";
+  const orientation: "portrait" | "landscape" = (height > width) ? "portrait" : "landscape";
 
-  // @ts-expect-error
-  let Layout = layouts[maptype][layout];
+  // @ts-ignore
+  const Layout = layouts[maptype][layout];
+  // const Layout = CelestialFullBackground;
 
   if (!Layout) {
     return <div>Выберите другую карту</div>
   }
 
-  let RenderedLayout = <Layout {...props} orientation={orientation} width={width} custom={props.custom} height={height} print={print}></Layout>
+  const RenderedLayout = <Layout {...props} orientation={orientation} width={width} custom={props.custom} height={height} print={print}></Layout>
 
   if (!print) {
     return (
@@ -118,7 +119,6 @@ export function MapView(props: MapViewProps) {
         }} />
         <MapFrame {...props.theme.data?.frameSettings} >
           {RenderedLayout}
-
         </MapFrame>
       </CardArea>
 

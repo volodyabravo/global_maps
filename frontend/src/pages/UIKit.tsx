@@ -1,13 +1,10 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CheckoutButton } from "../components/buttons/CheckOutButton";
-import PVZPicker from "../components/form/PVZPicker";
 import { TextField } from "../components/form/TextField";
 import { LocationSelector } from "../components/geocoder/LocationSelector";
-import { pvzs } from "./UIVars";
+import AppNavBar from "../components/AppBar";
 
 export function UIKitPage() {
-    const [popupOpen, setPopupOpen] = useState(true)
     const demoForm = useForm({
         defaultValues: {
             demo1: "",
@@ -19,9 +16,8 @@ export function UIKitPage() {
 
     const onSubmit = (data:any) => console.log(data);
 
-    let ass = demoForm.watch();
-    console.log(ass);
     return <div>
+        <AppNavBar />
         <CheckoutButton onClick={() => { alert("clicked") }} />
         <LocationSelector />
         <form onSubmit={demoForm.handleSubmit(onSubmit)}>
@@ -30,7 +26,5 @@ export function UIKitPage() {
             <input type="submit" />
             {/* <PVZPicker pvzs={pvzs} isOpen={popupOpen} setOpen={setPopupOpen}/> */}
         </form>
-        
-
     </div>
 }

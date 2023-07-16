@@ -15,22 +15,15 @@ export function Demo() {
         theme: string
     }>();
 
-    let theme = useMemo(() => { return themes.find((theme) => theme.id == custom?.theme) }, [custom?.theme]);
-    
-    // theme = {
-    //     data: {
-    //         layout: "SimpleVector",
-    //         maptype: "vector"
-    //     },
-    //     name: "demo",
-    //     id:1,
-    //     product: 2,
-    //     preview: ""
-    // };
+    const theme = useMemo(() => { return themes.find((theme) => theme.id == custom?.theme) }, [custom?.theme]);
+
 
     useEffect(() => {
         (async () => {
-            let themesData = await getThemes({});
+            if (router.theme == undefined) {
+                return;
+            }
+            const themesData = await getThemes({});
             setThemes(themesData);
             setCustom({
                 divider: "Разделитель",
@@ -52,6 +45,6 @@ export function Demo() {
     
     return <div style={{border: "2px solid black", width: router.width+"px"}}>
         {custom && theme &&
-            <MapView layout="SimpleVector" theme={theme} custom={custom} print width={parseInt(router.width)} height={parseInt(router.height)} />}
+            <MapView layout="SimpleVector" theme={theme} custom={custom} print width={router.width?parseInt(router.width):256} height={router.height?parseInt(router.height):256} />}
     </div >
 }

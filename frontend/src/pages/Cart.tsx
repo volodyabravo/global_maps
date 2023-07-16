@@ -8,6 +8,7 @@ import { CartItem } from "../components/cart/CartItem";
 import { inject, observer } from "mobx-react";
 import cartStore, { Cart } from "../cart/cart.store";
 import OrderForm from "../components/form/OrderForm";
+import AppNavBar from "../components/AppBar";
 
 export interface Item {
     preview?: string;
@@ -24,6 +25,7 @@ function CartPage(props: {
 }) {
     const items = cartStore.itemsArray;
     return <div>
+        <AppNavBar />
         <SectionTitle>Оформление заказа</SectionTitle>
         <Container>
             <PartsContainer>

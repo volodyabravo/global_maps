@@ -16,6 +16,7 @@ import { Cart } from "../../cart/cart.store";
 import useClient from "../../hooks/useClient";
 import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { VersionPicker } from "../../components/form/VersionPicker";
+import AppNavBar from "../../components/AppBar";
 
 function MapClientPage({ cartStore }: {
     cartStore?: Cart
@@ -44,11 +45,10 @@ function MapClientPage({ cartStore }: {
         price
     } = useClient(cartStore, MapType.Star)
 
-
-
-    let custom = form.watch();
+    const custom = form.watch();
 
     return <div style={{ "backgroundColor": "#F8F8F8", }}>
+        <AppNavBar />
         <Container sx={{
             "backgroundColor": "#F8F8F8",
             "paddingLeft": "0!important",
@@ -244,7 +244,7 @@ function MapClientPage({ cartStore }: {
 
 
 function RecursiveVersionPicker({ control, versions }: { control: Control<UserCustomizations, object>, versions: Array<Version> }) {
-    let { field: {
+    const { field: {
         value, onChange
     } } = useController({
         control: control,
@@ -274,9 +274,9 @@ function RecursiveVersionPicker({ control, versions }: { control: Control<UserCu
         ]
 
         if (value && value[0]) {
-            let selectedItem = items.find((x) => x.id === value[0]);
+            const selectedItem = items.find((x) => x.id === value[0]);
             if (selectedItem && selectedItem?.children && selectedItem.children.length > 0) {
-                let nofirst = value.filter((x, i) => i !== 0);
+                const nofirst = value.filter((x, i) => i !== 0);
                 console.log(nofirst)
                 elements = [
                     ...elements,

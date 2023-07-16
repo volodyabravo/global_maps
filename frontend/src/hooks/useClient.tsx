@@ -28,20 +28,20 @@ const useClient = (cart?: Cart, mapType?: MapType) => {
         }
     });
 
-    let custom = form.watch();
+    const custom = form.watch();
 
-    let theme = useMemo(() => { return themes.find((theme) => theme.id === custom.theme) }, [custom.theme, themes]);
-    let size: Size | undefined = useMemo(() => { return sizes.find((size) => size.id === custom.sizeId) }, [custom.sizeId, sizes]);
+    const theme = useMemo(() => { return themes.find((theme) => theme.id === custom.theme) }, [custom.theme, themes]);
+    const size: Size | undefined = useMemo(() => { return sizes.find((size) => size.id === custom.sizeId) }, [custom.sizeId, sizes]);
 
 
     useEffect(() => {
         (async () => {
             setLoading(true);
-            let themesData = await getThemes({ map_type: mapType });
+            const themesData = await getThemes({ map_type: mapType });
             setThemes(themesData);
-            let sizesData = await getSizes();
+            const sizesData = await getSizes();
             setSizes(sizesData)
-            let versionsData = await getVersions()
+            const versionsData = await getVersions()
             setVersions(versionsData);
             if (!custom.theme && themesData && themesData.length > 0) {
                 setTimeout(() => {
